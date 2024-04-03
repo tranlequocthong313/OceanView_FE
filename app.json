@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "OceanView_FE",
+    "slug": "OceanView_FE",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "OceanView_FE"
+}
