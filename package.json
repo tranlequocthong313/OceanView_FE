@@ -1,21 +1,43 @@
 {
-  "name": "oceanview_fe",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "expo start --dev-client",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start --web"
-  },
-  "dependencies": {
-    "expo": "~50.0.14",
-    "expo-status-bar": "~1.11.1",
-    "react": "18.2.0",
-    "react-native": "0.73.6"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.20.0"
-  },
-  "private": true
+    "name": "oceanview_fe",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "expo start --dev-client",
+        "android": "expo run:android",
+        "ios": "expo run:ios",
+        "web": "expo start --web",
+        "format": "npx prettier . -w",
+        "check-format": "npx prettier . -c",
+        "lint": "npx eslint .",
+        "lint:fix": "npx eslint --fix ."
+    },
+    "pre-commit": [
+        "format",
+        "lint:fix"
+    ],
+    "dependencies": {
+        "expo": "~50.0.14",
+        "expo-status-bar": "~1.11.1",
+        "react": "18.2.0",
+        "react-native": "0.73.6"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.20.0",
+        "babel-plugin-module-resolver": "^5.0.0",
+        "eslint": "^8.57.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-import-resolver-alias": "^1.1.2",
+        "eslint-import-resolver-babel-module": "^5.3.2",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-jsx-a11y": "^6.8.0",
+        "eslint-plugin-module-resolver": "^1.5.0",
+        "eslint-plugin-react": "^7.34.1",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-native": "^4.1.0",
+        "pre-commit": "^1.2.2",
+        "prettier": "3.2.5"
+    },
+    "private": true
 }
