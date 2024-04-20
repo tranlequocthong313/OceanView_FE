@@ -1,38 +1,29 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import ProfileStackNav from './ProfileStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
 
 const BottomTab = createBottomTabNavigator();
 
-function TabarIcon({ name }) {
-    const icons = {
-        home: <Ionicons name="home" color="black" size="24" />,
-        bell: <MaterialCommunityIcons name="bell" color="black" size="24" />,
-        user: <AntDesign name="user" color="black" size="24" />,
-    };
-
-    return icons[name];
-}
-
 export default function SettingsTabNav() {
     return (
-        <BottomTab.Navigator initialRouteName="HomeTab" screenOptions={{ headerShown: false }}>
+        <BottomTab.Navigator initialRouteName="HomeTab" screenOptions={{ headerShown: false}}>
             <BottomTab.Screen
                 name="HomeTab"
                 component={HomeStackNav}
                 options={{
                     tabBarLabel: 'Trang chủ',
-                    tabBarIcon: TabarIcon({ name: 'home' }),
+                    tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color={color} />,
                 }}
+                
             />
             <BottomTab.Screen
                 name="NotificationTab"
                 component={NotifyStackNav}
                 options={{
                     tabBarLabel: 'Thông báo',
-                    tabBarIcon: TabarIcon({ name: 'bell' }),
+                    tabBarIcon: ({ color }) => <Feather name="bell" size={24} color={color} />,
                     tabBarBadge: 3,
                 }}
             />
@@ -41,7 +32,7 @@ export default function SettingsTabNav() {
                 component={ProfileStackNav}
                 options={{
                     tabBarLabel: 'Tài khoản',
-                    tabBarIcon: TabarIcon({ name: 'user' }),
+                    tabBarIcon: ({ color }) => <AntDesign name="user" color={color} size={24} />,
                 }}
             />
         </BottomTab.Navigator>
