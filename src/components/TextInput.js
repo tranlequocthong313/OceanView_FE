@@ -39,5 +39,4 @@ function TextInput({ errorText, description, ...props }) {
     );
 }
 
-
 export default TextInput;

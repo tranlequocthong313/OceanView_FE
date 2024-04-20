@@ -16,4 +16,3 @@ function Paragraph(props) {
 }
 
 export default Paragraph;
-

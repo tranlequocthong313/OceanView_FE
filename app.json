@@ -3,7 +3,8 @@
         "name": "OceanView_FE",
         "slug": "OceanView_FE",
         "version": "1.0.0",
-        "assetBundlePatterns": ["**/*"]
+        "assetBundlePatterns": ["**/*"],
+        "userInterfaceStyle": "automatic"
     },
     "name": "OceanView_FE"
 }
