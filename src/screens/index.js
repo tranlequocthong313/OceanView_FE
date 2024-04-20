@@ -17,3 +17,4 @@ export { default as RegisterParkingCardScreen } from './RegisterParkingCardScree
 export { default as RegisterRelativeAccountScreen } from './RegisterRelativeAccountScreen';
 export { default as UpdateInfoScreen } from './UpdateInfoScreen';
 export { default as ChatScreen } from './ChatScreen';
+

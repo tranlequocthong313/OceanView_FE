@@ -6,6 +6,16 @@ import NotifyStackNav from './NotifyStackNav';
 
 const BottomTab = createBottomTabNavigator();
 
+function TabarIcon({ name }) {
+    const icons = {
+        home: <Ionicons name="home" color="black" size="24" />,
+        bell: <MaterialCommunityIcons name="bell" color="black" size="24" />,
+        user: <AntDesign name="user" color="black" size="24" />,
+    };
+
+    return icons[name];
+}
+
 export default function SettingsTabNav() {
     return (
         <BottomTab.Navigator initialRouteName="HomeTab" screenOptions={{ headerShown: false }}>
@@ -14,7 +24,7 @@ export default function SettingsTabNav() {
                 component={HomeStackNav}
                 options={{
                     tabBarLabel: 'Trang chủ',
-                    tabBarIcon: <Ionicons name="home" color="black" size="24" />,
+                    tabBarIcon: TabarIcon({ name: 'home' }),
                 }}
             />
             <BottomTab.Screen
@@ -22,7 +32,7 @@ export default function SettingsTabNav() {
                 component={NotifyStackNav}
                 options={{
                     tabBarLabel: 'Thông báo',
-                    tabBarIcon: <MaterialCommunityIcons name="bell" color="black" size="24" />,
+                    tabBarIcon: TabarIcon({ name: 'bell' }),
                     tabBarBadge: 3,
                 }}
             />
@@ -31,7 +41,7 @@ export default function SettingsTabNav() {
                 component={ProfileStackNav}
                 options={{
                     tabBarLabel: 'Tài khoản',
-                    tabBarIcon: <AntDesign name="user" color="black" size="24" />,
+                    tabBarIcon: TabarIcon({ name: 'user' }),
                 }}
             />
         </BottomTab.Navigator>
