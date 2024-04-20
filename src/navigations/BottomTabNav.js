@@ -14,7 +14,7 @@ export default function SettingsTabNav() {
                 component={HomeStackNav}
                 options={{
                     tabBarLabel: 'Trang chủ',
-                    tabBarIcon:  <Ionicons name="home" color='black' size='24' />,
+                    tabBarIcon: <Ionicons name="home" color="black" size="24" />,
                 }}
             />
             <BottomTab.Screen
@@ -22,7 +22,7 @@ export default function SettingsTabNav() {
                 component={NotifyStackNav}
                 options={{
                     tabBarLabel: 'Thông báo',
-                    tabBarIcon:  <MaterialCommunityIcons name="bell" color='black' size='24' />,
+                    tabBarIcon: <MaterialCommunityIcons name="bell" color="black" size="24" />,
                     tabBarBadge: 3,
                 }}
             />
@@ -31,9 +31,8 @@ export default function SettingsTabNav() {
                 component={ProfileStackNav}
                 options={{
                     tabBarLabel: 'Tài khoản',
-                    tabBarIcon: <AntDesign name="user" color='black' size='24' />,
+                    tabBarIcon: <AntDesign name="user" color="black" size="24" />,
                 }}
-                
             />
         </BottomTab.Navigator>
     );

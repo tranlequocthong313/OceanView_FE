@@ -6,7 +6,7 @@ import navigations from '~/navigations';
 import theme from './src/core/theme';
 import { LoginScreen, UpdateInfoScreen, ResetPasswordScreen, Dashboard } from './src/screens';
 
-const {HomeTabNav} = navigations
+const { HomeTabNav } = navigations;
 
 const AuthStack = createStackNavigator();
 

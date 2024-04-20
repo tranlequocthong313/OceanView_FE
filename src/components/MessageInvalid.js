@@ -55,6 +55,4 @@ function MessageInvalid({ message, onClose }) {
     );
 }
 
-
-
 export default MessageInvalid;

@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 export default function RegisterRelativeAccountScreen() {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('Nam');
-    const genders = ['Nam','Nữ'];
+    const genders = ['Nam', 'Nữ'];
 
     const [CCCD, setCCCD] = useState('');
     const [homeTown, setHomeTown] = useState('');

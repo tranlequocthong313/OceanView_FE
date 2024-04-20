@@ -26,4 +26,4 @@ const ListImages = [
     },
 ];
 
-export default ListImages
+export default ListImages;

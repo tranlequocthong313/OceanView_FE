@@ -1,4 +1,4 @@
-import { TouchableOpacity , View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { FontAwesome6, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
