@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, View, ToastAndroid } from 'react-native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';
+import { authAPI, userApis } from '~/utils/api';
 import Background from '../components/Background';
 import Header from '../components/Header';
 import Button from '../components/Button';
@@ -11,8 +12,6 @@ import theme from '../core/theme';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import passwordValidator from '../helpers/passwordValidator';
-// import authAPI, { endpoints } from '../utils/authAPI';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     row: {
@@ -45,7 +44,6 @@ export default function UpdateInfoScreen({ navigation }) {
     const [showInvalidUploadMessage, setShowInvalidUploadMessage] = useState(false);
     const [checkPassword, setCheckPassword] = useState(true);
     const [image, setImage] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     const handleCloseInvalidUploadMessage = () => {
         setShowInvalidUploadMessage(false);
@@ -64,21 +62,6 @@ export default function UpdateInfoScreen({ navigation }) {
         }
     };
 
-    // const checkToken = async () => {
-    //     try {
-    //         const token = await AsyncStorage.getItem('accessToken');
-    //         if (token !== null) {
-    //             // Token exists
-    //             console.log('Token found:', token);
-    //             // Now you can use the token for further operations
-    //         } else {
-    //             // Token doesn't exist
-    //             console.log('Token not found');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error checking token:', error);
-    //     }
-    // };
     const onUpdatePressed = async () => {
         const passwordError = passwordValidator(newPassword.value);
         const retypePasswordError = passwordValidator(retypePassword.value);
@@ -97,26 +80,37 @@ export default function UpdateInfoScreen({ navigation }) {
 
         if (image == null) {
             setShowInvalidUploadMessage(true);
-            setLoading(false);
             return;
         }
-        console.log(image);
+        try {
+            const formData = new global.FormData();
+            // The image may not have a name, the server requires the image to have enough information to be decoded
+            formData.append('avatar', {
+                uri: image.uri,
+                name: image.filename ?? `avtar.${image.mimeType.split('/')[1]}`,
+                type: image.mimeType,
+            });
+            formData.append('password', newPassword.value);
 
-        // try {
-        // setLoading(true);
-
-        //     const response = await authAPI.post(endpoints.login, {
-        //         password: newPassword.value,
-        //         avatar: image.uri,
-        //     });
-        // } catch (error) {
-        //     console.error(error);
-        //     setLoading(false);
-        // }
-        // navigation.reset({
-        //     index: 0,
-        //     routes: [{ name: 'HomeScreen' }],
-        // });
+            const response = await (
+                await authAPI()
+            ).patch(userApis.activeUser, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (response.status === 200) {
+                ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeScreen' }],
+                });
+            } else {
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -130,6 +124,10 @@ export default function UpdateInfoScreen({ navigation }) {
                 onChangeText={(text) => setNewPassword({ value: text, error: '' })}
                 error={!!newPassword.error}
                 errorText={newPassword.error}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
             />
 
             <TextInput
@@ -140,6 +138,9 @@ export default function UpdateInfoScreen({ navigation }) {
                 error={!!retypePassword.error}
                 errorText={retypePassword.error}
                 secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
             />
             <View style={{ flexDirection: 'row', justifyContent: 'start', alignItems: 'center', marginTop: 16 }}>
                 <ButtonPaper
@@ -176,7 +177,6 @@ export default function UpdateInfoScreen({ navigation }) {
             )}
             <Button mode="contained" onPress={onUpdatePressed} style={{ marginTop: 24 }}>
                 Hoàn tất
-                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
             </Button>
         </Background>
     );

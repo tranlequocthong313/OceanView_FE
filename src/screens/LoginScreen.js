@@ -72,23 +72,33 @@ export default function LoginScreen({ navigation, route }) {
                 username: username.value,
                 password: password.value,
             });
-
-            const token = response.data.token.access_token;
-            // Lưu trữ token vào AsyncStorage
-            await AsyncStorage.setItem('accessToken', token);
-            console.log('Token saved:', token);
-
-            console.log('Response:', response.data);
-            // Xử lý phản hồi từ server
-            navigation.navigate('UpdateInfoScreen');
-            setLoading(false);
-            // navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: 'UpdateInfoScreen' }],
-            // });
+            if (response.status === 200) {
+                const token = response.data.token.access_token;
+                await AsyncStorage.setItem('accessToken', token);
+                const { status } = response.data;
+                if (status === 'ACTIVE') {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'HomeScreen' }],
+                    });
+                } else if (status === 'ISSUED') {
+                    navigation.navigate('UpdateInfoScreen');
+                } else {
+                    const messages = {
+                        NOT_ISSUED_YET: 'Account is not issued yet',
+                        BANNED: 'You are banned',
+                    };
+                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                }
+            } else {
+                console.log(response.data);
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+            }
         } catch (error) {
             setLoading(false);
             setShowInvalidLoginMessage(true);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -108,6 +118,7 @@ export default function LoginScreen({ navigation, route }) {
                 keyboardType="numeric"
                 error={!!username.error}
                 errorText={username.error}
+                maxLength={6}
             />
             <TextInput
                 label="Password"
@@ -116,6 +127,10 @@ export default function LoginScreen({ navigation, route }) {
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
                 error={!!password.error}
                 errorText={password.error}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
+                secureTextEntry
             />
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>

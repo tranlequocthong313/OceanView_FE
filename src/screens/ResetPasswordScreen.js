@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import MessageInvalid from '~/components/MessageInvalid';
 import api, { userApis } from '~/utils/api';
-import { Pressable, ToastAndroid, View } from 'react-native';
-import useTogglePasswordVisibility from '~/hooks/useTogglePasswordVisibility';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ToastAndroid } from 'react-native';
 import Background from '../components/Background';
 import Header from '../components/Header';
 import Button from '../components/Button';
@@ -18,7 +16,6 @@ export default function ResetPasswordScreen({ navigation, route }) {
     const [newPassword, setNewPassword] = useState({ value: '', error: '' });
     const [retypePassword, setRetypePassword] = useState({ value: '', error: '' });
     const [checkPassword, setCheckPassword] = useState(true);
-    const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
     const handleCloseCheckPasswordMessage = () => {
         setCheckPassword(true);
@@ -63,36 +60,31 @@ export default function ResetPasswordScreen({ navigation, route }) {
         <Background>
             <BackButton goBack={navigation.goBack} />
             <Header>Reset password</Header>
-            <View>
-                <TextInput
-                    label="Mật khẩu mới"
-                    returnKeyType="next"
-                    value={newPassword.value}
-                    onChangeText={(text) => setNewPassword({ value: text, error: '' })}
-                    error={!!newPassword.error}
-                    errorText={newPassword.error}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    textContentType="password"
-                    secureTextEntry={passwordVisibility}
-                />
+            <TextInput
+                label="Mật khẩu mới"
+                returnKeyType="next"
+                value={newPassword.value}
+                onChangeText={(text) => setNewPassword({ value: text, error: '' })}
+                error={!!newPassword.error}
+                errorText={newPassword.error}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
+                secureTextEntry
+            />
 
-                <TextInput
-                    label="Nhập lại mật khẩu mới"
-                    returnKeyType="done"
-                    value={retypePassword.value}
-                    onChangeText={(text) => setRetypePassword({ value: text, error: '' })}
-                    error={!!retypePassword.error}
-                    errorText={retypePassword.error}
-                    secureTextEntry={passwordVisibility}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    textContentType="password"
-                />
-                <Pressable onPress={handlePasswordVisibility}>
-                    <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
-                </Pressable>
-            </View>
+            <TextInput
+                label="Nhập lại mật khẩu mới"
+                returnKeyType="done"
+                value={retypePassword.value}
+                onChangeText={(text) => setRetypePassword({ value: text, error: '' })}
+                error={!!retypePassword.error}
+                errorText={retypePassword.error}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
+            />
             {!checkPassword && (
                 <MessageInvalid
                     message="Mật khẩu nhập không khớp với nhau. Vui lòng kiểm tra lại!"

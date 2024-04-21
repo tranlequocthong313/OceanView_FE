@@ -74,7 +74,7 @@ function OTPScreen({ navigation, route }) {
                 placeholder="Nhập mã OTP"
                 value={otp}
                 onChangeText={handleOTPChange}
-                maxLength={6} // Số lượng ký tự cho OTP, thay đổi tùy theo yêu cầu
+                maxLength={6}
             />
             <TouchableOpacity style={styles.button} onPress={handleVerifyOTP}>
                 <Text style={styles.buttonText}>Xác nhận</Text>
