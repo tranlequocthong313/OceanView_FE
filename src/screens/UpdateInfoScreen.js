@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator,FormData } from 'react-native';
+import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
+
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
@@ -12,6 +13,7 @@ import theme from '../core/theme';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import passwordValidator from '../helpers/passwordValidator';
+
 import API, { endpoints } from '../configs/API';
 
 const styles = StyleSheet.create({
@@ -40,8 +42,8 @@ const styles = StyleSheet.create({
 });
 
 export default function UpdateInfoScreen({ navigation }) {
-    const [newPassword, setNewPassword] = useState({ value: '', error: '' });
-    const [retypePassword, setRetypePassword] = useState({ value: '', error: '' });
+    const [newPassword, setNewPassword] = useState({ value: 'tranlequocthong313@', error: '' });
+    const [retypePassword, setRetypePassword] = useState({ value: 'tranlequocthong313@', error: '' });
     const [showInvalidUploadMessage, setShowInvalidUploadMessage] = useState(false);
     const [checkPassword, setCheckPassword] = useState(true);
     const [image, setImage] = useState(null);
@@ -63,11 +65,14 @@ export default function UpdateInfoScreen({ navigation }) {
                 allowsEditing: true,
                 quality: 1,
             });
-            if (!result.canceled) setImage(result.assets[0].uri);
+            if (!result.canceled) setImage(result.assets[0]);
+
         }
     };
 
     const onUpdatePressed = async () => {
+        console.log(newPassword.value);
+        console.log(retypePassword.value);
         const passwordError = passwordValidator(newPassword.value);
         const retypePasswordError = passwordValidator(retypePassword.value);
 
@@ -95,24 +100,35 @@ export default function UpdateInfoScreen({ navigation }) {
 
             console.log('password:', newPassword.value);
             setLoading(true);
-            const token = await AsyncStorage.getItem('accessToken');
-            console.log('Token: ', token);
-
-            const formData = new FormData();
-            formData.append('avatar', image);
-            const headers = {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data',
-            };
-
-            const response = await API.patch(endpoints.uploadButton, formData, {
-                headers,
+            const formData = new global.FormData();
+            console.log(image.uri, image.type);
+            formData.append('avatar', {
+                uri: image.uri,
+                type: image.mimeType,
+                name: image.filename,
             });
+            formData.append('password', newPassword.value);
+            console.log(formData);
+
+            const response = await (
+                await authAPI()
+            ).patch(userApis.activeUser, formData, {
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log(response.status);
             console.log(response.data);
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'HomeScreen' }],
-            });
+            if (response.status === 200) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeScreen' }],
+                });
+            } else {
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+            }
+
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -124,15 +140,19 @@ export default function UpdateInfoScreen({ navigation }) {
         <Background>
             <BackButton goBack={navigation.goBack} />
             <Header>Cập nhật thông tin cá nhân</Header>
+
             <TextInput
-                label="Mật khẩu mới"
+                label="Nhập mật khẩu mới"
                 returnKeyType="next"
                 value={newPassword.value}
                 onChangeText={(text) => setNewPassword({ value: text, error: '' })}
                 error={!!newPassword.error}
                 errorText={newPassword.error}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
             />
-
             <TextInput
                 label="Nhập lại mật khẩu mới"
                 returnKeyType="done"
@@ -140,7 +160,10 @@ export default function UpdateInfoScreen({ navigation }) {
                 onChangeText={(text) => setRetypePassword({ value: text, error: '' })}
                 error={!!retypePassword.error}
                 errorText={retypePassword.error}
+                autoCapitalize="none"
+                autoCorrect={false}
                 secureTextEntry
+                textContentType="password"
             />
             <View style={{ flexDirection: 'row', justifyContent: 'start', alignItems: 'center', marginTop: 16 }}>
                 <ButtonPaper

@@ -66,7 +66,6 @@ export default function RegisterAccessCarScreen() {
     const genders = ['Nam', 'Nữ'];
     const [relationship, setRelationShip] = useState('');
 
-
     const [CCCD, setCCCD] = useState('');
     const [homeTown, setHomeTown] = useState('');
     const [SDT, setSDT] = useState('');
@@ -193,7 +192,8 @@ export default function RegisterAccessCarScreen() {
             <ScrollView>
                 <View style={styles.container}>
                     <SafeAreaView style={styles.wrapper}>
-                    <View style={styles.note}>
+                        <View style={styles.note}>
+
                             <Text style={styles.textNote}>Thông tin người được đăng ký</Text>
                         </View>
                         <Text style={styles.title}>Đăng ký cấp phát tài khoản cho người thân </Text>

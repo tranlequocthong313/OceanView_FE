@@ -94,7 +94,7 @@ export default function ProfileScreen({ navigation }) {
                         <MaterialIcons name="navigate-next" size={24} color="black" />
                     </View>
                 </TouchableOpacity>
-                
+
                 <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
                     <View style={styles.viewWrapper}>
                         <View style={styles.wrapWithIcon}>
