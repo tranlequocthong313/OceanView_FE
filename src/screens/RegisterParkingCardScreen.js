@@ -88,9 +88,11 @@ export default function RegisterParkingCarScreen() {
     const [licensePlates, setLicensePlates] = useState('');
 
     const [name, setName] = useState('');
-
-    // const [CCCD, setCCCD] = useState('');
+    const [email, setEmail] = useState('');
+    const [CCCD, setCCCD] = useState('');
+    const [homeTown, setHomeTown] = useState('');
     const [SDT, setSDT] = useState('');
+    const [relationship, setRelationShip] = useState('');
     const [selectedButton, setSelectedButton] = useState(null);
 
     const [day, setDay] = useState('');
@@ -300,6 +302,7 @@ export default function RegisterParkingCarScreen() {
                             <TextInput
                                 style={styles.input}
                                 label="Họ và tên"
+                                secureTextEntry
                                 value={name}
                                 onChangeText={(text) => {
                                     setName(text);
@@ -358,7 +361,41 @@ export default function RegisterParkingCarScreen() {
                                     setSDT(text);
                                 }}
                             />
+                            <TextInput
+                                style={styles.input}
+                                label="Email"
+                                value={email}
+                                onChangeText={(text) => {
+                                    setEmail(text);
+                                }}
+                            />
                         </View>
+                        <TextInput
+                            style={styles.input}
+                            label="Số CCCD"
+                            keyboardType="numeric"
+                            maxLength={12}
+                            value={CCCD}
+                            onChangeText={(text) => {
+                                setCCCD(text);
+                            }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            label="Quê quán"
+                            value={homeTown}
+                            onChangeText={(text) => {
+                                setHomeTown(text);
+                            }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            label="Mối quan hệ với chủ sở hữu"
+                            value={relationship}
+                            onChangeText={(text) => {
+                                setRelationShip(text);
+                            }}
+                        />
                     </SafeAreaView>
                     <Button style={styles.submit} icon="arrow-right-circle" mode="contained" onPress={handleSubmit}>
                         Đăng ký

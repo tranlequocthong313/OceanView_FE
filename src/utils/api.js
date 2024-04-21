@@ -1,10 +1,12 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const HOST = 'https://oceanview-be.onrender.com';
+// const HOST = 'https://oceanview-be.onrender.com';
+const HOST = 'http://192.168.1.175:8000/';
 
 export const userApis = {
     login: '/users/login/',
-    updateInfo: 'users/activate/',
+    activeUser: `users/active/`,
     currentUser: 'users/current/',
     sendResetPasswordOTP: (residentId) => `users/${residentId}/send-otp/`,
     sendResetPasswordEmail: (residentId) => `users/${residentId}/send-reset-password-link/`,
@@ -13,12 +15,17 @@ export const userApis = {
     resetPassowrd: `users/reset-password/`,
 };
 
-export const authAPI = axios.create({
-    baseURL: HOST,
-    headers: {
-        Authorization: `Bearer...`,
-    },
-});
+export const authAPI = async () => {
+    const token = await AsyncStorage.getItem('accessToken');
+    console.log('Token: ', token);
+
+    return axios.create({
+        baseURL: HOST,
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
 
 const api = axios.create({
     baseURL: HOST,

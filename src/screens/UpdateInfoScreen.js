@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';
+import { authAPI, userApis } from '~/utils/api';
 import Background from '../components/Background';
 import Header from '../components/Header';
 import Button from '../components/Button';
@@ -11,8 +12,6 @@ import theme from '../core/theme';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import passwordValidator from '../helpers/passwordValidator';
-// import authAPI, { endpoints } from '../utils/authAPI';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     row: {
@@ -40,12 +39,12 @@ const styles = StyleSheet.create({
 });
 
 export default function UpdateInfoScreen({ navigation }) {
-    const [newPassword, setNewPassword] = useState({ value: '', error: '' });
-    const [retypePassword, setRetypePassword] = useState({ value: '', error: '' });
+    const [newPassword, setNewPassword] = useState({ value: 'tranlequocthong313@', error: '' });
+    const [retypePassword, setRetypePassword] = useState({ value: 'tranlequocthong313@', error: '' });
     const [showInvalidUploadMessage, setShowInvalidUploadMessage] = useState(false);
     const [checkPassword, setCheckPassword] = useState(true);
     const [image, setImage] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const handleCloseInvalidUploadMessage = () => {
         setShowInvalidUploadMessage(false);
@@ -59,27 +58,17 @@ export default function UpdateInfoScreen({ navigation }) {
         if (status !== 'granted') {
             console.log('Permissions denied!');
         } else {
-            const result = await ImagePicker.launchImageLibraryAsync();
+            const result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                quality: 1,
+            });
             if (!result.canceled) setImage(result.assets[0]);
         }
     };
 
-    // const checkToken = async () => {
-    //     try {
-    //         const token = await AsyncStorage.getItem('accessToken');
-    //         if (token !== null) {
-    //             // Token exists
-    //             console.log('Token found:', token);
-    //             // Now you can use the token for further operations
-    //         } else {
-    //             // Token doesn't exist
-    //             console.log('Token not found');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error checking token:', error);
-    //     }
-    // };
     const onUpdatePressed = async () => {
+        console.log(newPassword.value);
+        console.log(retypePassword.value);
         const passwordError = passwordValidator(newPassword.value);
         const retypePasswordError = passwordValidator(retypePassword.value);
 
@@ -101,37 +90,64 @@ export default function UpdateInfoScreen({ navigation }) {
             return;
         }
         console.log(image);
+        try {
+            console.log('image:', image);
+            console.log('uri:', image.uri);
 
-        // try {
-        // setLoading(true);
+            console.log('password:', newPassword.value);
+            setLoading(true);
+            const formData = new global.FormData();
+            console.log(image.uri, image.type);
+            formData.append('avatar', {
+                uri: image.uri,
+                type: image.mimeType,
+                name: image.filename,
+            });
+            formData.append('password', newPassword.value);
+            console.log(formData);
 
-        //     const response = await authAPI.post(endpoints.login, {
-        //         password: newPassword.value,
-        //         avatar: image.uri,
-        //     });
-        // } catch (error) {
-        //     console.error(error);
-        //     setLoading(false);
-        // }
-        // navigation.reset({
-        //     index: 0,
-        //     routes: [{ name: 'HomeScreen' }],
-        // });
+            const response = await (
+                await authAPI()
+            ).patch(userApis.activeUser, formData, {
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log(response.status);
+            console.log(response.data);
+            if (response.status === 200) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeScreen' }],
+                });
+            } else {
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <Background>
             <BackButton goBack={navigation.goBack} />
             <Header>Cập nhật thông tin cá nhân</Header>
+
             <TextInput
-                label="Mật khẩu mới"
+                label="Nhập mật khẩu mới"
                 returnKeyType="next"
                 value={newPassword.value}
                 onChangeText={(text) => setNewPassword({ value: text, error: '' })}
                 error={!!newPassword.error}
                 errorText={newPassword.error}
+                secureTextEntry
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
             />
-
             <TextInput
                 label="Nhập lại mật khẩu mới"
                 returnKeyType="done"
@@ -139,7 +155,10 @@ export default function UpdateInfoScreen({ navigation }) {
                 onChangeText={(text) => setRetypePassword({ value: text, error: '' })}
                 error={!!retypePassword.error}
                 errorText={retypePassword.error}
+                autoCapitalize="none"
+                autoCorrect={false}
                 secureTextEntry
+                textContentType="password"
             />
             <View style={{ flexDirection: 'row', justifyContent: 'start', alignItems: 'center', marginTop: 16 }}>
                 <ButtonPaper
@@ -175,7 +194,6 @@ export default function UpdateInfoScreen({ navigation }) {
                 />
             )}
             <Button mode="contained" onPress={onUpdatePressed} style={{ marginTop: 24 }}>
-                Hoàn tất
                 {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
             </Button>
         </Background>

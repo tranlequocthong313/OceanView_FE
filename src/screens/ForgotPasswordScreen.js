@@ -32,6 +32,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                 error={!!residentId.error}
                 errorText={residentId.error}
                 autoCapitalize="none"
+                maxLength={6}
             />
             <Button mode="contained" onPress={sendResidentId} style={{ marginTop: 16 }}>
                 Send Resident ID

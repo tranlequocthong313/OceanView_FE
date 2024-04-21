@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageInvalid from '~/components/MessageInvalid';
 import { AntDesign } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import theme from '../core/theme';
 import passwordValidator from '../helpers/passwordValidator';
-import usernameValidator from '../helpers/usernameValidator';
+import formValidator from '../helpers/formValidator';
 
 const styles = StyleSheet.create({
     forgotPassword: {
@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
         margin: 2,
         lineHeight: 14,
     },
+    toggleButton: {
+        marginTop: 5,
+        color: 'blue',
+        textDecorationLine: 'underline',
+    },
 });
 
 export default function LoginScreen({ navigation, route }) {
@@ -56,8 +61,10 @@ export default function LoginScreen({ navigation, route }) {
         setShowInvalidLoginMessage(false);
     };
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const onLoginPressed = async () => {
-        const usernameError = usernameValidator(password.value);
+        const usernameError = formValidator(username.value, 'Username');
         const passwordError = passwordValidator(password.value);
 
         if (passwordError || usernameError) {
@@ -71,24 +78,42 @@ export default function LoginScreen({ navigation, route }) {
             const response = await api.post(userApis.login, {
                 username: username.value,
                 password: password.value,
+                // username: '240003',
+                // password: 'MsAbHHdDXK',
             });
+            if (response.status === 200) {
+                const token = response.data.token.access_token;
+                const { status } = response.data;
 
-            const token = response.data.token.access_token;
-            // Lưu trữ token vào AsyncStorage
-            await AsyncStorage.setItem('accessToken', token);
-            console.log('Token saved:', token);
+                // Lưu trữ token vào AsyncStorage
+                await AsyncStorage.setItem('accessToken', token);
 
-            console.log('Response:', response.data);
-            // Xử lý phản hồi từ server
-            navigation.navigate('UpdateInfoScreen');
-            setLoading(false);
-            // navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: 'UpdateInfoScreen' }],
-            // });
+                console.log(token);
+                console.log(status);
+                console.log('Response:', response.data);
+
+                if (status === 'ACTIVE') {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'HomeScreen' }],
+                    });
+                } else if (status === 'ISSUED') {
+                    navigation.navigate('UpdateInfoScreen');
+                } else {
+                    const messages = {
+                        NOT_ISSUED_YET: 'Account is not issued yet',
+                        BANNED: 'You are banned',
+                    };
+                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                }
+            } else {
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            }
         } catch (error) {
             setLoading(false);
             setShowInvalidLoginMessage(true);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -108,15 +133,28 @@ export default function LoginScreen({ navigation, route }) {
                 keyboardType="numeric"
                 error={!!username.error}
                 errorText={username.error}
+                maxLength={6}
             />
             <TextInput
+                secureTextEntry={!showPassword}
                 label="Password"
                 returnKeyType="done"
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
                 error={!!password.error}
                 errorText={password.error}
+                style={styles.inputPassword}
+                right={
+                    <Input.Icon
+                        icon={showPassword ? 'eye' : 'eye-off'}
+                        onPress={() => setShowPassword(!showPassword)}
+                    />
+                }
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="password"
             />
+
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
                     <Text style={styles.forgot}>Forgot your password?</Text>
