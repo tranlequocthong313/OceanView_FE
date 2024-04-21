@@ -75,7 +75,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import authAPI, { endpoints } from '../utils/authAPI';
+import api, { userApis } from '../utils/api';
 
 const styles = StyleSheet.create({
     container: {
@@ -108,7 +108,7 @@ export default function DetailsProfileScreen() {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const response = await authAPI.get(endpoints['/currentUser']);
+                const response = await api.get(userApis['/currentUser']);
                 // Lấy dữ liệu từ phản hồi API và cập nhật state
                 setProfileData(response.data);
             } catch (error) {

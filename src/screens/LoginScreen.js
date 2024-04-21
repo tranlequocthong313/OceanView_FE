@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageInvalid from '~/components/MessageInvalid';
 import { AntDesign } from '@expo/vector-icons';
+import api, { userApis } from '~/utils/api';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Header from '../components/Header';
@@ -13,7 +14,6 @@ import TextInput from '../components/TextInput';
 import theme from '../core/theme';
 import passwordValidator from '../helpers/passwordValidator';
 import usernameValidator from '../helpers/usernameValidator';
-import authAPI, { endpoints } from '../utils/authAPI';
 
 const styles = StyleSheet.create({
     forgotPassword: {
@@ -35,14 +35,22 @@ const styles = StyleSheet.create({
     notes: {
         fontSize: 10,
         margin: 2,
+        lineHeight: 14,
     },
 });
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, route }) {
     const [username, setUsername] = useState({ value: '', error: '' });
     const [password, setPassword] = useState({ value: '', error: '' });
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        console.log(route.params?.message);
+        if (route.params?.message) {
+            ToastAndroid.showWithGravity(route.params?.message, ToastAndroid.LONG, ToastAndroid.CENTER);
+        }
+    }, [route.params?.message]);
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
@@ -60,7 +68,7 @@ export default function LoginScreen({ navigation }) {
 
         try {
             setLoading(true);
-            const response = await authAPI.post(endpoints.login, {
+            const response = await api.post(userApis.login, {
                 username: username.value,
                 password: password.value,
             });
@@ -110,7 +118,7 @@ export default function LoginScreen({ navigation }) {
                 errorText={password.error}
             />
             <View style={styles.forgotPassword}>
-                <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
                     <Text style={styles.forgot}>Forgot your password?</Text>
                 </TouchableOpacity>
             </View>
