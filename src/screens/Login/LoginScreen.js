@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
         color: 'blue',
         textDecorationLine: 'underline',
     },
-
 });
 
 export default function LoginScreen({ navigation, route }) {
@@ -52,7 +51,6 @@ export default function LoginScreen({ navigation, route }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log(route.params?.message);
         if (route.params?.message) {
             ToastAndroid.showWithGravity(route.params?.message, ToastAndroid.LONG, ToastAndroid.CENTER);
         }
@@ -81,7 +79,7 @@ export default function LoginScreen({ navigation, route }) {
                 // username: username.value,
                 // password: password.value,
                 username: '240003',
-                password: 'MsAbHHdDXK',
+                password: 'minhha2k3',
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;

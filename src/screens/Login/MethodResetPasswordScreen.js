@@ -2,10 +2,10 @@ import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator } from 'react-n
 import { RadioButton, Button } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 import api, { userApis } from '~/utils/api';
-import Background from '../components/Background';
-import BackButton from '../components/BackButton';
-import Logo from '../components/Logo';
-import Header from '../components/Header';
+import Background from '../../components/Background';
+import BackButton from '../../components/BackButton';
+import Logo from '../../components/Logo';
+import Header from '../../components/Header';
 
 const styles = StyleSheet.create({
     RadioButton: { flexDirection: 'row', alignItems: 'center' },

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import validator from '~/helpers/validator';
-import Background from '../components/Background';
-import BackButton from '../components/BackButton';
-import Logo from '../components/Logo';
-import Header from '../components/Header';
-import TextInput from '../components/TextInput';
-import Button from '../components/Button';
+import Background from '../../components/Background';
+import BackButton from '../../components/BackButton';
+import Logo from '../../components/Logo';
+import Header from '../../components/Header';
+import TextInput from '../../components/TextInput';
+import Button from '../../components/Button';
 
 export default function ForgotPasswordScreen({ navigation }) {
     const [residentId, setResidentId] = useState({ value: '', error: '' });

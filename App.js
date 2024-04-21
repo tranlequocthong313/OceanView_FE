@@ -4,9 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SettingsTabNav from '~/navigations/BottomTabNav';
-import MethodResetPasswordScreen from '~/screens/MethodResetPasswordScreen';
-import ForgotPasswordScreen from '~/screens/ForgotPasswordScreen';
-import OTPScreen from '~/screens/OTPScreen';
+import MethodResetPasswordScreen from '~/screens/Login/MethodResetPasswordScreen';
+import ForgotPasswordScreen from '~/screens/Login/ForgotPasswordScreen';
+import OTPScreen from '~/screens/Login/OTPScreen';
 import theme from './src/core/theme';
 import { LoginScreen, UpdateInfoScreen, ResetPasswordScreen } from './src/screens';
 

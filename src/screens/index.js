@@ -17,4 +17,4 @@ export { default as RegisterRelativeAccountScreen } from './Services/RelativeAcc
 export { default as UpdateInfoScreen } from './Login/UpdateInfoScreen';
 export { default as ChatScreen } from './Account/Supports/ChatScreen';
 export { default as CreateReflectionScreen } from './Account/Supports/CreateReflectionScreen';
-export { default as OTPScreen } from './OTPScreen';
+export { default as OTPScreen } from './Login/OTPScreen';
