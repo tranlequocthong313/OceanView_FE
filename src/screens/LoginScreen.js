@@ -15,6 +15,8 @@ import theme from '../core/theme';
 import passwordValidator from '../helpers/passwordValidator';
 import formValidator from '../helpers/formValidator';
 
+import API, { endpoints } from '../configs/API';
+
 const styles = StyleSheet.create({
     forgotPassword: {
         width: '100%',
@@ -36,6 +38,11 @@ const styles = StyleSheet.create({
         fontSize: 10,
         margin: 2,
         lineHeight: 14,
+    },
+    toggleButton: {
+        marginTop: 5,
+        color: 'blue',
+        textDecorationLine: 'underline',
     },
     toggleButton: {
         marginTop: 5,
@@ -75,7 +82,8 @@ export default function LoginScreen({ navigation, route }) {
 
         try {
             setLoading(true);
-            const response = await api.post(userApis.login, {
+
+            const response = await API.post(endpoints.login, {
                 username: username.value,
                 password: password.value,
                 // username: '240003',

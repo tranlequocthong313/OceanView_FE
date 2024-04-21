@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
+
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';
-import { authAPI, userApis } from '~/utils/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Background from '../components/Background';
 import Header from '../components/Header';
 import Button from '../components/Button';
@@ -12,6 +13,8 @@ import theme from '../core/theme';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import passwordValidator from '../helpers/passwordValidator';
+
+import API, { endpoints } from '../configs/API';
 
 const styles = StyleSheet.create({
     row: {
@@ -63,6 +66,7 @@ export default function UpdateInfoScreen({ navigation }) {
                 quality: 1,
             });
             if (!result.canceled) setImage(result.assets[0]);
+
         }
     };
 
@@ -124,6 +128,7 @@ export default function UpdateInfoScreen({ navigation }) {
             } else {
                 ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
+
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -172,7 +177,7 @@ export default function UpdateInfoScreen({ navigation }) {
                 {image ? (
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Image
-                            source={{ uri: image.uri }}
+                            source={{ uri: image }}
                             style={{ width: 40, height: 40, borderColor: 'black', borderWidth: 1, marginRight: 16 }}
                         />
                         <AntDesign name="closecircleo" size={22} color="black" onPress={() => setImage()} />
