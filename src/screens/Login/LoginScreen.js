@@ -4,16 +4,16 @@ import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageInvalid from '~/components/MessageInvalid';
 import { AntDesign } from '@expo/vector-icons';
-import Background from '../components/Background';
-import Logo from '../components/Logo';
-import Header from '../components/Header';
-import Paragraph from '../components/Paragraph';
-import Button from '../components/Button';
-import TextInput from '../components/TextInput';
-import theme from '../core/theme';
-import passwordValidator from '../helpers/passwordValidator';
-import formValidator from '../helpers/formValidator';
-import API, { endpoints } from '../configs/API';
+import Background from '../../components/Background';
+import Logo from '../../components/Logo';
+import Header from '../../components/Header';
+import Paragraph from '../../components/Paragraph';
+import Button from '../../components/Button';
+import TextInput from '../../components/TextInput';
+import theme from '../../core/theme';
+import passwordValidator from '../../helpers/passwordValidator';
+import formValidator from '../../helpers/formValidator';
+import API, { endpoints } from '../../configs/API';
 
 const styles = StyleSheet.create({
     forgotPassword: {
@@ -55,7 +55,6 @@ export default function LoginScreen({ navigation }) {
 
     const [showPassword, setShowPassword] = useState(false);
 
-
     const onLoginPressed = async () => {
         const usernameError = formValidator(username.value, 'Username');
         const passwordError = passwordValidator(password.value);
@@ -69,10 +68,10 @@ export default function LoginScreen({ navigation }) {
         try {
             setLoading(true);
             const response = await API.post(endpoints.login, {
-                username: username.value,
-                password: password.value,
-                // username: '240003',
-                // password: 'MsAbHHdDXK',
+                // username: username.value,
+                // password: password.value,
+                username: '240003',
+                password: 'MsAbHHdDXK',
             });
 
             const token = response.data.token.access_token;
@@ -85,15 +84,20 @@ export default function LoginScreen({ navigation }) {
             console.log(status);
             console.log('Response:', response.data);
 
-            if (status === 'ACTIVE') {
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'HomeScreen' }],
-                });
-            } else {
-                navigation.navigate('UpdateInfoScreen');
-                setLoading(false);
-            }
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeScreen' }],
+            });
+
+            // if (status === 'ACTIVE') {
+            //     navigation.reset({
+            //         index: 0,
+            //         routes: [{ name: 'HomeScreen' }],
+            //     });
+            // } else {
+            //     navigation.navigate('UpdateInfoScreen');
+            //     setLoading(false);
+            // }
         } catch (error) {
             setLoading(false);
             setShowInvalidLoginMessage(true);
@@ -120,12 +124,11 @@ export default function LoginScreen({ navigation }) {
             <TextInput
                 secureTextEntry={!showPassword}
                 label="Password"
-                returnKeyType="done"
+                returnKeyType="next"
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
                 error={!!password.error}
                 errorText={password.error}
-                style={styles.inputPassword}
                 right={
                     <Input.Icon
                         icon={showPassword ? 'eye' : 'eye-off'}

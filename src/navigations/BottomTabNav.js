@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign, Feather } from '@expo/vector-icons';
-import ProfileStackNav from './ProfileStackNav';
+import ProfileStackNav from './AccountStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
 

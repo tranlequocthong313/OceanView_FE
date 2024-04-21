@@ -6,6 +6,7 @@ export const endpoints = {
     login: '/users/login/',
     updateInfo: '/users/active/',
     currentUser: '/users/current/',
+    reflection: 'uses/reflection/',
 };
 
 export const authApi = (accessToken) =>

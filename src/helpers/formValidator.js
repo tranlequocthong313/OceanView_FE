@@ -3,5 +3,4 @@ const formValidator = (text, field) => {
     return '';
 };
 
-
 export default formValidator;

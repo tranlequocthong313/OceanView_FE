@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function ProfileScreen({ navigation }) {
+export default function AccountScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <View>
@@ -85,7 +85,7 @@ export default function ProfileScreen({ navigation }) {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Contact')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Reflection')}>
                     <View style={styles.viewWrapper}>
                         <View style={styles.wrapWithIcon}>
                             <Feather name="phone" size={20} color="black" />
@@ -94,7 +94,7 @@ export default function ProfileScreen({ navigation }) {
                         <MaterialIcons name="navigate-next" size={24} color="black" />
                     </View>
                 </TouchableOpacity>
-                
+
                 <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
                     <View style={styles.viewWrapper}>
                         <View style={styles.wrapWithIcon}>

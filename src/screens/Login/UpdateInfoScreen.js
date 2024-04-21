@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator,FormData } from 'react-native';
-import { Button as ButtonPaper } from 'react-native-paper';
+import { StyleSheet, Image, View, ActivityIndicator, FormData } from 'react-native';
+import { Button as ButtonPaper, TextInput as Input } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Background from '../components/Background';
-import Header from '../components/Header';
-import Button from '../components/Button';
-import theme from '../core/theme';
-import TextInput from '../components/TextInput';
-import BackButton from '../components/BackButton';
-import passwordValidator from '../helpers/passwordValidator';
-import API, { endpoints } from '../configs/API';
+import Background from '../../components/Background';
+import Header from '../../components/Header';
+import Button from '../../components/Button';
+import theme from '../../core/theme';
+import TextInput from '../../components/TextInput';
+import BackButton from '../../components/BackButton';
+import passwordValidator from '../../helpers/passwordValidator';
+import API, { endpoints } from '../../configs/API';
 
 const styles = StyleSheet.create({
     row: {
@@ -46,6 +46,8 @@ export default function UpdateInfoScreen({ navigation }) {
     const [checkPassword, setCheckPassword] = useState(true);
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
 
     const handleCloseInvalidUploadMessage = () => {
         setShowInvalidUploadMessage(false);
@@ -105,7 +107,7 @@ export default function UpdateInfoScreen({ navigation }) {
                 'Content-Type': 'multipart/form-data',
             };
 
-            const response = await API.patch(endpoints.uploadButton, formData, {
+            const response = await API.patch(endpoints.updateInfo, formData, {
                 headers,
             });
             console.log(response.data);
@@ -125,12 +127,19 @@ export default function UpdateInfoScreen({ navigation }) {
             <BackButton goBack={navigation.goBack} />
             <Header>Cập nhật thông tin cá nhân</Header>
             <TextInput
+                secureTextEntry={!showPassword}
                 label="Mật khẩu mới"
-                returnKeyType="next"
+                returnKeyType="done"
                 value={newPassword.value}
                 onChangeText={(text) => setNewPassword({ value: text, error: '' })}
                 error={!!newPassword.error}
                 errorText={newPassword.error}
+                right={
+                    <Input.Icon
+                        icon={showPassword ? 'eye' : 'eye-off'}
+                        onPress={() => setShowPassword(!showPassword)}
+                    />
+                }
             />
 
             <TextInput
@@ -140,7 +149,13 @@ export default function UpdateInfoScreen({ navigation }) {
                 onChangeText={(text) => setRetypePassword({ value: text, error: '' })}
                 error={!!retypePassword.error}
                 errorText={retypePassword.error}
-                secureTextEntry
+                secureTextEntry={!showNewPassword}
+                right={
+                    <Input.Icon
+                        icon={showNewPassword ? 'eye' : 'eye-off'}
+                        onPress={() => setShowNewPassword(!showNewPassword)}
+                    />
+                }
             />
             <View style={{ flexDirection: 'row', justifyContent: 'start', alignItems: 'center', marginTop: 16 }}>
                 <ButtonPaper

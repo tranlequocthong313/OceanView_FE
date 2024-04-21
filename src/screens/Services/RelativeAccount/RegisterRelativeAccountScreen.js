@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     textNote: {
         color: '#fff',
-    }, 
+    },
     dmy: {
         borderWidth: 1,
         borderRadius: 4,
@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     submit: {
         margin: 8,
     },
-
 });
 
 export default function RegisterRelativeAccountScreen() {

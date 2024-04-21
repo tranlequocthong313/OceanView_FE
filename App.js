@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import SettingsTabNav from '~/navigations/BottomTabNav';
 import theme from './src/core/theme';
-import { LoginScreen, UpdateInfoScreen, ResetPasswordScreen, Dashboard } from './src/screens';
+import { LoginScreen, UpdateInfoScreen, ResetPasswordScreen } from './src/screens';
 
 const AuthStack = createStackNavigator();
 
@@ -14,7 +14,7 @@ export default function App() {
         <Provider theme={theme}>
             <NavigationContainer>
                 <AuthStack.Navigator
-                    initialRouteName="LoginScreen"
+                    initialRouteName="HomeScreen"
                     screenOptions={{
                         headerShown: false,
                     }}
@@ -22,7 +22,6 @@ export default function App() {
                     <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
                     <AuthStack.Screen name="UpdateInfoScreen" component={UpdateInfoScreen} />
                     <AuthStack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
-                    <AuthStack.Screen name="Dashboard" component={Dashboard} />
                     <AuthStack.Screen name="HomeScreen" component={SettingsTabNav} />
                 </AuthStack.Navigator>
             </NavigationContainer>

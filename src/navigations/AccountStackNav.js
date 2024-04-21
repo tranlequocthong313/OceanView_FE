@@ -7,62 +7,70 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
+    CreateReflectionScreen,
 } from '~/screens';
 
-const ProfileStack = createNativeStackNavigator();
+const AccountStack = createNativeStackNavigator();
 
-export default function ProfileStackNav() {
+export default function AccountStackNav() {
     return (
-        <ProfileStack.Navigator initialRouteName="Profile">
-            <ProfileStack.Screen
+        <AccountStack.Navigator initialRouteName="Profile">
+            <AccountStack.Screen
                 name="Profile"
                 component={ProfileScreen}
                 options={{
                     title: 'Tài khoản',
                 }}
             />
-            <ProfileStack.Screen
+            <AccountStack.Screen
                 name="DetailsProfile"
                 component={DetailsProfileScreen}
                 options={{
                     title: 'Thông tin cá nhân',
                 }}
             />
-            <ProfileStack.Screen
+            <AccountStack.Screen
                 name="Settings"
                 component={SettingsScreen}
                 options={{
                     headerTitle: 'Cài đặt',
                 }}
             />
-            <ProfileStack.Screen
+            <AccountStack.Screen
                 name="DetailsSettings"
                 component={DetailsSettingsScreen}
                 options={{
                     headerTitle: 'Cài đặt',
                 }}
             />
-            <ProfileStack.Screen
+            <AccountStack.Screen
                 name="Contact"
                 component={ContactScreen}
                 options={{
                     headerTitle: 'Liên hệ',
                 }}
             />
-            <ProfileStack.Screen
+            <AccountStack.Screen
+                name="Reflection"
+                component={CreateReflectionScreen}
+                options={{
+                    headerTitle: 'Tạo phản ánh mới',
+                }}
+            />
+            <AccountStack.Screen
                 name="Chat"
                 component={ChatScreen}
                 options={{
                     headerTitle: 'Chat với ban quản trị',
                 }}
             />
-            <ProfileStack.Screen
+            <AccountStack.Screen
                 name="AboutUs"
                 component={AboutUsScreen}
                 options={{
                     headerTitle: 'Về chúng tôi',
                 }}
             />
-        </ProfileStack.Navigator>
+        </AccountStack.Navigator>
     );
 }
