@@ -83,15 +83,8 @@ export default function LoginScreen({ navigation, route }) {
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;
-                const { status } = response.data;
-
-                // Lưu trữ token vào AsyncStorage
                 await AsyncStorage.setItem('accessToken', token);
-
-                console.log(token);
-                console.log(status);
-                console.log('Response:', response.data);
-
+                const { status } = response.data;
                 if (status === 'ACTIVE') {
                     navigation.reset({
                         index: 0,

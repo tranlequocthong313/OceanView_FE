@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
-import { Button as ButtonPaper } from 'react-native-paper';
+import { StyleSheet, Image, View, ToastAndroid } from 'react-native';
+import { ActivityIndicator, Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';
@@ -86,37 +86,28 @@ export default function UpdateInfoScreen({ navigation }) {
 
         if (image == null) {
             setShowInvalidUploadMessage(true);
-            setLoading(false);
             return;
         }
-        console.log(image);
         try {
-            console.log('image:', image);
-            console.log('uri:', image.uri);
-
-            console.log('password:', newPassword.value);
             setLoading(true);
             const formData = new global.FormData();
-            console.log(image.uri, image.type);
+            // The image may not have a name, the server requires the image to have enough information to be decoded
             formData.append('avatar', {
                 uri: image.uri,
+                name: image.filename ?? `avtar.${image.mimeType.split('/')[1]}`,
                 type: image.mimeType,
-                name: image.filename,
             });
             formData.append('password', newPassword.value);
-            console.log(formData);
 
             const response = await (
                 await authAPI()
             ).patch(userApis.activeUser, formData, {
                 headers: {
-                    // 'Content-Type': 'multipart/form-data',
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(response.status);
-            console.log(response.data);
             if (response.status === 200) {
+                ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'HomeScreen' }],
@@ -194,6 +185,7 @@ export default function UpdateInfoScreen({ navigation }) {
                 />
             )}
             <Button mode="contained" onPress={onUpdatePressed} style={{ marginTop: 24 }}>
+                Hoàn tất
                 {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
             </Button>
         </Background>
