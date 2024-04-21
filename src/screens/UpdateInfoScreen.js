@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, View, ActivityIndicator,FormData } from 'react-native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Background from '../components/Background';
 import Header from '../components/Header';
 import Button from '../components/Button';
@@ -11,8 +12,7 @@ import theme from '../core/theme';
 import TextInput from '../components/TextInput';
 import BackButton from '../components/BackButton';
 import passwordValidator from '../helpers/passwordValidator';
-// import authAPI, { endpoints } from '../utils/authAPI';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import API, { endpoints } from '../configs/API';
 
 const styles = StyleSheet.create({
     row: {
@@ -45,7 +45,7 @@ export default function UpdateInfoScreen({ navigation }) {
     const [showInvalidUploadMessage, setShowInvalidUploadMessage] = useState(false);
     const [checkPassword, setCheckPassword] = useState(true);
     const [image, setImage] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const handleCloseInvalidUploadMessage = () => {
         setShowInvalidUploadMessage(false);
@@ -59,26 +59,14 @@ export default function UpdateInfoScreen({ navigation }) {
         if (status !== 'granted') {
             console.log('Permissions denied!');
         } else {
-            const result = await ImagePicker.launchImageLibraryAsync();
-            if (!result.canceled) setImage(result.assets[0]);
+            const result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                quality: 1,
+            });
+            if (!result.canceled) setImage(result.assets[0].uri);
         }
     };
 
-    // const checkToken = async () => {
-    //     try {
-    //         const token = await AsyncStorage.getItem('accessToken');
-    //         if (token !== null) {
-    //             // Token exists
-    //             console.log('Token found:', token);
-    //             // Now you can use the token for further operations
-    //         } else {
-    //             // Token doesn't exist
-    //             console.log('Token not found');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error checking token:', error);
-    //     }
-    // };
     const onUpdatePressed = async () => {
         const passwordError = passwordValidator(newPassword.value);
         const retypePasswordError = passwordValidator(retypePassword.value);
@@ -101,22 +89,35 @@ export default function UpdateInfoScreen({ navigation }) {
             return;
         }
         console.log(image);
+        try {
+            console.log('image:', image);
+            console.log('uri:', image.uri);
 
-        // try {
-        // setLoading(true);
+            console.log('password:', newPassword.value);
+            setLoading(true);
+            const token = await AsyncStorage.getItem('accessToken');
+            console.log('Token: ', token);
 
-        //     const response = await authAPI.post(endpoints.login, {
-        //         password: newPassword.value,
-        //         avatar: image.uri,
-        //     });
-        // } catch (error) {
-        //     console.error(error);
-        //     setLoading(false);
-        // }
-        // navigation.reset({
-        //     index: 0,
-        //     routes: [{ name: 'HomeScreen' }],
-        // });
+            const formData = new FormData();
+            formData.append('avatar', image);
+            const headers = {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            };
+
+            const response = await API.patch(endpoints.uploadButton, formData, {
+                headers,
+            });
+            console.log(response.data);
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeScreen' }],
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -153,7 +154,7 @@ export default function UpdateInfoScreen({ navigation }) {
                 {image ? (
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Image
-                            source={{ uri: image.uri }}
+                            source={{ uri: image }}
                             style={{ width: 40, height: 40, borderColor: 'black', borderWidth: 1, marginRight: 16 }}
                         />
                         <AntDesign name="closecircleo" size={22} color="black" onPress={() => setImage()} />
@@ -175,7 +176,6 @@ export default function UpdateInfoScreen({ navigation }) {
                 />
             )}
             <Button mode="contained" onPress={onUpdatePressed} style={{ marginTop: 24 }}>
-                Hoàn tất
                 {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
             </Button>
         </Background>

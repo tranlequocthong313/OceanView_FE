@@ -8,7 +8,7 @@ const BottomTab = createBottomTabNavigator();
 
 export default function SettingsTabNav() {
     return (
-        <BottomTab.Navigator initialRouteName="HomeTab" screenOptions={{ headerShown: false}}>
+        <BottomTab.Navigator initialRouteName="HomeTab" screenOptions={{ headerShown: false }}>
             <BottomTab.Screen
                 name="HomeTab"
                 component={HomeStackNav}
@@ -16,7 +16,6 @@ export default function SettingsTabNav() {
                     tabBarLabel: 'Trang chủ',
                     tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color={color} />,
                 }}
-                
             />
             <BottomTab.Screen
                 name="NotificationTab"

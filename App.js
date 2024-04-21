@@ -14,7 +14,7 @@ export default function App() {
         <Provider theme={theme}>
             <NavigationContainer>
                 <AuthStack.Navigator
-                    initialRouteName="HomeScreen"
+                    initialRouteName="LoginScreen"
                     screenOptions={{
                         headerShown: false,
                     }}

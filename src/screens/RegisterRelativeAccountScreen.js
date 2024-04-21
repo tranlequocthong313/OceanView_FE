@@ -17,11 +17,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    title: {
-        marginVertical: 12,
-        fontWeight: '500',
-    },
 
+    title: {
+        fontWeight: '500',
+        fontSize: 16,
+    },
+    note: {
+        marginVertical: 12,
+        flex: 1,
+        backgroundColor: '#573E26',
+        padding: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 12,
+    },
+    textNote: {
+        color: '#fff',
+    }, 
     dmy: {
         borderWidth: 1,
         borderRadius: 4,
@@ -47,6 +59,7 @@ const styles = StyleSheet.create({
     submit: {
         margin: 8,
     },
+
 });
 
 export default function RegisterRelativeAccountScreen() {
@@ -63,6 +76,8 @@ export default function RegisterRelativeAccountScreen() {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    const [relationship, setRelationShip] = useState('');
 
     const handleInputChange = (text, field) => {
         let newValue = text;
@@ -180,6 +195,9 @@ export default function RegisterRelativeAccountScreen() {
             <ScrollView>
                 <View style={styles.container}>
                     <SafeAreaView style={styles.wrapper}>
+                        <View style={styles.note}>
+                            <Text style={styles.textNote}>Thông tin này sẽ được sử dụng khi đăng ký</Text>
+                        </View>
                         <Text style={styles.title}>Đăng ký cấp phát tài khoản cho người thân </Text>
 
                         <TextInput
@@ -289,6 +307,14 @@ export default function RegisterRelativeAccountScreen() {
                             value={email}
                             onChangeText={(text) => {
                                 setEmail(text);
+                            }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            label="Mối quan hệ với chủ sở hữu"
+                            value={relationship}
+                            onChangeText={(text) => {
+                                setRelationShip(text);
                             }}
                         />
                     </SafeAreaView>

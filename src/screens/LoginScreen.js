@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageInvalid from '~/components/MessageInvalid';
 import { AntDesign } from '@expo/vector-icons';
@@ -12,8 +12,8 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import theme from '../core/theme';
 import passwordValidator from '../helpers/passwordValidator';
-import usernameValidator from '../helpers/usernameValidator';
-import authAPI, { endpoints } from '../utils/authAPI';
+import formValidator from '../helpers/formValidator';
+import API, { endpoints } from '../configs/API';
 
 const styles = StyleSheet.create({
     forgotPassword: {
@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
         fontSize: 10,
         margin: 2,
     },
+    toggleButton: {
+        marginTop: 5,
+        color: 'blue',
+        textDecorationLine: 'underline',
+    },
 });
 
 export default function LoginScreen({ navigation }) {
@@ -48,8 +53,11 @@ export default function LoginScreen({ navigation }) {
         setShowInvalidLoginMessage(false);
     };
 
+    const [showPassword, setShowPassword] = useState(false);
+
+
     const onLoginPressed = async () => {
-        const usernameError = usernameValidator(password.value);
+        const usernameError = formValidator(username.value, 'Username');
         const passwordError = passwordValidator(password.value);
 
         if (passwordError || usernameError) {
@@ -60,24 +68,32 @@ export default function LoginScreen({ navigation }) {
 
         try {
             setLoading(true);
-            const response = await authAPI.post(endpoints.login, {
+            const response = await API.post(endpoints.login, {
                 username: username.value,
                 password: password.value,
+                // username: '240003',
+                // password: 'MsAbHHdDXK',
             });
 
             const token = response.data.token.access_token;
+            const { status } = response.data;
+
             // Lưu trữ token vào AsyncStorage
             await AsyncStorage.setItem('accessToken', token);
-            console.log('Token saved:', token);
 
+            console.log(token);
+            console.log(status);
             console.log('Response:', response.data);
-            // Xử lý phản hồi từ server
-            navigation.navigate('UpdateInfoScreen');
-            setLoading(false);
-            // navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: 'UpdateInfoScreen' }],
-            // });
+
+            if (status === 'ACTIVE') {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeScreen' }],
+                });
+            } else {
+                navigation.navigate('UpdateInfoScreen');
+                setLoading(false);
+            }
         } catch (error) {
             setLoading(false);
             setShowInvalidLoginMessage(true);
@@ -102,13 +118,22 @@ export default function LoginScreen({ navigation }) {
                 errorText={username.error}
             />
             <TextInput
+                secureTextEntry={!showPassword}
                 label="Password"
                 returnKeyType="done"
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
                 error={!!password.error}
                 errorText={password.error}
+                style={styles.inputPassword}
+                right={
+                    <Input.Icon
+                        icon={showPassword ? 'eye' : 'eye-off'}
+                        onPress={() => setShowPassword(!showPassword)}
+                    />
+                }
             />
+
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordScreen')}>
                     <Text style={styles.forgot}>Forgot your password?</Text>

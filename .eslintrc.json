@@ -19,10 +19,7 @@
         "react/jsx-props-no-spreading": "off",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off",
-        "react/no-unstable-nested-components": [
-            "off" ,
-            { "allowAsProps": true  }
-          ]
+        "react/no-unstable-nested-components": ["warn", { "allowAsProps": true }]
     },
     "extends": ["plugin:react/recommended", "airbnb", "airbnb/hooks", "prettier"],
     "settings": {

@@ -85,6 +85,16 @@ export default function ProfileScreen({ navigation }) {
                     </View>
                 </TouchableOpacity>
 
+                <TouchableOpacity onPress={() => navigation.navigate('Contact')}>
+                    <View style={styles.viewWrapper}>
+                        <View style={styles.wrapWithIcon}>
+                            <Feather name="phone" size={20} color="black" />
+                            <Text style={styles.title}>Tạo phản ánh mới</Text>
+                        </View>
+                        <MaterialIcons name="navigate-next" size={24} color="black" />
+                    </View>
+                </TouchableOpacity>
+                
                 <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
                     <View style={styles.viewWrapper}>
                         <View style={styles.wrapWithIcon}>
