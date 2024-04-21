@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import API, { endpoints } from '../../../configs/API';
+import api, { userApis } from '~/utils/api';
 
 const styles = StyleSheet.create({
     container: {
@@ -40,7 +40,7 @@ export default function DetailsProfileScreen() {
                 Authorization: `Bearer ${token}`,
             };
 
-            const response = await API.get(endpoints.currentUser, {
+            const response = await api.get(userApis.currentUser, {
                 headers,
             });
             setProfileData(response.data);

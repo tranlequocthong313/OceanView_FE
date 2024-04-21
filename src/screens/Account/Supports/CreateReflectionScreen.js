@@ -4,7 +4,8 @@ import Button from '~/components/Button';
 import formValidator from '~/helpers/formValidator';
 import TextInput from '~/components/TextInput';
 import DropDownPicker from 'react-native-dropdown-picker';
-import API, { endpoints } from '../../../configs/API';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api, { userApis } from '~/utils/api';
 
 const styles = StyleSheet.create({
     container: {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function CreateReflectionScreen({ navigation }) {
+export default function CreateReflectionScreen() {
     const [title, setTitle] = useState({ value: '', error: '' });
     const [desc, setDesc] = useState({ value: '', error: '' });
 
@@ -75,11 +76,11 @@ export default function CreateReflectionScreen({ navigation }) {
                 Authorization: `Bearer ${token}`,
             };
 
-            const response = await API.post(endpoints.reflection, {
+            const response = await api.post(userApis.reflection, {
                 type: items.value,
                 title: title.value,
                 desc: desc.value,
-                headers
+                headers,
             });
 
             console.log(response);
