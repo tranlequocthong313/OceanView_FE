@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     submit: {
         margin: 8,
     },
-
 });
 
 export default function RegisterRelativeAccountScreen() {

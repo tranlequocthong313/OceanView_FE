@@ -4,7 +4,6 @@ import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageInvalid from '~/components/MessageInvalid';
 import { AntDesign } from '@expo/vector-icons';
-import api, { userApis } from '~/utils/api';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
 import Header from '../components/Header';
@@ -38,11 +37,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         margin: 2,
         lineHeight: 14,
-    },
-    toggleButton: {
-        marginTop: 5,
-        color: 'blue',
-        textDecorationLine: 'underline',
     },
     toggleButton: {
         marginTop: 5,

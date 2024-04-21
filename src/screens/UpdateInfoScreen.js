@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
 });
 
 export default function UpdateInfoScreen({ navigation }) {
-    const [newPassword, setNewPassword] = useState({ value: 'tranlequocthong313@', error: '' });
-    const [retypePassword, setRetypePassword] = useState({ value: 'tranlequocthong313@', error: '' });
+    const [newPassword, setNewPassword] = useState({ value: '', error: '' });
+    const [retypePassword, setRetypePassword] = useState({ value: '', error: '' });
     const [showInvalidUploadMessage, setShowInvalidUploadMessage] = useState(false);
     const [checkPassword, setCheckPassword] = useState(true);
     const [image, setImage] = useState(null);

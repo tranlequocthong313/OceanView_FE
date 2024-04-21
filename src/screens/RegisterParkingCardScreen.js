@@ -307,8 +307,6 @@ export default function RegisterParkingCarScreen() {
                                 onChangeText={(text) => {
                                     setName(text);
                                 }}
-                                
-                                
                             />
 
                             <View style={styles.inputContainer}>

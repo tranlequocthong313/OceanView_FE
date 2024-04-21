@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 export default function DetailsProfileScreen() {
     const [profileData, setProfileData] = useState(null);
 
-
     const fetchProfileData = async () => {
         try {
             const token = await AsyncStorage.getItem('accessToken');
@@ -41,7 +40,6 @@ export default function DetailsProfileScreen() {
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
-
 
             const response = await API.get(endpoints.currentUser, {
                 headers,
