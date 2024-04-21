@@ -193,6 +193,7 @@ export default function RegisterAccessCarScreen() {
                 <View style={styles.container}>
                     <SafeAreaView style={styles.wrapper}>
                         <View style={styles.note}>
+
                             <Text style={styles.textNote}>Thông tin người được đăng ký</Text>
                         </View>
                         <Text style={styles.title}>Đăng ký cấp phát tài khoản cho người thân </Text>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ToastAndroid } from 'react-native';
-import { ActivityIndicator, Button as ButtonPaper } from 'react-native-paper';
+import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
+
+import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api, { userApis } from '~/utils/api';
+
+import API, { endpoints } from '../configs/API';
 
 const styles = StyleSheet.create({
     container: {
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
 export default function DetailsProfileScreen() {
     const [profileData, setProfileData] = useState(null);
 
+
     const fetchProfileData = async () => {
         try {
             const token = await AsyncStorage.getItem('accessToken');
@@ -40,7 +42,8 @@ export default function DetailsProfileScreen() {
                 Authorization: `Bearer ${token}`,
             };
 
-            const response = await api.get(userApis.currentUser, {
+
+            const response = await API.get(endpoints.currentUser, {
                 headers,
             });
             setProfileData(response.data);
