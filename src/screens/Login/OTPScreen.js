@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
 // TODO: Create a standard OTP form style
 function OTPScreen({ navigation, route }) {
-    const { residentId } = route.params;
+    const { phoneNumber } = route.params;
 
     const [otp, setOTP] = useState('');
 
@@ -50,7 +50,7 @@ function OTPScreen({ navigation, route }) {
                 return;
             }
             const res = await api.post(userApis.verifyOTP, {
-                resident_id: residentId,
+                phone_number: phoneNumber,
                 otp,
             });
             console.log(res.data);

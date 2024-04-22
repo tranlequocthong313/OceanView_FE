@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -44,17 +44,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function LoginScreen({ navigation, route }) {
+export default function LoginScreen({ navigation }) {
     const [username, setUsername] = useState({ value: '', error: '' });
     const [password, setPassword] = useState({ value: '', error: '' });
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (route.params?.message) {
-            ToastAndroid.showWithGravity(route.params?.message, ToastAndroid.LONG, ToastAndroid.CENTER);
-        }
-    }, [route.params?.message]);
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
