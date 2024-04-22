@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
+// import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
+
 import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageInvalid from '~/components/MessageInvalid';
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
     },
     toggleButton: {
         marginTop: 5,
-        color: 'blue',
+        color: theme.colors.secondary,
         textDecorationLine: 'underline',
     },
 });
@@ -50,11 +52,11 @@ export default function LoginScreen({ navigation, route }) {
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (route.params?.message) {
-            ToastAndroid.showWithGravity(route.params?.message, ToastAndroid.LONG, ToastAndroid.CENTER);
-        }
-    }, [route.params?.message]);
+    // useEffect(() => {
+    //     if (route.params?.message) {
+    //         ToastAndroid.showWithGravity(route.params?.message, ToastAndroid.LONG, ToastAndroid.CENTER);
+    //     }
+    // }, [route.params?.message]);
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
@@ -76,39 +78,39 @@ export default function LoginScreen({ navigation, route }) {
             setLoading(true);
 
             const response = await api.post(userApis.login, {
-                // username: username.value,
-                // password: password.value,
-                username: '240003',
-                password: 'minhha2k3',
+                username: username.value,
+                password: password.value,
+                // username: '240003',
+                // password: 'minhha2k3',
             });
-            if (response.status === 200) {
-                const token = response.data.token.access_token;
-                const { status } = response.data;
+            // if (response.status === 200) {
+            //     const token = response.data.token.access_token;
+            //     const { status } = response.data;
 
-                // Lưu trữ token vào AsyncStorage
-                await AsyncStorage.setItem('accessToken', token);
+            //     // Lưu trữ token vào AsyncStorage
+            //     await AsyncStorage.setItem('accessToken', token);
 
-                console.log(token);
-                console.log(status);
-                console.log('Response:', response.data);
+            //     console.log(token);
+            //     console.log(status);
+            //     console.log('Response:', response.data);
 
-                if (status === 'ACTIVE') {
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'HomeScreen' }],
-                    });
-                } else if (status === 'ISSUED') {
-                    navigation.navigate('UpdateInfoScreen');
-                } else {
-                    const messages = {
-                        NOT_ISSUED_YET: 'Account is not issued yet',
-                        BANNED: 'You are banned',
-                    };
-                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
-                }
-            } else {
-                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
-            }
+            //     if (status === 'ACTIVE') {
+            //         navigation.reset({
+            //             index: 0,
+            //             routes: [{ name: 'HomeScreen' }],
+            //         });
+            //     } else if (status === 'ISSUED') {
+            //         navigation.navigate('UpdateInfoScreen');
+            //     } else {
+            //         const messages = {
+            //             NOT_ISSUED_YET: 'Account is not issued yet',
+            //             BANNED: 'You are banned',
+            //         };
+            //         ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+            //     }
+            // } else {
+            //     ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            // }
         } catch (error) {
             setLoading(false);
             setShowInvalidLoginMessage(true);

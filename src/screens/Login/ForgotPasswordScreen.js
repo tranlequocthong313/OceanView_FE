@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import validator from '~/helpers/validator';
+import residentIdValidator from '~/helpers/residentIdValidator';
 import Background from '../../components/Background';
 import BackButton from '../../components/BackButton';
 import Logo from '../../components/Logo';
@@ -11,7 +11,7 @@ export default function ForgotPasswordScreen({ navigation }) {
     const [residentId, setResidentId] = useState({ value: '', error: '' });
 
     const sendResidentId = () => {
-        const isValid = validator.residentIdValidator(residentId.value);
+        const isValid = residentIdValidator(residentId.value);
         if (isValid) {
             navigation.navigate('MethodResetPasswordScreen', { residentId: residentId.value });
         } else {

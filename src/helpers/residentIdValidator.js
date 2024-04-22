@@ -18,4 +18,4 @@ const residentIdValidator = (residentId) => {
     return true;
 };
 
-export default { residentIdValidator };
+export default residentIdValidator;

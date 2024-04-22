@@ -1,14 +1,20 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import ProfileStackNav from './AccountStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
 
-const BottomTab = createBottomTabNavigator();
+const BottomTab = createMaterialBottomTabNavigator();
 
 export default function SettingsTabNav() {
     return (
-        <BottomTab.Navigator initialRouteName="HomeTab" screenOptions={{ headerShown: false }}>
+        <BottomTab.Navigator
+            initialRouteName="HomeTab"
+            // activeColor="#f0edf6"
+            inactiveColor="#3e2465"
+            // barStyle={{ backgroundColor: '#694fad' }}
+            screenOptions={{ headerShown: false }}
+        >
             <BottomTab.Screen
                 name="HomeTab"
                 component={HomeStackNav}

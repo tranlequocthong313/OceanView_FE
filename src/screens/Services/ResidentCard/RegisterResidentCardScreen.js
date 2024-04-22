@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function RegisterRelativeAccountScreen() {
+export default function RegisterResidentCardScreen() {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('Nam');
     const genders = ['Nam', 'Nữ'];

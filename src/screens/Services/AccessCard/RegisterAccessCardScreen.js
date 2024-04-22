@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function RegisterAccessCarScreen() {
+export default function RegisterAccessCardScreen() {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('Nam');
     const genders = ['Nam', 'Nữ'];

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
+// import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
+import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
 
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
@@ -107,15 +108,15 @@ export default function UpdateInfoScreen({ navigation }) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            if (response.status === 200) {
-                ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'HomeScreen' }],
-                });
-            } else {
-                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
-            }
+            // if (response.status === 200) {
+            //     ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            //     navigation.reset({
+            //         index: 0,
+            //         routes: [{ name: 'HomeScreen' }],
+            //     });
+            // } else {
+            //     ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+            // }
         } catch (error) {
             console.error('Error:', error);
         } finally {

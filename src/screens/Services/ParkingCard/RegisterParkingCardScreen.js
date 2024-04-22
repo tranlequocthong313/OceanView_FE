@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function RegisterParkingCarScreen() {
+export default function RegisterParkingCardScreen() {
     const [vehicleType, setVehicleType] = useState('');
     const [licensePlates, setLicensePlates] = useState('');
 
