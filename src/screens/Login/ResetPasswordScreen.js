@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { ToastAndroid } from 'react-native';
+import { ToastAndroid } from 'react-native';
 import api, { userApis } from '~/utils/api';
 import passwordValidator from '~/helpers/passwordValidator';
 import MessageInvalid from '~/components/MessageInvalid';
@@ -21,40 +21,40 @@ export default function ResetPasswordScreen({ navigation, route }) {
         setCheckPassword(true);
     };
 
-    // const onUpdatePressed = async () => {
-    //     const passwordError = passwordValidator(newPassword.value);
-    //     const retypePasswordError = passwordValidator(retypePassword.value);
+    const onUpdatePressed = async () => {
+        const passwordError = passwordValidator(newPassword.value);
+        const retypePasswordError = passwordValidator(retypePassword.value);
 
-    //     if (passwordError || retypePasswordError) {
-    //         setNewPassword({ ...newPassword, error: passwordError });
-    //         setRetypePassword({ ...retypePassword, error: retypePasswordError });
-    //         return;
-    //     }
-    //     if (newPassword.value === retypePassword.value) {
-    //         setCheckPassword(true);
-    //     } else {
-    //         setCheckPassword(false);
-    //         return;
-    //     }
+        if (passwordError || retypePasswordError) {
+            setNewPassword({ ...newPassword, error: passwordError });
+            setRetypePassword({ ...retypePassword, error: retypePasswordError });
+            return;
+        }
+        if (newPassword.value === retypePassword.value) {
+            setCheckPassword(true);
+        } else {
+            setCheckPassword(false);
+            return;
+        }
 
-    //     try {
-    //         console.log(newPassword.value);
-    //         console.log(retypePassword.value);
-    //         const res = await api.post(`${userApis.resetPassword}?token=${token}`, {
-    //             password: newPassword.value,
-    //             confirm_password: retypePassword.value,
-    //         });
-    //         console.log(res.data);
-    //         if (res.status === 401) {
-    //             ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
-    //         } else {
-    //             navigation.navigate('LoginScreen', { message: res.data });
-    //         }
-    //     } catch (error) {
-    //         console.error(error.response.data);
-    //         ToastAndroid.showWithGravity(error.response.data, ToastAndroid.SHORT, ToastAndroid.CENTER);
-    //     }
-    // };
+        try {
+            console.log(newPassword.value);
+            console.log(retypePassword.value);
+            const res = await api.post(`${userApis.resetPassword}?token=${token}`, {
+                password: newPassword.value,
+                confirm_password: retypePassword.value,
+            });
+            console.log(res.data);
+            if (res.status === 401) {
+                ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
+            } else {
+                navigation.navigate('LoginScreen', { message: res.data });
+            }
+        } catch (error) {
+            console.error(error.response.data);
+            ToastAndroid.showWithGravity(error.response.data, ToastAndroid.SHORT, ToastAndroid.CENTER);
+        }
+    };
 
     return (
         <Background>

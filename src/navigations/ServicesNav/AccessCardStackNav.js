@@ -10,7 +10,7 @@ const AccessCardStack = createNativeStackNavigator();
 
 export default function AccessCardStackNav() {
     return (
-        <AccessCardStack.Navigator initialRouteName="AccessCard" >
+        <AccessCardStack.Navigator initialRouteName="AccessCard">
             <AccessCardStack.Screen
                 name="AccessCard"
                 component={AccessCardMainScreen}

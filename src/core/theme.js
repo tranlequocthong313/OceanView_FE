@@ -11,7 +11,6 @@ const theme = {
         secondary: '#414757',
         error: '#f13a59',
         light: '#DDF6F2',
-
     },
 };
 

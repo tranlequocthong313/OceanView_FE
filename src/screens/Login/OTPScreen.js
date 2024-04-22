@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-// import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid } from 'react-native';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ToastAndroid } from 'react-native';
+// import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import api, { userApis } from '~/utils/api';
 
 const styles = StyleSheet.create({
@@ -44,27 +44,27 @@ function OTPScreen({ navigation, route }) {
         setOTP(text);
     };
 
-    // const handleVerifyOTP = async () => {
-    //     try {
-    //         if (!otp || otp.length !== 6) {
-    //             ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
-    //             return;
-    //         }
-    //         const res = await api.post(userApis.verifyOTP, {
-    //             resident_id: residentId,
-    //             otp,
-    //         });
-    //         console.log(res.data);
-    //         if (res.status === 401) {
-    //             ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
-    //             setOTP('');
-    //         } else {
-    //             navigation.navigate('ResetPasswordScreen', { token: res.data?.token });
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
+    const handleVerifyOTP = async () => {
+        try {
+            if (!otp || otp.length !== 6) {
+                ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                return;
+            }
+            const res = await api.post(userApis.verifyOTP, {
+                resident_id: residentId,
+                otp,
+            });
+            console.log(res.data);
+            if (res.status === 401) {
+                ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
+                setOTP('');
+            } else {
+                navigation.navigate('ResetPasswordScreen', { token: res.data?.token });
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <View style={styles.container}>

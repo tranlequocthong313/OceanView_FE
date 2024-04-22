@@ -1,9 +1,7 @@
-import { View } from "react-native";
+import { View } from 'react-native';
 
 const ServiceButton = () => {
-    <View>
-        
-    </View>
-}
+    <View />;
+};
 
 export default ServiceButton;

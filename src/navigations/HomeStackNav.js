@@ -6,7 +6,7 @@ const HomeStack = createNativeStackNavigator();
 
 export default function HomeStackNav() {
     return (
-        <HomeStack.Navigator initialRouteName="Home" >
+        <HomeStack.Navigator initialRouteName="Home">
             <HomeStack.Screen
                 name="Home"
                 component={HomeScreen}

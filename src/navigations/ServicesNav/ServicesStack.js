@@ -1,8 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-    ServicesScreen,
- 
-} from '~/screens';
+import { ServicesScreen } from '~/screens';
 import ParkingCardStack from './ParkingCardStackNav';
 import AccessCardStack from './AccessCardStackNav';
 import ResidentCardStack from './ResidentCardStackNav';

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     center: {
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
 });
 
 export default function ResidentCardMainScreen({ navigation }) {
@@ -59,7 +59,10 @@ export default function ResidentCardMainScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.residentCard} onPress={() => navigation.navigate('ReissueResidentCard')}>
+                <TouchableOpacity
+                    style={styles.residentCard}
+                    onPress={() => navigation.navigate('ReissueResidentCard')}
+                >
                     <View style={styles.center}>
                         <Ionicons name="refresh-circle" size={24} color="green" />
                         <Text>Cấp lại thẻ</Text>

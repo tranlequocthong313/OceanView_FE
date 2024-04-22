@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     center: {
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
 });
 
 export default function ServiceScreen({ navigation }) {

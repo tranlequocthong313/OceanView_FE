@@ -1,5 +1,5 @@
-// import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator } from 'react-native';
-import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator } from 'react-native';
+// import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { RadioButton, Button } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 import api, { userApis } from '~/utils/api';
@@ -43,33 +43,33 @@ function MethodResetPasswordScreen({ navigation, route }) {
     }, [residentId]);
 
     // TODO: Implement deep linking to open the app after reseting password success with mail method
-    // const resetPassword = async () => {
-    //     try {
-    //         if (!methods.value.includes(method)) {
-    //             ToastAndroid.showWithGravity('You must choose a method', ToastAndroid.LONG, ToastAndroid.CENTER);
-    //             console.log(`method not allowed ${method}`);
-    //             return;
-    //         }
-    //         let endpoint = userApis.sendResetPasswordOTP(residentId);
-    //         if (method === 'email') {
-    //             endpoint = userApis.sendResetPasswordEmail(residentId);
-    //         }
-    //         const res = await api.post(endpoint);
-    //         console.log(res.data);
-    //         if (res.status === 200) {
-    //             if (method === 'email') {
-    //                 navigation.navigate('LoginScreen', { message: res.data });
-    //             } else {
-    //                 navigation.navigate('OTPScreen', { residentId });
-    //             }
-    //         } 
-    //         // else {
-    //         //     ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
-    //         // }
-    //     } catch (ex) {
-    //         console.error(ex);
-    //     }
-    // };
+    const resetPassword = async () => {
+        try {
+            if (!methods.value.includes(method)) {
+                ToastAndroid.showWithGravity('You must choose a method', ToastAndroid.LONG, ToastAndroid.CENTER);
+                console.log(`method not allowed ${method}`);
+                return;
+            }
+            let endpoint = userApis.sendResetPasswordOTP(residentId);
+            if (method === 'email') {
+                endpoint = userApis.sendResetPasswordEmail(residentId);
+            }
+            const res = await api.post(endpoint);
+            console.log(res.data);
+            if (res.status === 200) {
+                if (method === 'email') {
+                    navigation.navigate('LoginScreen', { message: res.data });
+                } else {
+                    navigation.navigate('OTPScreen', { residentId });
+                }
+            }
+            // else {
+            //     ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+            // }
+        } catch (ex) {
+            console.error(ex);
+        }
+    };
 
     return (
         <Background>

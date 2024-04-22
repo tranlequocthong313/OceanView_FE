@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     center: {
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
 });
 
 export default function AccessCardMainScreen({ navigation }) {
@@ -42,10 +42,7 @@ export default function AccessCardMainScreen({ navigation }) {
         <View style={styles.container}>
             <View style={styles.wrapper}>
                 <View style={styles.cardContainer}>
-                    <TouchableOpacity
-                        style={styles.wrapCard}
-                        onPress={() => navigation.navigate('RegisterAccessCard')}
-                    >
+                    <TouchableOpacity style={styles.wrapCard} onPress={() => navigation.navigate('RegisterAccessCard')}>
                         <View style={styles.center}>
                             <Ionicons name="add-circle" size={24} color="black" />
                             <Text>Đăng ký thẻ</Text>
