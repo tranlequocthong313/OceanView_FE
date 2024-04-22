@@ -8,9 +8,9 @@ export const userApis = {
     login: '/users/login/',
     activeUser: `/users/active/`,
     currentUser: '/users/current/',
-    sendResetPasswordOTP: (residentId) => `/users/${residentId}/send-otp/`,
-    sendResetPasswordEmail: (residentId) => `/users/${residentId}/send-reset-password-link/`,
-    methodResetPassword: (residentId) => `/users/${residentId}/forgot-password/`,
+    sendResetPasswordOTP: `/users/send-otp/`,
+    sendResetPasswordEmail: `/users/send-reset-password-link/`,
+    methodResetPassword: `/users/forgot-password/`,
     verifyOTP: `/users/verify-otp/`,
     resetPassword: `/users/reset-password/`,
 };
