@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
-
-import Background from '~/components/Background';
-import BackButton from '~/components/BackButton';
-import Logo from '~/components/Logo';
-import Header from '~/components/Header';
-import TextInput from '~/components/TextInput';
-import Button from '~/components/Button';
+import api, { userApis } from '~/utils/api';
+import { Background, BackButton, Logo, Header, TextInput, Button } from '~/components';
 import theme from '~/core/theme';
 import { ActivityIndicator } from 'react-native-paper';
-import api, { userApis } from '~/utils/api';
 
 export default function ForgotPasswordScreen({ navigation }) {
     const [userIdentifier, setUserIdentifier] = useState({ value: '', error: '' });
     const [loading, setLoading] = useState(false);
-
 
     const sendResidentId = async () => {
         if (userIdentifier.value) {
@@ -21,6 +14,8 @@ export default function ForgotPasswordScreen({ navigation }) {
             try {
                 const res = await api.post(userApis.methodResetPassword, { user_identifier: userIdentifier.value });
                 const methods = res.data;
+
+                // console.log(methods);
                 navigation.navigate('MethodResetPasswordScreen', { methods });
             } catch (error) {
                 console.error(error);

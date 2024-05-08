@@ -7,6 +7,8 @@ export { default as OTPScreen } from './Login/OTPScreen';
 // HomeScreen
 export { default as HomeScreen } from './Home/HomeScreen';
 export { default as DetailsHomeScreen } from './Home/DetailsHomeScreen';
+export { default as UtilityScreen } from './Home/UtilityScreen';
+export { default as InvoiceScreen } from './Home/InvoiceScreen';
 
 // AccountScreen
 export { default as ProfileScreen } from './Account/AccountScreen';

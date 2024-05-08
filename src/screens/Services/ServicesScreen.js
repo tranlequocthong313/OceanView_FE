@@ -1,5 +1,6 @@
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { FontAwesome6, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { ServiceNavButton } from '~/components';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,6 +28,8 @@ const styles = StyleSheet.create({
         margin: 10,
         alignItems: 'center',
         padding: 16,
+        borderWidth: 1,
+        borderColor: '#000',
     },
     nameService: {
         marginTop: 4,
@@ -38,6 +41,8 @@ const styles = StyleSheet.create({
         padding: 16,
         margin: 10,
         borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#000',
     },
     center: {
         justifyContent: 'center',
@@ -51,27 +56,27 @@ export default function ServiceScreen({ navigation }) {
             <Text style={styles.text}>Danh sách dịch vụ</Text>
             <View style={styles.wrapper}>
                 <View style={styles.cardContainer}>
-                    <TouchableOpacity style={styles.wrapCard} onPress={() => navigation.navigate('ParkingCardMain')}>
-                        <View style={styles.center}>
-                            <FontAwesome6 name="square-parking" size={24} color="black" />
-                            <Text style={styles.nameService}>Thẻ giữ xe</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.wrapCard} onPress={() => navigation.navigate('AccessCardMain')}>
-                        <View style={styles.center}>
-                            <MaterialCommunityIcons name="credit-card-sync-outline" size={24} color="black" />
-                            <Text style={styles.nameService}>Thẻ ra vào</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <ServiceNavButton
+                        navigation={navigation}
+                        icon={<FontAwesome6 name="square-parking" size={24} color="black" />}
+                        title="Thẻ giữ xe"
+                        destination="ParkingCardMain"
+                    />
+                    <ServiceNavButton
+                        navigation={navigation}
+                        icon={<MaterialCommunityIcons name="credit-card-sync-outline" size={24} color="black" />}
+                        title="Thẻ ra vào"
+                        destination="AccessCardMain"
+                    />
                 </View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('ResidentCardMain')}>
-                    <View style={styles.residentCard}>
-                        <MaterialIcons name="account-circle" size={24} color="black" />
-                        <Text style={styles.nameService}>Thẻ cư dân</Text>
-                    </View>
-                </TouchableOpacity>
+                <ServiceNavButton
+                    navigation={navigation}
+                    icon={<MaterialIcons name="account-circle" size={24} color="black" />}
+                    title="Thẻ cư dân"
+                    destination="ResidentCardMain"
+                    row
+                />
             </View>
         </View>
     );

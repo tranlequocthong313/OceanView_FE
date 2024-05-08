@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
     AccessCardMainScreen,
-    RegisterParkingCardScreen,
-    CancelParkingCardScreen,
-    ReissueParkingCardScreen,
+    RegisterAccessCardScreen,
+    CancelAccessCardScreen,
+    ReissueAccessCardScreen,
 } from '~/screens';
 
 const AccessCardStack = createNativeStackNavigator();
@@ -19,22 +19,22 @@ export default function AccessCardStackNav() {
                 }}
             />
             <AccessCardStack.Screen
-                name="RegisterParkingCard"
-                component={RegisterParkingCardScreen}
+                name="RegisterAccessCard"
+                component={RegisterAccessCardScreen}
                 options={{
                     title: 'Đăng ký thẻ ra vào',
                 }}
             />
             <AccessCardStack.Screen
-                name="CancelParkingCard"
-                component={CancelParkingCardScreen}
+                name="CancelAccessCard"
+                component={CancelAccessCardScreen}
                 options={{
                     title: 'Huỷ thẻ ra vào',
                 }}
             />
             <AccessCardStack.Screen
-                name="ReissueParkingCard"
-                component={ReissueParkingCardScreen}
+                name="ReissueAccessCard"
+                component={ReissueAccessCardScreen}
                 options={{
                     title: 'Cấp lại thẻ ra vào',
                 }}

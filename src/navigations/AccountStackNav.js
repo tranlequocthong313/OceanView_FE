@@ -40,7 +40,8 @@ export default function AccountStackNav() {
                 name="DetailsSettings"
                 component={DetailsSettingsScreen}
                 options={{
-                    headerTitle: 'Cài đặt',
+                    headerTitle: 'Chi tiết cài đặt',
+                    headerShown: false,
                 }}
             />
             <AccountStack.Screen

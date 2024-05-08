@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
-// import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
-
+import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
+// import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import MessageInvalid from '~/components/MessageInvalid';
 import { authAPI, userApis } from '~/utils/api';
-import Background from '~/components/Background';
-import Header from '~/components/Header';
-import Button from '~/components/Button';
 import theme from '~/core/theme';
-import TextInput from '~/components/TextInput';
-import BackButton from '~/components/BackButton';
 import passwordValidator from '~/helpers/passwordValidator';
+import { Background, Header, Button, TextInput, BackButton } from '~/components';
 
 const styles = StyleSheet.create({
     row: {
@@ -92,7 +87,7 @@ export default function UpdateInfoScreen({ navigation }) {
         }
         try {
             setLoading(true);
-            const formData = new global.FormData();
+            const formData = new FormData();
             // The image may not have a name, the server requires the image to have enough information to be decoded
             formData.append('avatar', {
                 uri: image.uri,
@@ -109,13 +104,13 @@ export default function UpdateInfoScreen({ navigation }) {
                 },
             });
             if (response.status === 200) {
-                ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                // ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'HomeScreen' }],
                 });
             } else {
-                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
         } catch (error) {
             console.error('Error:', error);

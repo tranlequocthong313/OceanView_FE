@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import SettingsTabNav from '~/navigations/BottomTabNav';
 import MethodResetPasswordScreen from '~/screens/Login/MethodResetPasswordScreen';
 import ForgotPasswordScreen from '~/screens/Login/ForgotPasswordScreen';
@@ -17,7 +16,7 @@ export default function App() {
         <Provider theme={theme}>
             <NavigationContainer>
                 <AuthStack.Navigator
-                    initialRouteName="HomeScreen"
+                    initialRouteName="LoginScreen"
                     screenOptions={{
                         headerShown: false,
                     }}

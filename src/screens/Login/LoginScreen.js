@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
-// import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
-
+import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
+// import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MessageInvalid from '~/components/MessageInvalid';
 import { AntDesign } from '@expo/vector-icons';
 import api, { userApis } from '~/utils/api';
-import Background from '../../components/Background';
-import Logo from '../../components/Logo';
-import Header from '../../components/Header';
-import Paragraph from '../../components/Paragraph';
-import Button from '../../components/Button';
-import TextInput from '../../components/TextInput';
+import { Background, Logo, Header, Paragraph, Button, TextInput, MessageInvalid } from '~/components';
+import { passwordValidator, formValidator } from '~/helpers';
 import theme from '../../core/theme';
-import passwordValidator from '../../helpers/passwordValidator';
-import formValidator from '../../helpers/formValidator';
 
 const styles = StyleSheet.create({
     forgotPassword: {
@@ -28,11 +20,7 @@ const styles = StyleSheet.create({
     },
     forgot: {
         fontSize: 13,
-        color: theme.colors.secondary,
-    },
-    link: {
-        fontWeight: 'bold',
-        color: theme.colors.primary,
+        color: theme.colors.third,
     },
     notes: {
         fontSize: 10,
@@ -84,6 +72,8 @@ export default function LoginScreen({ navigation }) {
                 // Lưu trữ token vào AsyncStorage
                 await AsyncStorage.setItem('accessToken', token);
 
+                // TODO: Đưa đối tượng user vào context để  các component khác có thể sử dụng
+
                 console.log(token);
                 console.log(status);
                 console.log('Response:', response.data);
@@ -100,10 +90,10 @@ export default function LoginScreen({ navigation }) {
                         NOT_ISSUED_YET: 'Account is not issued yet',
                         BANNED: 'You are banned',
                     };
-                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                    // ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
                 }
             } else {
-                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (error) {
             setLoading(false);
@@ -113,6 +103,7 @@ export default function LoginScreen({ navigation }) {
         }
     };
 
+    // TODO: Chuyển cái Logo Header Paragraph này thành 1 Compoent, rồi sau đó tất cả Screen liên quan đếnLogin, ForgotPassword dều là children của Component này => Tránh duplicate code
     return (
         <Background>
             <Logo />

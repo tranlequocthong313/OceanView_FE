@@ -6,13 +6,15 @@ const HOST = 'https://oceanview-be.onrender.com';
 
 export const userApis = {
     login: '/users/login/',
-    activeUser: `/users/active/`,
+    activeUser: '/users/active/',
     currentUser: '/users/current/',
-    sendResetPasswordOTP: `/users/send-otp/`,
-    sendResetPasswordEmail: `/users/send-reset-password-link/`,
-    methodResetPassword: `/users/forgot-password/`,
-    verifyOTP: `/users/verify-otp/`,
-    resetPassword: `/users/reset-password/`,
+    methodResetPassword: '/users/forgot-password/',
+    sendResetPasswordOTP: '/users/otp/',
+    sendResetPasswordEmail: '/users/email/',
+    verifyOTP: '/users/otp-verification/',
+    resetPassword: '/users/password/',
+
+    accessCard: '/services/access-cards/',
 };
 
 export const authAPI = async () => {

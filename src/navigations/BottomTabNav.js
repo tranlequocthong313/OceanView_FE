@@ -1,5 +1,6 @@
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { AntDesign, Feather } from '@expo/vector-icons';
+import theme from '~/core/theme';
 import ProfileStackNav from './AccountStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
@@ -10,10 +11,12 @@ export default function SettingsTabNav() {
     return (
         <BottomTab.Navigator
             initialRouteName="HomeTab"
-            // activeColor="#f0edf6"
-            inactiveColor="#3e2465"
-            // barStyle={{ backgroundColor: '#694fad' }}
-            screenOptions={{ headerShown: false }}
+            activeColor="#fff"
+            inactiveColor="#fff"
+            activeIndicatorStyle={{ backgroundColor: theme.colors.outline }}
+            barStyle={{ backgroundColor: theme.colors.primary }}
+            tabBarHideOnKeyboard
+            h
         >
             <BottomTab.Screen
                 name="HomeTab"
@@ -36,6 +39,7 @@ export default function SettingsTabNav() {
                 name="ProfileTab"
                 component={ProfileStackNav}
                 options={{
+                    tabBarStyle: { display: 'none' },
                     tabBarLabel: 'Tài khoản',
                     tabBarIcon: ({ color }) => <AntDesign name="user" color={color} size={24} />,
                 }}

@@ -1,10 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    // text: '#000000',
-    // primary: '#560CCE',
-    // secondary: '#414757',
-    // error: '#f13a59',
     container: {
         width: 400,
         height: 400,
@@ -13,7 +9,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Settings Screen</Text>

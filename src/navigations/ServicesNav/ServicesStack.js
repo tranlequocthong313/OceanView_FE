@@ -17,6 +17,7 @@ export default function ServiceStackNav() {
                     headerShown: true,
                 }}
             />
+
             <ServiceStack.Screen
                 name="ParkingCardMain"
                 component={ParkingCardStack}
@@ -24,6 +25,7 @@ export default function ServiceStackNav() {
                     title: 'Thẻ giữ xe',
                 }}
             />
+
             <ServiceStack.Screen
                 name="AccessCardMain"
                 component={AccessCardStack}
