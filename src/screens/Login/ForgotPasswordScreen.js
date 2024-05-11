@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import api, { userApis } from '~/utils/api';
 import { Background, BackButton, Logo, Header, TextInput, Button } from '~/components';
 import theme from '~/core/theme';
@@ -26,7 +26,7 @@ export default function ForgotPasswordScreen({ navigation }) {
         } else {
             setUserIdentifier({ ...userIdentifier, error: 'User identifier invalid' });
         }
-    };
+    }
 
     return (
         <Background>

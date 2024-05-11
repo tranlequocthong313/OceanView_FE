@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 // import { ToastAndroid } from 'react-native';
 import api, { userApis } from '~/utils/api';
 import passwordValidator from '~/helpers/passwordValidator';
@@ -49,7 +49,7 @@ export default function ResetPasswordScreen({ navigation, route }) {
             console.error(error.response.data);
             // ToastAndroid.showWithGravity(error.response.data, ToastAndroid.SHORT, ToastAndroid.CENTER);
         }
-    };
+    }
 
     return (
         <Background>

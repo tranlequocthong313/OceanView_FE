@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import theme from '~/core/theme';
 
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function DetailsInvoice({ month, year, amount }) {
+function DetailsInvoice({ month, year, amount }) {
+    console.log("DetailsInvoice render")
     return (
         <View style={styles.listItem}>
             <Text>
@@ -31,3 +33,5 @@ export default function DetailsInvoice({ month, year, amount }) {
         </View>
     );
 }
+
+export default memo(DetailsInvoice)

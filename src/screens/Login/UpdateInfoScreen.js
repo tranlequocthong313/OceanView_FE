@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
 // import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Button as ButtonPaper } from 'react-native-paper';
@@ -117,7 +117,7 @@ export default function UpdateInfoScreen({ navigation }) {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
         <Background>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
 // import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text, TextInput as Input } from 'react-native-paper';
@@ -8,6 +8,7 @@ import api, { userApis } from '~/utils/api';
 import { Background, Logo, Header, Paragraph, Button, TextInput, MessageInvalid } from '~/components';
 import { passwordValidator, formValidator } from '~/helpers';
 import { useUserDispatch } from '~/hooks/useUser';
+import { USER_ACTION_TYPE } from '~/reducers/userReducer';
 import theme from '../../core/theme';
 
 const styles = StyleSheet.create({
@@ -79,7 +80,7 @@ export default function LoginScreen({ navigation }) {
                 console.log(status);
                 console.log('Response:', response.data);
                 userDispatch({
-                    type: 'login',
+                    type: USER_ACTION_TYPE.LOGIN,
                     payload: response.data,
                 });
                 if (status === 'ACTIVE') {
@@ -106,7 +107,7 @@ export default function LoginScreen({ navigation }) {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     // TODO: Chuyển cái Logo Header Paragraph này thành 1 Compoent, rồi sau đó tất cả Screen liên quan đếnLogin, ForgotPassword dều là children của Component này => Tránh duplicate code
     return (

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function ServiceNavButton({ navigation, icon, title, destination, row }) {
+function ServiceNavButton({ navigation, icon, title, destination, row }) {
     return (
         <TouchableOpacity
             style={row ? styles.residentCard : styles.wrapCard}
@@ -41,3 +41,5 @@ export default function ServiceNavButton({ navigation, icon, title, destination,
         </TouchableOpacity>
     );
 }
+
+export default ServiceNavButton

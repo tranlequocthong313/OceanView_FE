@@ -1,10 +1,16 @@
+export const USER_ACTION_TYPE = {
+    LOGIN: 0,
+    CURRENT: 1,
+    LOGOUT: 2,
+}
+
 function userReducer(state, action) {
     switch (action.type) {
-        case 'login':
+        case USER_ACTION_TYPE.LOGIN:
             return action.payload;
-        case 'current':
+        case USER_ACTION_TYPE.CURRENT:
             return action.payload;
-        case 'logout':
+        case USER_ACTION_TYPE.LOGOUT:
             return null;
         default:
             return state;

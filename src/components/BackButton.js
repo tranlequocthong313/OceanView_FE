@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import arrowBackImg from '../assets/arrow_back.png';
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
 });
 
 function BackButton({ goBack }) {
+    console.log("BackButton render")
     return (
         <TouchableOpacity onPress={goBack} style={styles.container}>
             <Image style={styles.image} source={arrowBackImg} />
@@ -24,4 +25,4 @@ function BackButton({ goBack }) {
     );
 }
 
-export default BackButton;
+export default memo(BackButton)
