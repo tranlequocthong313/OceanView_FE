@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
 // import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text, TextInput as Input } from 'react-native-paper';
@@ -107,7 +107,7 @@ export default function LoginScreen({ navigation }) {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     // TODO: Chuyển cái Logo Header Paragraph này thành 1 Compoent, rồi sau đó tất cả Screen liên quan đếnLogin, ForgotPassword dều là children của Component này => Tránh duplicate code
     return (

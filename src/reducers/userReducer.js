@@ -2,7 +2,7 @@ export const USER_ACTION_TYPE = {
     LOGIN: 0,
     CURRENT: 1,
     LOGOUT: 2,
-}
+};
 
 function userReducer(state, action) {
     switch (action.type) {

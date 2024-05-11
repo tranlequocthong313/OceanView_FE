@@ -36,4 +36,4 @@ function Invoice({ month, year, amount, actived, onPress }) {
     );
 }
 
-export default Invoice
+export default Invoice;

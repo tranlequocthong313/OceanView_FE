@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 // import { Text, View, StyleSheet,  ActivityIndicator, ToastAndroid } from 'react-native';
 import { RadioButton, Button } from 'react-native-paper';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import api, { userApis } from '~/utils/api';
 import theme from '~/core/theme';
 import { BackButton, Background, Logo, Header } from '~/components';
@@ -69,7 +69,7 @@ function MethodResetPasswordScreen({ navigation, route }) {
         } finally {
             setSubmitLoading(false);
         }
-    }
+    };
 
     return (
         <Background>

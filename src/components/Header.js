@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 });
 
 function Header(props) {
-    console.log('render Header component')
+    console.log('render Header component');
     return <Text style={styles.header} {...props} />;
 }
 

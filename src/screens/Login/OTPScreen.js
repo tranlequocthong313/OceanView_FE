@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // import { Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -112,7 +112,7 @@ function OTPScreen({ navigation, route }) {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
     return (
         <Background>
             <BackButton goBack={navigation.goBack} />

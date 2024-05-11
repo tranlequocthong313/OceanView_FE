@@ -96,7 +96,7 @@ export default function CreateFeedbackScreen() {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     return (
         <KeyboardAvoidingView>

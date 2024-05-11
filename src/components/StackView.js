@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 function StackView({ navigation, icon, title, destination }) {
-    console.log('StackView render')
+    console.log('StackView render');
     return (
         <TouchableOpacity onPress={() => navigation.navigate(destination)}>
             <View style={styles.viewWrapper}>
@@ -37,4 +37,4 @@ function StackView({ navigation, icon, title, destination }) {
     );
 }
 
-export default memo(StackView)
+export default memo(StackView);

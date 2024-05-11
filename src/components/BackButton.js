@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 function BackButton({ goBack }) {
-    console.log("BackButton render")
+    console.log('BackButton render');
     return (
         <TouchableOpacity onPress={goBack} style={styles.container}>
             <Image style={styles.image} source={arrowBackImg} />
@@ -25,4 +25,4 @@ function BackButton({ goBack }) {
     );
 }
 
-export default memo(BackButton)
+export default memo(BackButton);

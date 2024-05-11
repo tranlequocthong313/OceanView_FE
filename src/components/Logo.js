@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 function Logo() {
-    console.log('render Logo component')
+    console.log('render Logo component');
     return <Image source={logo} style={styles.image} />;
 }
 

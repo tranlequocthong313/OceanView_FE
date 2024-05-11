@@ -42,4 +42,4 @@ function ServiceNavButton({ navigation, icon, title, destination, row }) {
     );
 }
 
-export default ServiceNavButton
+export default ServiceNavButton;

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 });
 
 function UtilityButton({ navigation, icon, tittle, destination }) {
-    console.log('UtilityButton render')
+    console.log('UtilityButton render');
     return (
         <View style={styles.utilityWrap}>
             <TouchableOpacity onPress={() => navigation.navigate(destination)}>
@@ -35,4 +35,4 @@ function UtilityButton({ navigation, icon, tittle, destination }) {
     );
 }
 
-export default memo(UtilityButton)
+export default memo(UtilityButton);

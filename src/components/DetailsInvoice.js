@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 function DetailsInvoice({ month, year, amount }) {
-    console.log("DetailsInvoice render")
+    console.log('DetailsInvoice render');
     return (
         <View style={styles.listItem}>
             <Text>
@@ -34,4 +34,4 @@ function DetailsInvoice({ month, year, amount }) {
     );
 }
 
-export default memo(DetailsInvoice)
+export default memo(DetailsInvoice);
