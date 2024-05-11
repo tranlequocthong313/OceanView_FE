@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import { ToastAndroid } from 'react-native';
+// import { ToastAndroid } from 'react-native';
 import api, { userApis } from '~/utils/api';
 import passwordValidator from '~/helpers/passwordValidator';
-import MessageInvalid from '~/components/MessageInvalid';
-import Header from '../../components/Header';
-import TextInput from '../../components/TextInput';
-import Button from '../../components/Button';
-import BackButton from '../../components/BackButton';
-import Background from '../../components/Background';
+import { Header, TextInput, BackButton, Background, Button, MessageInvalid, Logo } from '~/components';
 
 // TODO: Re-design this screen ui, use useTogglePasswordVisibility hook to implement toggle password visibility
 export default function ResetPasswordScreen({ navigation, route }) {
@@ -46,19 +41,20 @@ export default function ResetPasswordScreen({ navigation, route }) {
             });
             console.log(res.data);
             if (res.status === 401) {
-                ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
+                // ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
             } else {
                 navigation.navigate('LoginScreen', { message: res.data });
             }
         } catch (error) {
             console.error(error.response.data);
-            ToastAndroid.showWithGravity(error.response.data, ToastAndroid.SHORT, ToastAndroid.CENTER);
+            // ToastAndroid.showWithGravity(error.response.data, ToastAndroid.SHORT, ToastAndroid.CENTER);
         }
     };
 
     return (
         <Background>
             <BackButton goBack={navigation.goBack} />
+            <Logo />
             <Header>Reset password</Header>
             <TextInput
                 label="Mật khẩu mới"

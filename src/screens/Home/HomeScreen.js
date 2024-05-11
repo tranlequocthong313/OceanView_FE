@@ -1,15 +1,21 @@
 import { AntDesign, FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { UtilityButton } from '~/components';
+import theme from '~/core/theme';
+import { useUser } from '~/hooks/useUser';
 
 const styles = StyleSheet.create({
     container: {},
     wrapHeader: {
+        marginTop: 40,
         paddingTop: 40,
-        backgroundColor: '#F7BD62',
+        marginHorizontal: 4,
+        backgroundColor: theme.colors.primary,
         height: 130,
         flexDirection: 'row',
         justifyContent: 'space-between',
         position: 'relative',
+        borderRadius: 4,
     },
     header: {
         flexDirection: 'row',
@@ -20,17 +26,21 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         resizeMode: 'contain',
         margin: 8,
+        borderWidth: 1,
+        borderColor: '#fff',
     },
     contentWrapper: {
-        margin: 8,
+        marginHorizontal: 4,
+        marginVertical: 8,
     },
     greeting: {
-        fontSize: 14,
-        color: '#6E4D21',
+        fontSize: 12,
+        color: '#fff',
         marginBottom: 8,
     },
     resident: {
-        fontSize: 18,
+        color: '#fff',
+        fontSize: 16,
         fontWeight: '500',
     },
     iconsHeader: {
@@ -50,42 +60,28 @@ const styles = StyleSheet.create({
         backgroundColor: '#EEEDEC',
     },
     utilityContainer: {
-        padding: 16,
+        paddingTop: 16,
+        paddingBottom: 12,
         backgroundColor: '#fff',
         borderRadius: 6,
-        margin: 20,
+        marginHorizontal: 12,
+        marginVertical: 20,
         flexDirection: 'row',
         justifyContent: 'center',
-    },
-    utilityWrap: {
-        alignItems: 'center',
-        paddingHorizontal: 12,
-    },
-    utilityIcon: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#EEEDEC',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 4,
-    },
-    utilityText: {
-        fontSize: 13,
     },
 });
 
 export default function HomeScreen({ navigation }) {
+    const user = useUser();
+    console.log(user);
+
     return (
         <View style={styles.container}>
             {/* header */}
             <View style={styles.wrapHeader}>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.navigate('ProfileTab')}>
-                        <Image
-                            style={styles.image}
-                            source={{ uri: 'https://randomuser.me/api/portraits/women/40.jpg' }}
-                        />
+                        <Image style={styles.image} source={{ uri: user.avatar }} />
                     </TouchableOpacity>
                     <View style={styles.contentWrapper}>
                         <Text style={styles.greeting}>Xin chào,</Text>
@@ -113,41 +109,33 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.contentWrap}>
                 {/* utility */}
                 <View style={styles.utilityContainer}>
-                    <View style={styles.utilityWrap}>
-                        <TouchableOpacity>
-                            <View style={styles.utilityIcon}>
-                                <MaterialCommunityIcons name="beach" size={24} color="black" />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.utilityText}>Tiện ích</Text>
-                    </View>
+                    <UtilityButton
+                        icon={<MaterialCommunityIcons name="beach" size={24} color="black" />}
+                        tittle="Tiện ích"
+                        navigation={navigation}
+                        destination="UtilityScreen"
+                    />
 
-                    <View style={styles.utilityWrap}>
-                        <TouchableOpacity onPress={() => navigation.navigate('ServiceScreen')}>
-                            <View style={styles.utilityIcon}>
-                                <FontAwesome6 name="servicestack" size={24} color="black" />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.utilityText}>Dịch vụ</Text>
-                    </View>
+                    <UtilityButton
+                        icon={<FontAwesome6 name="servicestack" size={24} color="black" />}
+                        tittle="Dịch vụ"
+                        navigation={navigation}
+                        destination="ServiceScreen"
+                    />
 
-                    <View style={styles.utilityWrap}>
-                        <TouchableOpacity>
-                            <View style={styles.utilityIcon}>
-                                <FontAwesome6 name="file-invoice-dollar" size={22} color="black" />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.utilityText}>Hoá đơn</Text>
-                    </View>
+                    <UtilityButton
+                        icon={<FontAwesome6 name="file-invoice-dollar" size={22} color="black" />}
+                        tittle="Hoá đơn"
+                        navigation={navigation}
+                        destination="InvoiceScreen"
+                    />
 
-                    <View style={styles.utilityWrap}>
-                        <TouchableOpacity>
-                            <View style={styles.utilityIcon}>
-                                <AntDesign name="appstore-o" size={22} color="black" />
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.utilityText}>Xem thêm</Text>
-                    </View>
+                    <UtilityButton
+                        icon={<AntDesign name="appstore-o" size={22} color="black" />}
+                        tittle="Xem thêm"
+                        navigation={navigation}
+                        destination="UtilityAll"
+                    />
                 </View>
             </View>
         </View>

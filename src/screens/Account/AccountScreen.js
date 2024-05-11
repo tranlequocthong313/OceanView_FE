@@ -1,5 +1,6 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons, AntDesign, Feather, Entypo } from '@expo/vector-icons';
+import { StackView } from '~/components';
 
 const styles = StyleSheet.create({
     container: {
@@ -13,22 +14,14 @@ const styles = StyleSheet.create({
         color: 'red',
         padding: 4,
     },
-    viewWrapper: {
+    wrapWithIcon: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        borderStyle: 'solid',
     },
     title: {
         fontSize: 16,
         fontWeight: '400',
         marginLeft: 8,
         alignContent: 'center',
-    },
-    wrapWithIcon: {
-        flexDirection: 'row',
     },
     wrapLogout: {
         marginTop: 8,
@@ -55,65 +48,47 @@ export default function AccountScreen({ navigation }) {
         <View style={styles.container}>
             <View>
                 <Text style={styles.classify}>Chung</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('DetailsProfile')}>
-                    <View style={styles.viewWrapper}>
-                        <View style={styles.wrapWithIcon}>
-                            <Feather name="user" size={20} color="black" />
-                            <Text style={styles.title}>Thông tin cá nhân</Text>
-                        </View>
-                        <MaterialIcons name="navigate-next" size={24} color="black" />
-                    </View>
-                </TouchableOpacity>
+                <StackView
+                    navigation={navigation}
+                    icon={<Feather name="user" size={20} color="black" />}
+                    title="Thông tin cá nhân"
+                    destination="DetailsProfile"
+                />
 
-                <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-                    <View style={styles.viewWrapper}>
-                        <View style={styles.wrapWithIcon}>
-                            <AntDesign name="setting" size={22} color="black" />
-                            <Text style={styles.title}>Cài đặt</Text>
-                        </View>
-                        <MaterialIcons name="navigate-next" size={24} color="black" />
-                    </View>
-                </TouchableOpacity>
+                <StackView
+                    navigation={navigation}
+                    icon={<AntDesign name="setting" size={22} color="black" />}
+                    title="Cài đặt"
+                    destination="Settings"
+                />
+                <StackView
+                    navigation={navigation}
+                    icon={<Feather name="phone" size={20} color="black" />}
+                    title="Liên hệ với chúng tôi"
+                    destination="Contact"
+                />
 
-                <TouchableOpacity onPress={() => navigation.navigate('Contact')}>
-                    <View style={styles.viewWrapper}>
-                        <View style={styles.wrapWithIcon}>
-                            <Feather name="phone" size={20} color="black" />
-                            <Text style={styles.title}>Liên hệ với chúng tôi</Text>
-                        </View>
-                        <MaterialIcons name="navigate-next" size={24} color="black" />
-                    </View>
-                </TouchableOpacity>
+                <StackView
+                    navigation={navigation}
+                    icon={<Entypo name="new-message" size={24} color="black" />}
+                    title="Tạo phản ánh mới"
+                    destination="Feedback"
+                />
 
-                <TouchableOpacity onPress={() => navigation.navigate('Reflection')}>
-                    <View style={styles.viewWrapper}>
-                        <View style={styles.wrapWithIcon}>
-                            <Feather name="phone" size={20} color="black" />
-                            <Text style={styles.title}>Tạo phản ánh mới</Text>
-                        </View>
-                        <MaterialIcons name="navigate-next" size={24} color="black" />
-                    </View>
-                </TouchableOpacity>
+                <StackView
+                    navigation={navigation}
+                    icon={<AntDesign name="message1" size={22} color="black" />}
+                    title="Chat với ban quản trị"
+                    destination="Chat"
+                />
 
-                <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-                    <View style={styles.viewWrapper}>
-                        <View style={styles.wrapWithIcon}>
-                            <AntDesign name="message1" size={22} color="black" />
-                            <Text style={styles.title}>Chat với ban quản trị</Text>
-                        </View>
-                        <MaterialIcons name="navigate-next" size={24} color="black" />
-                    </View>
-                </TouchableOpacity>
+                <StackView
+                    navigation={navigation}
+                    icon={<AntDesign name="infocirlce" size={20} color="black" />}
+                    title="Về chúng tôi"
+                    destination="AboutUs"
+                />
 
-                <TouchableOpacity onPress={() => navigation.navigate('AboutUs')}>
-                    <View style={styles.viewWrapper}>
-                        <View style={styles.wrapWithIcon}>
-                            <AntDesign name="infocirlce" size={20} color="black" />
-                            <Text style={styles.title}>Về chúng tôi</Text>
-                        </View>
-                        <MaterialIcons name="navigate-next" size={24} color="black" />
-                    </View>
-                </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.wrapLogout}
                     onPress={() => {

@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import Background from '~/components/Background';
-import BackButton from '~/components/BackButton';
-import Logo from '~/components/Logo';
-import Header from '~/components/Header';
-import TextInput from '~/components/TextInput';
-import Button from '~/components/Button';
+import api, { userApis } from '~/utils/api';
+import { Background, BackButton, Logo, Header, TextInput, Button } from '~/components';
 import theme from '~/core/theme';
 import { ActivityIndicator } from 'react-native-paper';
-import api, { userApis } from '~/utils/api';
 
 export default function ForgotPasswordScreen({ navigation }) {
     const [userIdentifier, setUserIdentifier] = useState({ value: '', error: '' });
@@ -19,6 +14,8 @@ export default function ForgotPasswordScreen({ navigation }) {
             try {
                 const res = await api.post(userApis.methodResetPassword, { user_identifier: userIdentifier.value });
                 const methods = res.data;
+
+                // console.log(methods);
                 navigation.navigate('MethodResetPasswordScreen', { methods });
             } catch (error) {
                 console.error(error);
@@ -35,9 +32,9 @@ export default function ForgotPasswordScreen({ navigation }) {
         <Background>
             <BackButton goBack={navigation.goBack} />
             <Logo />
-            <Header>Restore Password</Header>
+            <Header>Thông tin tài khoản</Header>
             <TextInput
-                label="User identifier"
+                label="Email hoặc Số điện thoại"
                 returnKeyType="done"
                 value={userIdentifier.value}
                 onChangeText={(text) => setUserIdentifier({ value: text, error: '' })}
@@ -46,7 +43,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                 autoCapitalize="none"
             />
             <Button mode="contained" onPress={sendResidentId} style={{ marginTop: 16 }}>
-                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Send user identifier'}
+                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Tiếp tục'}
             </Button>
         </Background>
     );

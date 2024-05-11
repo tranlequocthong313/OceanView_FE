@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
+// import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MessageInvalid from '~/components/MessageInvalid';
 import { AntDesign } from '@expo/vector-icons';
 import api, { userApis } from '~/utils/api';
-import Background from '../../components/Background';
-import Logo from '../../components/Logo';
-import Header from '../../components/Header';
-import Paragraph from '../../components/Paragraph';
-import Button from '../../components/Button';
-import TextInput from '../../components/TextInput';
+import { Background, Logo, Header, Paragraph, Button, TextInput, MessageInvalid } from '~/components';
+import { passwordValidator, formValidator } from '~/helpers';
+import { useUserDispatch } from '~/hooks/useUser';
 import theme from '../../core/theme';
-import passwordValidator from '../../helpers/passwordValidator';
-import formValidator from '../../helpers/formValidator';
 
 const styles = StyleSheet.create({
     forgotPassword: {
@@ -26,11 +21,7 @@ const styles = StyleSheet.create({
     },
     forgot: {
         fontSize: 13,
-        color: theme.colors.secondary,
-    },
-    link: {
-        fontWeight: 'bold',
-        color: theme.colors.primary,
+        color: theme.colors.third,
     },
     notes: {
         fontSize: 10,
@@ -39,16 +30,18 @@ const styles = StyleSheet.create({
     },
     toggleButton: {
         marginTop: 5,
-        color: 'blue',
+        color: theme.colors.secondary,
         textDecorationLine: 'underline',
     },
 });
 
 export default function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState({ value: '', error: '' });
-    const [password, setPassword] = useState({ value: '', error: '' });
+    // TODO: Delete these 2 values after
+    const [username, setUsername] = useState({ value: '240001', error: '' });
+    const [password, setPassword] = useState({ value: 'tranlequocthong313', error: '' });
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
+    const userDispatch = useUserDispatch();
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
@@ -70,10 +63,10 @@ export default function LoginScreen({ navigation }) {
             setLoading(true);
 
             const response = await api.post(userApis.login, {
-                // username: username.value,
-                // password: password.value,
-                username: '240003',
-                password: 'minhha2k3',
+                username: username.value,
+                password: password.value,
+                // username: '240003',
+                // password: 'minhha2k3',
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;
@@ -85,7 +78,10 @@ export default function LoginScreen({ navigation }) {
                 console.log(token);
                 console.log(status);
                 console.log('Response:', response.data);
-
+                userDispatch({
+                    type: 'login',
+                    payload: response.data,
+                });
                 if (status === 'ACTIVE') {
                     navigation.reset({
                         index: 0,
@@ -94,14 +90,15 @@ export default function LoginScreen({ navigation }) {
                 } else if (status === 'ISSUED') {
                     navigation.navigate('UpdateInfoScreen');
                 } else {
-                    const messages = {
-                        NOT_ISSUED_YET: 'Account is not issued yet',
-                        BANNED: 'You are banned',
-                    };
-                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                    // TODO: Handle case account is banned or not issued yet
+                    // const messages = {
+                    //     NOT_ISSUED_YET: 'Account is not issued yet',
+                    //     BANNED: 'You are banned',
+                    // };
+                    // ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
                 }
             } else {
-                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (error) {
             setLoading(false);
@@ -111,6 +108,7 @@ export default function LoginScreen({ navigation }) {
         }
     };
 
+    // TODO: Chuyển cái Logo Header Paragraph này thành 1 Compoent, rồi sau đó tất cả Screen liên quan đếnLogin, ForgotPassword dều là children của Component này => Tránh duplicate code
     return (
         <Background>
             <Logo />
@@ -120,7 +118,7 @@ export default function LoginScreen({ navigation }) {
                 <AntDesign name="heart" size={14} color="red" />
             </Paragraph>
             <TextInput
-                label="Username"
+                label="Mã cư dân"
                 returnKeyType="next"
                 value={username.value}
                 onChangeText={(text) => setUsername({ value: text, error: '' })}
@@ -131,7 +129,7 @@ export default function LoginScreen({ navigation }) {
             />
             <TextInput
                 secureTextEntry={!showPassword}
-                label="Password"
+                label="Mật khẩu"
                 returnKeyType="next"
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
@@ -150,11 +148,11 @@ export default function LoginScreen({ navigation }) {
 
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-                    <Text style={styles.forgot}>Forgot your password?</Text>
+                    <Text style={styles.forgot}>Quên mật khẩu?</Text>
                 </TouchableOpacity>
             </View>
             <Button mode="contained" onPress={onLoginPressed}>
-                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Login'}
+                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Đăng nhập'}
             </Button>
             {showInvalidLoginMessage && (
                 <MessageInvalid

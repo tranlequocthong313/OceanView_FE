@@ -7,7 +7,7 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
-    CreateReflectionScreen,
+    CreateFeedbackScreen,
 } from '~/screens';
 
 const AccountStack = createNativeStackNavigator();
@@ -40,7 +40,8 @@ export default function AccountStackNav() {
                 name="DetailsSettings"
                 component={DetailsSettingsScreen}
                 options={{
-                    headerTitle: 'Cài đặt',
+                    headerTitle: 'Chi tiết cài đặt',
+                    headerShown: false,
                 }}
             />
             <AccountStack.Screen
@@ -50,9 +51,10 @@ export default function AccountStackNav() {
                     headerTitle: 'Liên hệ',
                 }}
             />
+            {/* TODO: Move this outta here */}
             <AccountStack.Screen
-                name="Reflection"
-                component={CreateReflectionScreen}
+                name="Feedback"
+                component={CreateFeedbackScreen}
                 options={{
                     headerTitle: 'Tạo phản ánh mới',
                 }}
