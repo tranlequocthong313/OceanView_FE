@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import api, { userApis } from '~/utils/api';
+import { authAPI, userApis } from '~/utils/api';
 import { useUserDispatch } from '~/hooks/useUser';
+import { USER_ACTION_TYPE } from '~/reducers/userReducer';
 
 const styles = StyleSheet.create({
     container: {
@@ -36,17 +36,8 @@ export default function DetailsProfileScreen() {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const token = await AsyncStorage.getItem('accessToken');
-                console.log(token);
-
-                const headers = {
-                    Authorization: `Bearer ${token}`,
-                };
-
-                const response = await api.get(userApis.currentUser, {
-                    headers,
-                });
-                userDispatch({ type: 'current', payload: response.data });
+                const response = await (await authAPI()).get(userApis.currentUser);
+                userDispatch({ type: USER_ACTION_TYPE.CURRENT, payload: response.data });
                 setProfileData(response.data);
             } catch (error) {
                 console.log(error);

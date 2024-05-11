@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -22,7 +23,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function UtilityButton({ navigation, icon, tittle, destination }) {
+function UtilityButton({ navigation, icon, tittle, destination }) {
+    console.log('UtilityButton render');
     return (
         <View style={styles.utilityWrap}>
             <TouchableOpacity onPress={() => navigation.navigate(destination)}>
@@ -32,3 +34,5 @@ export default function UtilityButton({ navigation, icon, tittle, destination })
         </View>
     );
 }
+
+export default memo(UtilityButton);

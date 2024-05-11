@@ -8,6 +8,7 @@ import api, { userApis } from '~/utils/api';
 import { Background, Logo, Header, Paragraph, Button, TextInput, MessageInvalid } from '~/components';
 import { passwordValidator, formValidator } from '~/helpers';
 import { useUserDispatch } from '~/hooks/useUser';
+import { USER_ACTION_TYPE } from '~/reducers/userReducer';
 import theme from '../../core/theme';
 
 const styles = StyleSheet.create({
@@ -79,7 +80,7 @@ export default function LoginScreen({ navigation }) {
                 console.log(status);
                 console.log('Response:', response.data);
                 userDispatch({
-                    type: 'login',
+                    type: USER_ACTION_TYPE.LOGIN,
                     payload: response.data,
                 });
                 if (status === 'ACTIVE') {
