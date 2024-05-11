@@ -58,7 +58,6 @@ function DetailsSettingsScreen() {
         setValue,
     });
 
-
     const startResendOtpTimer = () => {
         if (resendOtpTimerInterval.current) {
             console.log(resendOtpTimerInterval.current);
