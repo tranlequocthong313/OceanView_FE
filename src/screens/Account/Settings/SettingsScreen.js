@@ -1,10 +1,18 @@
-import { View, Text, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-export default function SettingsScreen({ navigation }) {
+const styles = StyleSheet.create({
+    container: {
+        width: 400,
+        height: 400,
+        color: '#000000',
+        backgroundColor: '#f13a59',
+    },
+});
+
+export default function SettingsScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Settings screen</Text>
-            <Button title="Go to Details" onPress={() => navigation.navigate('DetailsSettings')} />
+        <View style={styles.container}>
+            <Text style={styles.text}>Settings Screen</Text>
         </View>
     );
 }

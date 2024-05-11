@@ -1,26 +1,34 @@
-import { Text, View, StyleSheet, ToastAndroid, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
+// import { Text, View, StyleSheet,  ActivityIndicator, ToastAndroid } from 'react-native';
 import { RadioButton, Button } from 'react-native-paper';
 import React, { useState } from 'react';
 import api, { userApis } from '~/utils/api';
 import theme from '~/core/theme';
-import Background from '../../components/Background';
-import BackButton from '../../components/BackButton';
-import Logo from '../../components/Logo';
-import Header from '../../components/Header';
+import { BackButton, Background, Logo, Header } from '~/components';
 
 const styles = StyleSheet.create({
     RadioButton: { flexDirection: 'row', alignItems: 'center' },
+    submitBtn: { marginTop: 20 },
+    methods: { display: 'flex', alignItems: 'center', flexDirection: 'column' },
 });
 
-// TODO: Re-design this screen ui
 function MethodResetPasswordScreen({ navigation, route }) {
     const { methods } = route.params;
 
     const [method, setMethod] = useState('phone_number');
     const [submitLoading, setSubmitLoading] = useState(false);
 
+    const { email, phone_number: phoneNumber } = methods;
+
+    const hiddenPhoneNumber = phoneNumber.replace(/.(?=.{4})/g, '*');
+
+    const hiddenEmail = email.replace(/^(.{2}).*?@/, '$1******@');
+
     const getMethodText = (key) => {
-        const texts = { phone_number: 'Send otp to your phone', email: 'Send reset password link to your email' };
+        const texts = {
+            email: `Gửi Link đến email (${hiddenEmail})`,
+            phone_number: `Gửi OTP đến số điện thoại (${hiddenPhoneNumber})`,
+        };
         return texts[key];
     };
 
@@ -29,7 +37,7 @@ function MethodResetPasswordScreen({ navigation, route }) {
         setSubmitLoading(true);
         try {
             if (!(method in methods)) {
-                ToastAndroid.showWithGravity('You must choose a method', ToastAndroid.LONG, ToastAndroid.CENTER);
+                // ToastAndroid.showWithGravity('You must choose a method', ToastAndroid.LONG, ToastAndroid.CENTER);
                 console.log(`method not allowed ${method}`);
                 return;
             }
@@ -47,13 +55,14 @@ function MethodResetPasswordScreen({ navigation, route }) {
             console.log(res.data);
             if (res.status === 200) {
                 if (method === 'email') {
-                    ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
+                    // ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
                     navigation.navigate('LoginScreen');
                 } else {
+                    // navigation.navigate('OTPScreen', { phoneNumber: methods[method] });
                     navigation.navigate('OTPScreen', { phoneNumber: methods[method] });
                 }
             } else {
-                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
         } catch (ex) {
             console.error(ex);
@@ -66,19 +75,23 @@ function MethodResetPasswordScreen({ navigation, route }) {
         <Background>
             <BackButton goBack={navigation.goBack} />
             <Logo />
-            <Header>Reset Password</Header>
-            {Object.keys(methods).map((m) => (
-                <View key={m} style={styles.RadioButton}>
-                    <RadioButton
-                        value={m}
-                        status={method === m ? 'checked' : 'unchecked'}
-                        onPress={() => setMethod(m)}
-                    />
-                    <Text>{getMethodText(m)}</Text>
-                </View>
-            ))}
-            <Button mode="contained" onPress={resetPassword} style={{ marginTop: 16 }}>
-                {submitLoading ? <ActivityIndicator color={theme.colors.surface} /> : 'Reset password'}
+            <Header>Chọn phương thức</Header>
+            <View style={styles.methods}>
+                {Object.keys(methods)
+                    .reverse()
+                    .map((m) => (
+                        <View key={m} style={styles.RadioButton}>
+                            <RadioButton
+                                value={m}
+                                status={method === m ? 'checked' : 'unchecked'}
+                                onPress={() => setMethod(m)}
+                            />
+                            <Text>{getMethodText(m)}</Text>
+                        </View>
+                    ))}
+            </View>
+            <Button mode="contained" onPress={resetPassword} style={styles.submitBtn}>
+                {submitLoading ? <ActivityIndicator color={theme.colors.surface} /> : 'Tiếp tục'}
             </Button>
         </Background>
     );

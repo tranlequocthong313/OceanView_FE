@@ -5,7 +5,7 @@ import formValidator from '~/helpers/formValidator';
 import TextInput from '~/components/TextInput';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api, { userApis } from '~/utils/api';
+import { authAPI, feedbackApis } from '~/utils/api';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,34 +41,37 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function CreateReflectionScreen() {
+// TODO: Add image field
+export default function CreateFeedbackScreen() {
     const [title, setTitle] = useState({ value: '', error: '' });
-    const [desc, setDesc] = useState({ value: '', error: '' });
+    const [content, setContent] = useState({ value: '', error: '' });
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-        { label: 'Thắc mắc', value: 'question' },
-        { label: 'Yêu cầu hỗ trợ', value: 'support' },
-        { label: 'Phàn nàn', value: 'complaint' },
+    const [type, setType] = useState(null);
+    const [types, setTypes] = useState([
+        { label: 'Thắc mắc', value: 'QUESTION' },
+        { label: 'Yêu cầu hỗ trợ', value: 'SUPPORT' },
+        { label: 'Phàn nàn', value: 'COMPLAIN' },
+        { label: 'Khác', value: 'OTHER' },
     ]);
 
     const handleSubmit = async () => {
         const titleError = formValidator(title.value, 'Title');
-        const descError = formValidator(desc.value, 'Description');
+        const descError = formValidator(content.value, 'Description');
 
-        if (value === null) {
+        if (type === null) {
             Alert.alert('Lỗi', 'Vui lòng chọn một mục trong nhóm phản ánh trước khi tạo!');
             return;
         }
 
         if (titleError || descError) {
             setTitle({ ...title, error: titleError });
-            setDesc({ ...desc, error: descError });
+            setContent({ ...content, error: descError });
 
             return;
         }
         try {
+            // TODO: Can we send the access token in just one place? Keep it simple and Don't repeat yourself
             const token = await AsyncStorage.getItem('accessToken');
             console.log(token);
 
@@ -76,14 +79,20 @@ export default function CreateReflectionScreen() {
                 Authorization: `Bearer ${token}`,
             };
 
-            const response = await api.post(userApis.reflection, {
-                type: items.value,
-                title: title.value,
-                desc: desc.value,
+            // TODO: Add image
+            const response = await (
+                await authAPI()
+            ).post(
+                feedbackApis.feedbackPost,
+                {
+                    type,
+                    title: title.value,
+                    content: content.value,
+                },
                 headers,
-            });
+            );
 
-            console.log(response);
+            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -92,14 +101,14 @@ export default function CreateReflectionScreen() {
     return (
         <KeyboardAvoidingView>
             <View style={styles.container}>
-                <Text style={styles.titleName}>Nhóm phản ánh </Text>
+                <Text style={styles.titleName}>Loại phản ánh </Text>
                 <DropDownPicker
                     open={open}
-                    value={value}
-                    items={items}
+                    value={type}
+                    items={types}
                     setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
+                    setValue={setType}
+                    setItems={setTypes}
                     placeholder="-----Chọn-----"
                 />
 
@@ -109,7 +118,6 @@ export default function CreateReflectionScreen() {
 
                         <TextInput
                             style={styles.input}
-                            autoCapitalize="words"
                             value={title.value}
                             onChangeText={(text) => {
                                 setTitle({ ...title, value: text });
@@ -124,13 +132,12 @@ export default function CreateReflectionScreen() {
                             multiline
                             numberOfLines={6}
                             style={styles.inputDesc}
-                            autoCapitalize="words"
-                            value={desc.value}
+                            value={content.value}
                             onChangeText={(text) => {
-                                setDesc({ ...desc, value: text });
+                                setContent({ ...content, value: text });
                             }}
-                            error={!!desc.error}
-                            errorText={desc.error}
+                            error={!!content.error}
+                            errorText={content.error}
                         />
                         <Button icon="arrow-right-circle" mode="contained" onPress={handleSubmit}>
                             Tạo

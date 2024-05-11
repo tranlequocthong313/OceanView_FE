@@ -6,13 +6,21 @@ const HOST = 'https://oceanview-be.onrender.com';
 
 export const userApis = {
     login: '/users/login/',
-    activeUser: `/users/active/`,
+    activeUser: '/users/active/',
     currentUser: '/users/current/',
-    sendResetPasswordOTP: `/users/send-otp/`,
-    sendResetPasswordEmail: `/users/send-reset-password-link/`,
-    methodResetPassword: `/users/forgot-password/`,
-    verifyOTP: `/users/verify-otp/`,
-    resetPassword: `/users/reset-password/`,
+    methodResetPassword: '/users/forgot-password/',
+    sendResetPasswordOTP: '/users/otp/',
+    sendResetPasswordEmail: '/users/email/',
+    verifyOTP: '/users/otp-verification/',
+    resetPassword: '/users/password/',
+};
+
+export const serviceApis = {
+    accessCard: '/services/access-cards/',
+};
+
+export const feedbackApis = {
+    feedbackPost: '/feedbacks/',
 };
 
 export const authAPI = async () => {
@@ -30,5 +38,7 @@ export const authAPI = async () => {
 const api = axios.create({
     baseURL: HOST,
 });
+
+// TODO: Intercept responses to refresh password
 
 export default api;

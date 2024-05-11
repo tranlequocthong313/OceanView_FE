@@ -1,11 +1,9 @@
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text } from 'react-native';
 
-export default function ChatScreen({ navigation }) {
+export default function ChatScreen() {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Chat with admin</Text>
-            <TextInput label="Mật khẩu" secureTextEntry />
-            <Button title="Go to Details" onPress={() => navigation.navigate('DetailsSettings')} />
+            <Text>Chat with admin </Text>
         </View>
     );
 }

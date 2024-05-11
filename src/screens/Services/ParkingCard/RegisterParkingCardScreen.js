@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function RegisterParkingCarScreen() {
+export default function RegisterParkingCardScreen() {
     const [vehicleType, setVehicleType] = useState('');
     const [licensePlates, setLicensePlates] = useState('');
 
@@ -92,7 +92,6 @@ export default function RegisterParkingCarScreen() {
     const [CCCD, setCCCD] = useState('');
     const [homeTown, setHomeTown] = useState('');
     const [SDT, setSDT] = useState('');
-    const [relationship, setRelationShip] = useState('');
     const [selectedButton, setSelectedButton] = useState(null);
 
     const [day, setDay] = useState('');
@@ -386,14 +385,6 @@ export default function RegisterParkingCarScreen() {
                             value={homeTown}
                             onChangeText={(text) => {
                                 setHomeTown(text);
-                            }}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            label="Mối quan hệ với chủ sở hữu"
-                            value={relationship}
-                            onChangeText={(text) => {
-                                setRelationShip(text);
                             }}
                         />
                     </SafeAreaView>
