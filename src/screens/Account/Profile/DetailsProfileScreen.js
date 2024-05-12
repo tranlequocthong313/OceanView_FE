@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { authAPI, userApis } from '~/utils/api';
 
+import { useUserDispatch } from '~/hooks/useUser';
+import { USER_ACTION_TYPE } from '~/reducers/userReducer';
+
 const styles = StyleSheet.create({
     container: {
         marginTop: 20,
@@ -30,18 +33,21 @@ const styles = StyleSheet.create({
 export default function DetailsProfileScreen() {
     const [profileData, setProfileData] = useState(null);
 
-    const fetchProfileData = async () => {
-        try {
-            const response = await (await authAPI()).get(userApis.currentUser);
-            setProfileData(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+
+    const userDispatch = useUserDispatch();
 
     useEffect(() => {
+        const fetchProfileData = async () => {
+            try {
+                const response = await (await authAPI()).get(userApis.currentUser);
+                userDispatch({ type: USER_ACTION_TYPE.CURRENT, payload: response.data });
+                setProfileData(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
         fetchProfileData();
-    }, []);
+    }, [userDispatch]);
 
     return (
         <View style={styles.container}>

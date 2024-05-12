@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import theme from '../core/theme';
@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
 });
 
 function Header(props) {
+    console.log('render Header component');
     return <Text style={styles.header} {...props} />;
 }
 
-export default Header;
+export default memo(Header);

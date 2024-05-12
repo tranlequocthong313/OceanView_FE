@@ -11,7 +11,7 @@ import {
     ToastAndroid,
     Image,
 } from 'react-native';
-import { authAPI, userApis } from '~/utils/api';
+import { authAPI, serviceApis } from '~/utils/api';
 import { AntDesign } from '@expo/vector-icons';
 import Button from '~/components/Button';
 import { Button as ButtonPaper } from 'react-native-paper';
@@ -119,7 +119,7 @@ export default function CreateReflectionScreen({ navigation }) {
 
             const response = await (
                 await authAPI()
-            ).post(userApis.feedback, formData, {
+            ).post(serviceApis.feedback, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

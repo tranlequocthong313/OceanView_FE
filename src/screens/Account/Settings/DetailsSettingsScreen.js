@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet } from 'react-native';
 // import { Text, View, TouchableOpacity } from 'react-native';
+
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { Button, Background, Header, Logo, Paragraph } from '~/components';
 import theme from '~/core/theme';
@@ -51,6 +52,12 @@ function DetailsSettingsScreen() {
     const resendOtpTimerInterval = useRef(null);
 
     const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(RESEND_OTP_TIME_LIMIT);
+    const [value, setValue] = useState('');
+    const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+        value,
+        setValue,
+    });
 
     const startResendOtpTimer = () => {
         if (resendOtpTimerInterval.current) {
@@ -62,7 +69,6 @@ function DetailsSettingsScreen() {
         }, 1000);
     };
 
-    const [value, setValue] = useState('');
 
     const onResendOtpButtonPress = () => {
         setValue('');
@@ -70,12 +76,6 @@ function DetailsSettingsScreen() {
         startResendOtpTimer();
         console.log('todo: Resend OTP');
     };
-
-    const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-        value,
-        setValue,
-    });
 
     useEffect(() => {
         startResendOtpTimer();

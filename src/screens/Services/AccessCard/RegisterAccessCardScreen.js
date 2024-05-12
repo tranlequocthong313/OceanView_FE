@@ -1,6 +1,6 @@
-import { SafeAreaView, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, ToastAndroid } from 'react-native';
 import { TextInput, RadioButton, Button } from 'react-native-paper';
-import { authAPI, userApis } from '~/utils/api';
+import { authAPI, serviceApis } from '~/utils/api';
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -184,20 +184,30 @@ export default function RegisterAccessCardScreen() {
     };
 
     const handleSubmit = async () => {
-        console.log('Submit successfully');
-        console.log(`date_of_birth: ${year}-${month}-${day}`);
-
         try {
-            const formData = new FormData();
-            formData.append('relative.relationship', relationship);
-            formData.append('relative.personal_information.citizen_id', CCCD);
-            formData.append('relative.personal_information.phone_number', SDT);
-            formData.append('relative.personal_information.full_name', name);
-            formData.append('relative.personal_information.day_of_birth', `${year}-${month}-${day}`);
-            formData.append('relative.personal_information.hometown', homeTown);
-            formData.append('relative.personal_information.gender', gender);
+            const requestData = {
+                relative: {
+                    relationship,
+                    personal_information: {
+                        citizen_id: CCCD,
+                        phone_number: SDT,
+                        full_name: name,
+                        date_of_birth: `${year}-${month}-${day}`,
+                        hometown: homeTown,
+                        gender,
+                    },
+                },
+            };
 
-            const response = await (await authAPI()).post(userApis.accessCard, formData);
+            const response = await (
+                await authAPI()
+            ).post(serviceApis.accessCard, requestData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
 
             console.log('Response success:', response.data);
         } catch (error) {

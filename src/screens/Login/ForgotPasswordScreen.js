@@ -32,9 +32,9 @@ export default function ForgotPasswordScreen({ navigation }) {
         <Background>
             <BackButton goBack={navigation.goBack} />
             <Logo />
-            <Header>Restore Password</Header>
+            <Header>Thông tin tài khoản</Header>
             <TextInput
-                label="User identifier"
+                label="Email hoặc Số điện thoại"
                 returnKeyType="done"
                 value={userIdentifier.value}
                 onChangeText={(text) => setUserIdentifier({ value: text, error: '' })}
@@ -43,7 +43,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                 autoCapitalize="none"
             />
             <Button mode="contained" onPress={sendResidentId} style={{ marginTop: 16 }}>
-                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Send user identifier'}
+                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Tiếp tục'}
             </Button>
         </Background>
     );

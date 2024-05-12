@@ -13,11 +13,17 @@ export const userApis = {
     sendResetPasswordEmail: '/users/email/',
     verifyOTP: '/users/otp-verification/',
     resetPassword: '/users/password/',
+};
 
+export const serviceApis = {
     accessCard: '/services/access-cards/',
     parkingCard: '/services/parking-cards/',
 
     feedback: '/feedbacks/',
+};
+
+export const feedbackApis = {
+    feedbackPost: '/feedbacks/',
 };
 
 export const authAPI = async () => {
@@ -35,5 +41,7 @@ export const authAPI = async () => {
 const api = axios.create({
     baseURL: HOST,
 });
+
+// TODO: Intercept responses to refresh password
 
 export default api;

@@ -6,6 +6,8 @@ import { AntDesign } from '@expo/vector-icons';
 import api, { userApis } from '~/utils/api';
 import { Background, Logo, Header, Paragraph, Button, TextInput, MessageInvalid } from '~/components';
 import { passwordValidator, formValidator } from '~/helpers';
+import { useUserDispatch } from '~/hooks/useUser';
+import { USER_ACTION_TYPE } from '~/reducers/userReducer';
 import theme from '../../core/theme';
 
 const styles = StyleSheet.create({
@@ -34,10 +36,12 @@ const styles = StyleSheet.create({
 });
 
 export default function LoginScreen({ navigation }) {
+    // TODO: Delete these 2 values after
     const [username, setUsername] = useState({ value: '', error: '' });
     const [password, setPassword] = useState({ value: '', error: '' });
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
+    const userDispatch = useUserDispatch();
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
@@ -59,10 +63,10 @@ export default function LoginScreen({ navigation }) {
             setLoading(true);
 
             const response = await api.post(userApis.login, {
-                username: username.value,
-                password: password.value,
-                // username: '240003',
-                // password: 'minhha2k3',
+                // username: username.value,
+                // password: password.value,
+                username: '240002',
+                password: 'minhha2k3',
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;
@@ -71,12 +75,13 @@ export default function LoginScreen({ navigation }) {
                 // Lưu trữ token vào AsyncStorage
                 await AsyncStorage.setItem('accessToken', token);
 
-                // TODO: Đưa đối tượng user vào context để  các component khác có thể sử dụng
-
                 // console.log(token);
                 // console.log(status);
                 console.log('Response:', response.data);
-
+                userDispatch({
+                    type: USER_ACTION_TYPE.LOGIN,
+                    payload: response.data,
+                });
                 if (status === 'ACTIVE') {
                     navigation.reset({
                         index: 0,
@@ -112,7 +117,7 @@ export default function LoginScreen({ navigation }) {
                 <AntDesign name="heart" size={14} color="red" />
             </Paragraph>
             <TextInput
-                label="Username"
+                label="Mã cư dân"
                 returnKeyType="next"
                 value={username.value}
                 onChangeText={(text) => setUsername({ value: text, error: '' })}
@@ -123,7 +128,7 @@ export default function LoginScreen({ navigation }) {
             />
             <TextInput
                 secureTextEntry={!showPassword}
-                label="Password"
+                label="Mật khẩu"
                 returnKeyType="next"
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
@@ -142,11 +147,11 @@ export default function LoginScreen({ navigation }) {
 
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-                    <Text style={styles.forgot}>Forgot your password?</Text>
+                    <Text style={styles.forgot}>Quên mật khẩu?</Text>
                 </TouchableOpacity>
             </View>
             <Button mode="contained" onPress={onLoginPressed}>
-                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Login'}
+                {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Đăng nhập'}
             </Button>
             {showInvalidLoginMessage && (
                 <MessageInvalid

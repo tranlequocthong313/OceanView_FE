@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet } from 'react-native';
 // import { Text, View, TouchableOpacity } from 'react-native';
 
+
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import api, { userApis } from '~/utils/api';
 import theme from '~/core/theme';
@@ -58,6 +59,12 @@ function OTPScreen({ navigation, route }) {
     const hiddenPhoneNumber = phoneNumber.replace(/.(?=.{4})/g, '*');
 
     const [resendButtonDisabledTime, setResendButtonDisabledTime] = useState(RESEND_OTP_TIME_LIMIT);
+    const [value, setValue] = useState('');
+    const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+        value,
+        setValue,
+    });
 
     const startResendOtpTimer = () => {
         if (resendOtpTimerInterval.current) {
@@ -69,7 +76,6 @@ function OTPScreen({ navigation, route }) {
         }, 1000);
     };
 
-    const [value, setValue] = useState('');
 
     const onResendOtpButtonPress = async () => {
         setValue('');
@@ -82,12 +88,6 @@ function OTPScreen({ navigation, route }) {
             console.error(error);
         }
     };
-
-    const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-        value,
-        setValue,
-    });
 
     useEffect(() => {
         startResendOtpTimer();

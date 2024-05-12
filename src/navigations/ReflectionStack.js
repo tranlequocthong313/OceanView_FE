@@ -10,7 +10,7 @@ export default function ReflectionStackNav() {
                 name="Reflection"
                 component={HistoryReflectionScreen}
                 options={{
-                    title: 'Dịch vụ',
+                    title: 'Danh sách phản ánh',
                 }}
             />
 
@@ -28,6 +28,8 @@ export default function ReflectionStackNav() {
                     title: 'Chỉnh sửa phản ánh',
                 }}
             />
+
+            
         </ReflectionStack.Navigator>
     );
 }

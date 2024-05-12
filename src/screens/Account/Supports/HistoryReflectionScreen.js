@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    ScrollView,
+    ActivityIndicator,
+    Alert,
+    ToastAndroid,
+} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { authAPI, userApis } from '~/utils/api';
+import { authAPI, serviceApis } from '~/utils/api';
 import { Button } from 'react-native-paper';
 import theme from '~/core/theme';
 
@@ -63,7 +72,7 @@ export default function HistoryReflectionScreen({ navigation }) {
         try {
             const response = await (
                 await authAPI()
-            ).get(userApis.feedback, {
+            ).get(serviceApis.feedback, {
                 params: {
                     offset,
                     limit: LIMIT,
@@ -80,8 +89,6 @@ export default function HistoryReflectionScreen({ navigation }) {
         setIsLoading(true);
         fetchReflectionData();
     }, [fetchReflectionData]);
-
-    console.log(reflectionData);
 
     const getTotalPages = () => {
         if (!reflectionData || !reflectionData.count) return 1;
@@ -124,7 +131,12 @@ export default function HistoryReflectionScreen({ navigation }) {
                     onPress: async () => {
                         try {
                             // Gửi yêu cầu xóa phản ánh với id tương ứng
-                            await (await authAPI()).delete(`${userApis.feedback}${id}/`);
+                            await (await authAPI()).delete(`${serviceApis.feedback}${id}/`);
+                            ToastAndroid.showWithGravity(
+                                'Đã xoá phản ánh thành công',
+                                ToastAndroid.LONG,
+                                ToastAndroid.CENTER,
+                            );
                             // Refresh lại dữ liệu sau khi xóa
                             fetchReflectionData();
                         } catch (error) {

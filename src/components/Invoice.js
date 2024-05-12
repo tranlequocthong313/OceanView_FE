@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Invoice({ month, year, amount, actived, onPress }) {
+function Invoice({ month, year, amount, actived, onPress }) {
     return (
         <TouchableOpacity style={styles.listItem} onPress={onPress}>
             <Text>
@@ -35,3 +35,5 @@ export default function Invoice({ month, year, amount, actived, onPress }) {
         </TouchableOpacity>
     );
 }
+
+export default Invoice;

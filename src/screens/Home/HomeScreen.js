@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { AntDesign, FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { UtilityButton } from '~/components';
 import theme from '~/core/theme';
+import { useUser } from '~/hooks/useUser';
 
 const styles = StyleSheet.create({
     container: {},
@@ -70,18 +71,17 @@ const styles = StyleSheet.create({
     },
 });
 
-// TODO: Lấy avatar của user từ context sau khi login thay vào đây
 export default function HomeScreen({ navigation }) {
+    const user = useUser();
+    console.log(user);
+
     return (
         <View style={styles.container}>
             {/* header */}
             <View style={styles.wrapHeader}>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.navigate('ProfileTab')}>
-                        <Image
-                            style={styles.image}
-                            source={{ uri: 'https://randomuser.me/api/portraits/women/40.jpg' }}
-                        />
+                        <Image style={styles.image} source={{ uri: user.avatar }} />
                     </TouchableOpacity>
                     <View style={styles.contentWrapper}>
                         <Text style={styles.greeting}>Xin chào,</Text>

@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { memo } from 'react';
 
 const styles = StyleSheet.create({
     viewWrapper: {
@@ -21,7 +22,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function StackView({ navigation, icon, title, destination }) {
+function StackView({ navigation, icon, title, destination }) {
+    console.log('StackView render');
     return (
         <TouchableOpacity onPress={() => navigation.navigate(destination)}>
             <View style={styles.viewWrapper}>
@@ -34,3 +36,5 @@ export default function StackView({ navigation, icon, title, destination }) {
         </TouchableOpacity>
     );
 }
+
+export default memo(StackView);

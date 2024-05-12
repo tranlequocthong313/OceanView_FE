@@ -7,6 +7,8 @@ import { BackButton, Background, Logo, Header } from '~/components';
 
 const styles = StyleSheet.create({
     RadioButton: { flexDirection: 'row', alignItems: 'center' },
+    submitBtn: { marginTop: 20 },
+    methods: { display: 'flex', alignItems: 'center', flexDirection: 'column' },
 });
 
 function MethodResetPasswordScreen({ navigation, route }) {
@@ -15,15 +17,18 @@ function MethodResetPasswordScreen({ navigation, route }) {
     const [method, setMethod] = useState('phoneNumber');
     const [submitLoading, setSubmitLoading] = useState(false);
 
-    const { email, phoneNumber } = methods;
+
+    const { email, phone_number: phoneNumber } = methods;
+
     const hiddenPhoneNumber = phoneNumber.replace(/.(?=.{4})/g, '*');
 
     const hiddenEmail = email.replace(/^(.{2}).*?@/, '$1******@');
 
     const getMethodText = (key) => {
         const texts = {
-            email: `Send reset password link to your email (${hiddenEmail})`,
-            phoneNumber: `Send otp to your phone (${hiddenPhoneNumber})`,
+
+            email: `Gửi Link đến email (${hiddenEmail})`,
+            phone_number: `Gửi OTP đến số điện thoại (${hiddenPhoneNumber})`,
         };
         return texts[key];
     };
@@ -70,8 +75,8 @@ function MethodResetPasswordScreen({ navigation, route }) {
         <Background>
             <BackButton goBack={navigation.goBack} />
             <Logo />
-            <Header>Reset Password</Header>
-            <View>
+            <Header>Chọn phương thức</Header>
+            <View style={styles.methods}>
                 {Object.keys(methods)
                     .reverse()
                     .map((m) => (
@@ -85,8 +90,8 @@ function MethodResetPasswordScreen({ navigation, route }) {
                         </View>
                     ))}
             </View>
-            <Button mode="contained" onPress={resetPassword} style={{ marginTop: 16 }}>
-                {submitLoading ? <ActivityIndicator color={theme.colors.surface} /> : 'Reset password'}
+            <Button mode="contained" onPress={resetPassword} style={styles.submitBtn}>
+                {submitLoading ? <ActivityIndicator color={theme.colors.surface} /> : 'Tiếp tục'}
             </Button>
         </Background>
     );

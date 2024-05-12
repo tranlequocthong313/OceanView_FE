@@ -6,11 +6,12 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     TouchableHighlight,
+    ToastAndroid,
 } from 'react-native';
 import { TextInput, Button, RadioButton } from 'react-native-paper';
 import React, { useState } from 'react';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
-import { authAPI, userApis } from '~/utils/api';
+import { authAPI, serviceApis } from '~/utils/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const styles = StyleSheet.create({
@@ -260,12 +261,21 @@ export default function RegisterParkingCardScreen() {
 
             const response = await (
                 await authAPI()
-            ).post(userApis.parkingCard, requestData, {
+            ).post(serviceApis.parkingCard, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-
+            if (response.status === 200) {
+                ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+            } 
+            // else {
+            //     ToastAndroid.showWithGravity(
+            //         'Vui lòng nhập đúng số phòng của chủ sở hữu',
+            //         ToastAndroid.LONG,
+            //         ToastAndroid.CENTER,
+            //     );
+            // }
             console.log('Response success:', response.data);
         } catch (error) {
             console.log(error);
