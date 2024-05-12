@@ -2,6 +2,7 @@ import { SafeAreaView, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView 
 import { TextInput, RadioButton, Button } from 'react-native-paper';
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import { authAPI, userApis } from '~/utils/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const styles = StyleSheet.create({
@@ -186,8 +187,26 @@ export default function RegisterResidentCardScreen() {
         hideDatePicker();
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log('Submit successfully');
+        console.log(`date_of_birth: ${year}-${month}-${day}`);
+
+        try {
+            const formData = new FormData();
+            formData.append('relative.relationship', relationship);
+            formData.append('relative.personal_information.citizen_id', CCCD);
+            formData.append('relative.personal_information.phone_number', SDT);
+            formData.append('relative.personal_information.full_name', name);
+            formData.append('relative.personal_information.day_of_birth', `${year}-${month}-${day}`);
+            formData.append('relative.personal_information.hometown', homeTown);
+            formData.append('relative.personal_information.gender', gender);
+
+            const response = await (await authAPI()).post(userApis.accessCard, formData);
+
+            console.log('Response success:', response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

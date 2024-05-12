@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function SettingsScreen({ navigation }) {
+export default function SettingsScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Settings Screen</Text>

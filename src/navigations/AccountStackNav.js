@@ -7,8 +7,8 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
-    CreateReflectionScreen,
 } from '~/screens';
+import ReflectionStackNav from './ReflectionStack';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -52,10 +52,10 @@ export default function AccountStackNav() {
                 }}
             />
             <AccountStack.Screen
-                name="Reflection"
-                component={CreateReflectionScreen}
+                name="HistoryReflection"
+                component={ReflectionStackNav}
                 options={{
-                    headerTitle: 'Tạo phản ánh mới',
+                    headerTitle: 'Danh sách phản ánh',
                 }}
             />
             <AccountStack.Screen

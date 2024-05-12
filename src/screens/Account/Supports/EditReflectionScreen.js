@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function CreateReflectionScreen({ navigation }) {
+export default function EditReflectionScreen({ navigation, route }) {
     const [title, setTitle] = useState({ value: '', error: '' });
     const [desc, setDesc] = useState({ value: '', error: '' });
 
@@ -73,6 +73,7 @@ export default function CreateReflectionScreen({ navigation }) {
         { label: 'Khác', value: 'OTHER' },
     ]);
 
+    const { id } = route.params;
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -88,6 +89,23 @@ export default function CreateReflectionScreen({ navigation }) {
             if (!result.canceled) setImage(result.assets[0]);
         }
     };
+
+    const fetchReflectionData = useCallback(async () => {
+        try {
+            const response = await (await authAPI()).get(`${userApis.feedback}${id}/`);
+            console.log(response.data);
+            setTitle((prevState) => ({ ...prevState, value: response.data.title, error: '' }));
+            setDesc((prevState) => ({ ...prevState, value: response.data.content, error: '' }));
+            setImage({ uri: response.data.image });
+            setValue(response.data.type);
+        } catch (error) {
+            console.log(error);
+        }
+    }, [id, setTitle, setDesc, setImage, setValue]);
+
+    useEffect(() => {
+        fetchReflectionData();
+    }, [fetchReflectionData]);
 
     const handleSubmit = async () => {
         const titleError = formValidator(title.value, 'Title');
@@ -106,6 +124,7 @@ export default function CreateReflectionScreen({ navigation }) {
         }
         try {
             setLoading(true);
+
             const formData = new FormData();
             // The image may not have a name, the server requires the image to have enough information to be decoded
             formData.append('image', {
@@ -119,14 +138,23 @@ export default function CreateReflectionScreen({ navigation }) {
 
             const response = await (
                 await authAPI()
-            ).post(userApis.feedback, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+            ).patch(
+                `${userApis.feedback}${id}/`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
                 },
-            });
+                //     {
+                //     title: title.value,
+                //     content: desc.value,
+                //     type: value,
+                // }
+            );
             console.log(response.status);
-            if (response.status === 201) {
-                ToastAndroid.showWithGravity('Đã tạo phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+            if (response.status === 200) {
+                ToastAndroid.showWithGravity('Cập nhật phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
                 navigation.navigate('Reflection');
             } else {
                 ToastAndroid.showWithGravity('Vui lòng kiểm tra lại!', ToastAndroid.LONG, ToastAndroid.CENTER);
@@ -217,7 +245,7 @@ export default function CreateReflectionScreen({ navigation }) {
                             )}
                         </View>
                         <Button mode="contained" onPress={handleSubmit}>
-                            {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
+                            {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Cập nhật'}
                         </Button>
                     </SafeAreaView>
                 </ScrollView>

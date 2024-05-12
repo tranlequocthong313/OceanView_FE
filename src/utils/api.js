@@ -15,6 +15,9 @@ export const userApis = {
     resetPassword: '/users/password/',
 
     accessCard: '/services/access-cards/',
+    parkingCard: '/services/parking-cards/',
+
+    feedback: '/feedbacks/',
 };
 
 export const authAPI = async () => {

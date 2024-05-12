@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
-// import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
+// import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
@@ -91,7 +91,7 @@ export default function UpdateInfoScreen({ navigation }) {
             // The image may not have a name, the server requires the image to have enough information to be decoded
             formData.append('avatar', {
                 uri: image.uri,
-                name: image.filename ?? `avtar.${image.mimeType.split('/')[1]}`,
+                name: image.filename ?? `avatar.${image.mimeType.split('/')[1]}`,
                 type: image.mimeType,
             });
             formData.append('password', newPassword.value);
@@ -104,13 +104,13 @@ export default function UpdateInfoScreen({ navigation }) {
                 },
             });
             if (response.status === 200) {
-                // ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity('Active account successfully', ToastAndroid.SHORT, ToastAndroid.CENTER);
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'HomeScreen' }],
                 });
             } else {
-                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
         } catch (error) {
             console.error('Error:', error);

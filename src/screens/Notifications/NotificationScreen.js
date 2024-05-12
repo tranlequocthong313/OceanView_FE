@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     desc: {
         fontSize: 14,
         flexGrow: 1,
+        flexWrap: 'wrap',
     },
 });
 export default function NotificationScreen() {

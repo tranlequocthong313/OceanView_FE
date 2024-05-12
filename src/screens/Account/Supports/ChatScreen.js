@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text } from 'react-native';
 
 export default function ChatScreen() {
     return (

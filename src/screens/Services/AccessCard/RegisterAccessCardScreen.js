@@ -185,9 +185,7 @@ export default function RegisterAccessCardScreen() {
 
     const handleSubmit = async () => {
         console.log('Submit successfully');
-        console.log('date_of_birth: ' + `${year}-${month}-${day}`);
-        console.log(`citizen_id: ${  CCCD}`);
-        console.log(`phone_number: ${  SDT}`);
+        console.log(`date_of_birth: ${year}-${month}-${day}`);
 
         try {
             const formData = new FormData();
@@ -195,7 +193,7 @@ export default function RegisterAccessCardScreen() {
             formData.append('relative.personal_information.citizen_id', CCCD);
             formData.append('relative.personal_information.phone_number', SDT);
             formData.append('relative.personal_information.full_name', name);
-            formData.append('relative.personal_information.xf', `${year}-${month}-${day}`);
+            formData.append('relative.personal_information.day_of_birth', `${year}-${month}-${day}`);
             formData.append('relative.personal_information.hometown', homeTown);
             formData.append('relative.personal_information.gender', gender);
 
@@ -228,7 +226,7 @@ export default function RegisterAccessCardScreen() {
                         />
 
                         <View>
-                            <Text style={styles.text}>Ngày sinh: </Text>
+                            <Text>Ngày sinh: </Text>
                             <View>
                                 <View style={styles.inputContainer}>
                                     <TextInput

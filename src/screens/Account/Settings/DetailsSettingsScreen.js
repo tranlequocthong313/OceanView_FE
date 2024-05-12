@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet } from 'react-native';
+// import { Text, View, TouchableOpacity } from 'react-native';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { Button, Background, Header, Logo, Paragraph } from '~/components';
-import { StyleSheet } from 'react-native';
 import theme from '~/core/theme';
 
 export const styles = StyleSheet.create({
@@ -46,7 +45,7 @@ export const styles = StyleSheet.create({
     },
 });
 
-function DetailsSettingsScreen({ navigation, route }) {
+function DetailsSettingsScreen() {
     const CELL_COUNT = 6;
     const RESEND_OTP_TIME_LIMIT = 60;
     const resendOtpTimerInterval = useRef(null);
@@ -63,6 +62,8 @@ function DetailsSettingsScreen({ navigation, route }) {
         }, 1000);
     };
 
+    const [value, setValue] = useState('');
+
     const onResendOtpButtonPress = () => {
         setValue('');
         setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);
@@ -70,7 +71,6 @@ function DetailsSettingsScreen({ navigation, route }) {
         console.log('todo: Resend OTP');
     };
 
-    const [value, setValue] = useState('');
     const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
     const [props, getCellOnLayoutHandler] = useClearByFocusCell({
         value,
@@ -84,7 +84,7 @@ function DetailsSettingsScreen({ navigation, route }) {
 
     const handleVerifyOTP = () => {
         if (!value || value.length !== 6) {
-            // ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
             return;
         }
         console.log(value);

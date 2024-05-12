@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function InvoiceScreen({ navigation }) {
+export default function InvoiceScreen() {
     const [activedInvoice, setActivedInvoice] = useState(true);
     const [activedUnInvoice, setActivedUnInvoice] = useState(false);
 
@@ -85,7 +85,7 @@ export default function InvoiceScreen({ navigation }) {
 
     const generateSampleData = () => {
         const data = [];
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 3; i += 1) {
             const amount = Math.floor(Math.random() * 10000000);
 
             const formattedAmount = amount.toLocaleString();
@@ -112,7 +112,7 @@ export default function InvoiceScreen({ navigation }) {
         if (items.length > 0) {
             setValue(items[0].value);
         }
-    }, []);
+    }, [items]);
 
     const selectedYear = 2024;
 
@@ -167,13 +167,11 @@ export default function InvoiceScreen({ navigation }) {
                                         onPress={() => handlePress(item.id)}
                                         icon
                                     />
-                                    {activedInvoices[item.id] ? (
-                                        detailInvoices.map((di) => (
-                                            <DetailsInvoice month={di.id} year={selectedYear} amount={di.amount} />
-                                        ))
-                                    ) : (
-                                        <></>
-                                    )}
+                                    {activedInvoices[item.id]
+                                        ? detailInvoices.map((di) => (
+                                              <DetailsInvoice month={di.id} year={selectedYear} amount={di.amount} />
+                                          ))
+                                        : null}
                                 </View>
                             )}
                             keyExtractor={(item) => item.id.toString()}
@@ -184,9 +182,7 @@ export default function InvoiceScreen({ navigation }) {
                         <Button mode="contained" onPress={() => console.log('Thanh toan ')}>
                             Thanh toán
                         </Button>
-                    ) : (
-                        <></>
-                    )}
+                    ) : null}
                 </ScrollView>
             </View>
         </View>
