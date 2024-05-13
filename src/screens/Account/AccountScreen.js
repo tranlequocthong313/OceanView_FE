@@ -77,6 +77,13 @@ export default function AccountScreen({ navigation }) {
 
                 <StackView
                     navigation={navigation}
+                    icon={<Entypo name="new-message" size={24} color="black" />}
+                    title="Quản lý tủ đồ"
+                    destination="LockerScreen"
+                />
+
+                <StackView
+                    navigation={navigation}
                     icon={<AntDesign name="message1" size={22} color="black" />}
                     title="Chat với ban quản trị"
                     destination="Chat"

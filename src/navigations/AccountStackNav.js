@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useUser } from '~/hooks/useUser';
 import {
     DetailsProfileScreen,
-    SettingsScreen,
     ContactScreen,
     AboutUsScreen,
     ProfileScreen,
@@ -9,10 +9,15 @@ import {
     ChatScreen,
     CreateFeedbackScreen,
 } from '~/screens';
+import LockerScreen from '~/screens/Locker/LockerScreen';
+import LockerDetailScreen from '~/screens/Locker/LockerDetailScreen';
+import { Fragment } from 'react';
 
 const AccountStack = createNativeStackNavigator();
 
 export default function AccountStackNav() {
+    const user = useUser();
+
     return (
         <AccountStack.Navigator initialRouteName="Profile">
             <AccountStack.Screen
@@ -30,13 +35,6 @@ export default function AccountStackNav() {
                 }}
             />
             <AccountStack.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{
-                    headerTitle: 'Cài đặt',
-                }}
-            />
-            <AccountStack.Screen
                 name="DetailsSettings"
                 component={DetailsSettingsScreen}
                 options={{
@@ -51,6 +49,27 @@ export default function AccountStackNav() {
                     headerTitle: 'Liên hệ',
                 }}
             />
+            {user && user.is_staff && (
+                <>
+                    <AccountStack.Screen
+                        name="LockerScreen"
+                        component={LockerScreen}
+                        options={{
+                            headerTitle: 'Quản lý tủ đồ',
+                        }}
+                    />
+                    <AccountStack.Screen
+                        name="LockerDetailScreen"
+                        component={LockerDetailScreen}
+                        options={({ route }) => {
+                            const locker = route.params?.locker;
+                            return {
+                                title: `${locker?.owner?.resident_id} - ${locker?.owner?.personal_information?.full_name}`,
+                            };
+                        }}
+                    />
+                </>
+            )}
             {/* TODO: Move this outta here */}
             <AccountStack.Screen
                 name="Feedback"

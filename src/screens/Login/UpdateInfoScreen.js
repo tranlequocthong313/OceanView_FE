@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 // import { StyleSheet, Image, View, ActivityIndicator, ToastAndroid } from 'react-native';
-import { Button as ButtonPaper } from 'react-native-paper';
-import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
+import { Button as ButtonPaper } from 'react-native-paper';
+import { BackButton, Background, Button, Header, TextInput } from '~/components';
 import MessageInvalid from '~/components/MessageInvalid';
-import { authAPI, userApis } from '~/utils/api';
 import theme from '~/core/theme';
 import passwordValidator from '~/helpers/passwordValidator';
-import { Background, Header, Button, TextInput, BackButton } from '~/components';
+import { authAPI, userApis } from '~/utils/api';
+import handleUploadImage from '~/utils/image';
 
 const styles = StyleSheet.create({
     row: {
@@ -49,18 +49,6 @@ export default function UpdateInfoScreen({ navigation }) {
 
     const handleCloseCheckPasswordMessage = () => {
         setCheckPassword(true);
-    };
-    const handleUploadImage = async () => {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-            console.log('Permissions denied!');
-        } else {
-            const result = await ImagePicker.launchImageLibraryAsync({
-                allowsEditing: true,
-                quality: 1,
-            });
-            if (!result.canceled) setImage(result.assets[0]);
-        }
     };
 
     const onUpdatePressed = async () => {
@@ -153,7 +141,7 @@ export default function UpdateInfoScreen({ navigation }) {
                     mode="contained-tonal"
                     icon="file-upload-outline"
                     style={styles.upload}
-                    onPress={handleUploadImage}
+                    onPress={() => handleUploadImage(setImage)}
                 >
                     Tải ảnh đại diện
                 </ButtonPaper>

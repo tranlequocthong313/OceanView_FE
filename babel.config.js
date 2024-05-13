@@ -1,5 +1,5 @@
 module.exports = (api) => {
-    api.cache(true);
+    api.cache(false);
     return {
         presets: ['babel-preset-expo'],
         env: {
@@ -8,6 +8,7 @@ module.exports = (api) => {
             },
         },
         plugins: [
+            ['module:react-native-dotenv'],
             [
                 require.resolve('babel-plugin-module-resolver'),
                 {
