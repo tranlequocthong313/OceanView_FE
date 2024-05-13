@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, ToastAndroid } from 'react-native';
 import { TextInput, RadioButton, Button } from 'react-native-paper';
 import { authAPI, serviceApis } from '~/utils/api';
 import React, { useState } from 'react';
@@ -184,38 +184,30 @@ export default function RegisterAccessCardScreen() {
     };
 
     const handleSubmit = async () => {
-        // {
-        //     "relative": {
-        //         "relationship": "Mẹ",
-        //         "personal_information": {
-        //             "citizen_id": "353532353531",
-        //             "full_name": "Thanh",
-        //             "date_of_birth": "2024-04-17",
-        //             "phone_number": "35323535351",
-        //             "hometown": "TP.HCM",
-        //             "gender": "FEMALE"
-        //         }
-        //     }
-        // }
         try {
-            // const data = {
-            //     relative: {
-            //         relationship: relationship,
-            //         personal_information: {
-            //             // citizen_id: citzen
-            //         }
-            //     }
-            // }
-            const formData = new FormData();
-            formData.append('relative.relationship', relationship);
-            formData.append('relative.personal_information.citizen_id', CCCD);
-            formData.append('relative.personal_information.phone_number', SDT);
-            formData.append('relative.personal_information.full_name', name);
-            formData.append('relative.personal_information.xf', `${year}-${month}-${day}`);
-            formData.append('relative.personal_information.hometown', homeTown);
-            formData.append('relative.personal_information.gender', gender);
+            const requestData = {
+                relative: {
+                    relationship,
+                    personal_information: {
+                        citizen_id: CCCD,
+                        phone_number: SDT,
+                        full_name: name,
+                        date_of_birth: `${year}-${month}-${day}`,
+                        hometown: homeTown,
+                        gender,
+                    },
+                },
+            };
 
-            const response = await (await authAPI()).post(serviceApis.accessCard, formData);
+            const response = await (
+                await authAPI()
+            ).post(serviceApis.accessCard, requestData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
 
             console.log('Response success:', response.data);
         } catch (error) {
@@ -244,7 +236,7 @@ export default function RegisterAccessCardScreen() {
                         />
 
                         <View>
-                            <Text style={styles.text}>Ngày sinh: </Text>
+                            <Text>Ngày sinh: </Text>
                             <View>
                                 <View style={styles.inputContainer}>
                                     <TextInput

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
-// import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign } from '@expo/vector-icons';
@@ -38,8 +37,8 @@ const styles = StyleSheet.create({
 
 export default function LoginScreen({ navigation }) {
     // TODO: Delete these 2 values after
-    const [username, setUsername] = useState({ value: '240001', error: '' });
-    const [password, setPassword] = useState({ value: 'tranlequocthong313', error: '' });
+    const [username, setUsername] = useState({ value: '', error: '' });
+    const [password, setPassword] = useState({ value: '', error: '' });
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
     const userDispatch = useUserDispatch();
@@ -76,8 +75,8 @@ export default function LoginScreen({ navigation }) {
                 await AsyncStorage.setItem('accessToken', token);
                 await AsyncStorage.setItem('refreshToken', refreshToken);
 
-                console.log(token);
-                console.log(status);
+                // console.log(token);
+                // console.log(status);
                 console.log('Response:', response.data);
                 userDispatch({
                     type: USER_ACTION_TYPE.LOGIN,
@@ -91,15 +90,14 @@ export default function LoginScreen({ navigation }) {
                 } else if (status === 'ISSUED') {
                     navigation.navigate('UpdateInfoScreen');
                 } else {
-                    // TODO: Handle case account is banned or not issued yet
-                    // const messages = {
-                    //     NOT_ISSUED_YET: 'Account is not issued yet',
-                    //     BANNED: 'You are banned',
-                    // };
-                    // ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                    const messages = {
+                        NOT_ISSUED_YET: 'Account is not issued yet',
+                        BANNED: 'You are banned',
+                    };
+                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
                 }
             } else {
-                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (error) {
             console.error(error);

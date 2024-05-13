@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { authAPI, userApis } from '~/utils/api';
+
 import { useUserDispatch } from '~/hooks/useUser';
 import { USER_ACTION_TYPE } from '~/reducers/userReducer';
 
@@ -31,6 +32,8 @@ const styles = StyleSheet.create({
 
 export default function DetailsProfileScreen() {
     const [profileData, setProfileData] = useState(null);
+
+
     const userDispatch = useUserDispatch();
 
     useEffect(() => {

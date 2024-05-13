@@ -14,11 +14,12 @@ const AuthStack = createStackNavigator();
 
 export default function App() {
     return (
+
         <UserProvider>
             <Provider theme={theme}>
                 <NavigationContainer>
                     <AuthStack.Navigator
-                        initialRouteName="LoginScreen"
+                        initialRouteName="HomeScreen"
                         screenOptions={{
                             headerShown: false,
                         }}
@@ -29,7 +30,6 @@ export default function App() {
                         <AuthStack.Screen name="MethodResetPasswordScreen" component={MethodResetPasswordScreen} />
                         <AuthStack.Screen name="OTPScreen" component={OTPScreen} />
                         <AuthStack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
-
                         <AuthStack.Screen name="HomeScreen" component={SettingsTabNav} />
                     </AuthStack.Navigator>
                 </NavigationContainer>

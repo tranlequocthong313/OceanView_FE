@@ -7,11 +7,12 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
-    CreateFeedbackScreen,
+
 } from '~/screens';
 import LockerScreen from '~/screens/Locker/LockerScreen';
 import LockerDetailScreen from '~/screens/Locker/LockerDetailScreen';
 import { Fragment } from 'react';
+import ReflectionStackNav from './ReflectionStack';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -72,10 +73,11 @@ export default function AccountStackNav() {
             )}
             {/* TODO: Move this outta here */}
             <AccountStack.Screen
-                name="Feedback"
-                component={CreateFeedbackScreen}
+                name="HistoryReflection"
+                component={ReflectionStackNav}
+
                 options={{
-                    headerTitle: 'Tạo phản ánh mới',
+                    headerTitle: 'Danh sách phản ánh',
                 }}
             />
             <AccountStack.Screen

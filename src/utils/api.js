@@ -17,6 +17,9 @@ export const userApis = {
 
 export const serviceApis = {
     accessCard: '/services/access-cards/',
+    parkingCard: '/services/parking-cards/',
+
+    feedback: '/feedbacks/',
 };
 
 export const feedbackApis = {

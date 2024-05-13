@@ -18,7 +18,9 @@ export { default as SettingsScreen } from './Account/Settings/SettingsScreen';
 export { default as DetailsSettingsScreen } from './Account/Settings/DetailsSettingsScreen';
 export { default as DetailsProfileScreen } from './Account/Profile/DetailsProfileScreen';
 export { default as ChatScreen } from './Account/Supports/ChatScreen';
-export { default as CreateFeedbackScreen } from './Account/Supports/CreateFeedbackScreen';
+export { default as HistoryReflectionScreen } from './Account/Supports/HistoryReflectionScreen';
+export { default as CreateReflectionScreen } from './Account/Supports/CreateReflectionScreen';
+export { default as  EditReflectionScreen} from './Account/Supports/EditReflectionScreen';
 
 // ApartmentInfoScreen
 export { default as ContactScreen } from './ApartmentInfo/ContactScreen';

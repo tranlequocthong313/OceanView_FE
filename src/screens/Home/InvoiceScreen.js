@@ -167,13 +167,11 @@ export default function InvoiceScreen() {
                                         onPress={() => handlePress(item.id)}
                                         icon
                                     />
-                                    {activedInvoices[item.id] ? (
-                                        detailInvoices.map((di) => (
-                                            <DetailsInvoice month={di.id} year={selectedYear} amount={di.amount} />
-                                        ))
-                                    ) : (
-                                        <View />
-                                    )}
+                                    {activedInvoices[item.id]
+                                        ? detailInvoices.map((di) => (
+                                              <DetailsInvoice month={di.id} year={selectedYear} amount={di.amount} />
+                                          ))
+                                        : null}
                                 </View>
                             )}
                             keyExtractor={(item) => item.id.toString()}
@@ -184,9 +182,7 @@ export default function InvoiceScreen() {
                         <Button mode="contained" onPress={() => console.log('Thanh toan ')}>
                             Thanh toán
                         </Button>
-                    ) : (
-                        <View />
-                    )}
+                    ) : null}
                 </ScrollView>
             </View>
         </View>
