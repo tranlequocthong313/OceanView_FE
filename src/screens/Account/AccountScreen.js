@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 });
 
 export default function AccountScreen({ navigation }) {
-    const user = useUser()
+    const user = useUser();
 
     return (
         <View style={styles.container}>
@@ -85,14 +85,14 @@ export default function AccountScreen({ navigation }) {
                     destination="LockerDetailScreen"
                 />
 
-                {user && user.is_staff &&
+                {user && user.is_staff && (
                     <StackView
                         navigation={navigation}
                         icon={<MaterialCommunityIcons name="locker-multiple" size={24} color="black" />}
                         title="Quản lý tủ đồ cho cư dân"
                         destination="LockerScreen"
                     />
-                }
+                )}
 
                 <StackView
                     navigation={navigation}
