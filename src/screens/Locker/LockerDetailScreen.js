@@ -1,3 +1,4 @@
+import Toast from 'react-native-toast-message';
 import { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
@@ -53,6 +54,7 @@ function LockerDetailScreen({ route }) {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchLoading, setSearchLoading] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
     const [isAddModalVisible, setIsAddModalVisible] = useState(false);
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -87,11 +89,12 @@ function LockerDetailScreen({ route }) {
         setIsEditModalVisible(true);
     };
 
+    const defaultItemImage = 'https://thudaumot.binhduong.gov.vn/Portals/0/images/default.jpg';
     const renderItem = ({ item: _item }) => (
         <TouchableOpacity style={styles.itemContainer} onPress={() => onEditItem(_item)}>
             <Image
                 style={styles.image}
-                source={{ uri: _item?.image || 'https://thudaumot.binhduong.gov.vn/Portals/0/images/default.jpg' }}
+                source={{ uri: _item?.image || defaultItemImage }}
             />
             <View>
                 <Text style={styles.itemText}>Tên: {_item?.name}</Text>
@@ -122,35 +125,71 @@ function LockerDetailScreen({ route }) {
 
     const handleAddItem = async () => {
         try {
-            const { name, quantity, status } = item;
+            setSubmitLoading(true)
+            const { name, quantity, status, image } = item;
             if (!name || !quantity) {
                 // TODO: popping error up right here
                 return;
             }
-            // TODO: add image, created date
+            const formData = new FormData();
+            if (image) {
+                formData.append('image', {
+                    uri: image.uri,
+                    name: image.filename ?? `image.${image.mimeType.split('/')[1]}`,
+                    type: image.mimeType,
+                });
+            }
+            formData.append('name', name);
+            formData.append('quantity', quantity);
+            formData.append('status', status);
+
             const response = await (
                 await authAPI()
-            ).post(lockerApis.itemPost(lockerId), {
-                name,
-                quantity,
-                status,
+            ).post(lockerApis.itemPost(lockerId), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
             });
             const newItem = response.data;
             setItems([newItem, ...items]);
             setIsAddModalVisible(false);
+            Toast.show({
+                type: 'success',
+                text1: 'Thêm món hàng thành công'
+            });
         } catch (error) {
             console.error('Error adding item:', error);
+            Toast.show({
+                type: 'error',
+                text1: 'Thêm món hàng thất bại'
+            });
+        } finally {
+            setSubmitLoading(false)
         }
     };
 
     const handleEditItem = async () => {
         try {
-            const { name, quantity, status, id } = editedItem;
-            if (!name || !quantity || !id || !status) {
+            setSubmitLoading(true)
+            const { name, quantity, status, image, id } = editedItem;
+            if (!name || !quantity || !status || !id) {
                 // TODO: popping error up right here
                 return;
             }
-            const res = await (await authAPI()).patch(lockerApis.itemEdit(lockerId, id), editedItem);
+            const formData = new FormData();
+            if (image) {
+                formData.append('image', {
+                    uri: image.uri,
+                    name: image.filename ?? `image.${image.mimeType.split('/')[1]}`,
+                    type: image.mimeType,
+                });
+            }
+            formData.append('name', name);
+            formData.append('quantity', quantity);
+            formData.append('status', status);
+            const res = await (await authAPI()).patch(lockerApis.itemEdit(lockerId, id), formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
             setItems((prev) =>
                 prev.map((_item) => {
                     if (_item.id === res.data.id) {
@@ -163,8 +202,18 @@ function LockerDetailScreen({ route }) {
                 }),
             );
             setIsEditModalVisible(false);
+            Toast.show({
+                type: 'success',
+                text1: 'Chỉnh sửa món hàng thành công'
+            });
         } catch (error) {
             console.error(error);
+            Toast.show({
+                type: 'error',
+                text1: 'Chỉnh sửa món hàng thất bại'
+            });
+        } finally {
+            setSubmitLoading(false)
         }
     };
     // TODO: Add images for items if they don't have one, then use a default one
@@ -198,6 +247,7 @@ function LockerDetailScreen({ route }) {
                         item={item}
                         setItem={setItem}
                         submitText="Thêm"
+                        loading={submitLoading}
                     />
                     <ModalItem
                         visible={isEditModalVisible}
@@ -206,6 +256,7 @@ function LockerDetailScreen({ route }) {
                         item={editedItem}
                         setItem={setEditedItem}
                         submitText="Sửa"
+                        loading={submitLoading}
                     />
                 </>
             )}

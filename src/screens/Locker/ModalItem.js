@@ -1,8 +1,10 @@
-import { StyleSheet, View, Modal } from 'react-native'; // WARN: Don't use Modal from react-native-paper 💀💀💀
+import { AntDesign } from '@expo/vector-icons';
+import { Image, Modal, StyleSheet, View } from 'react-native'; // WARN: Don't use Modal from react-native-paper 💀💀💀
+import CheckBox from 'react-native-check-box';
+import { ActivityIndicator } from 'react-native-paper';
 import { Button, TextInput } from '~/components';
 import theme from '~/core/theme';
-import CheckBox from 'react-native-check-box';
-// import handleUploadImage from '~/utils/image';
+import handleUploadImage from '~/utils/image';
 
 const styles = StyleSheet.create({
     checkbox: {
@@ -44,8 +46,7 @@ const styles = StyleSheet.create({
 });
 
 // TODO: CSS for this component looks better
-function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText }) {
-    // TODO: Add image edit field
+function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText, loading = false }) {
     return (
         <Modal visible={visible} animationType="slide">
             <View style={styles.modalContainer}>
@@ -61,16 +62,26 @@ function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText }) {
                     keyboardType="numeric"
                 />
 
-                <View style={{ flexDirection: 'row', justifyContent: 'start', alignItems: 'center' }}>
+                <View>
                     <Button
                         mode="contained-tonal"
                         icon="file-upload-outline"
                         style={styles.upload}
-                        // onPress={() => handleUploadImage(setItemImage)} TODO: Handle pick image from here
+                        onPress={() => handleUploadImage((image) => setItem({ ...item, image }))}
                     >
-                        Thay đổi ảnh món hàng
+                        Ảnh món hàng
                     </Button>
                 </View>
+
+                {item?.image && (
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                        <Image
+                            source={{ uri: item.image?.uri ?? item.image }}
+                            style={{ width: 60, height: 60, borderColor: 'black', borderWidth: 1 }}
+                        />
+                        <AntDesign name="closecircleo" size={22} color="black" onPress={() => setItem({ ...item, image: null })} />
+                    </View>
+                )}
 
                 <CheckBox
                     onClick={() =>
@@ -93,7 +104,7 @@ function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText }) {
                         Hủy
                     </Button>
                     <Button style={styles.button} mode="contained" onPress={onSubmit}>
-                        {submitText}
+                        {loading ? <ActivityIndicator color={theme.colors.surface} /> : submitText}
                     </Button>
                 </View>
             </View>
