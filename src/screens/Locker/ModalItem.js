@@ -79,7 +79,12 @@ function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText, loa
                             source={{ uri: item.image?.uri ?? item.image }}
                             style={{ width: 60, height: 60, borderColor: 'black', borderWidth: 1 }}
                         />
-                        <AntDesign name="closecircleo" size={22} color="black" onPress={() => setItem({ ...item, image: null })} />
+                        <AntDesign
+                            name="closecircleo"
+                            size={22}
+                            color="black"
+                            onPress={() => setItem({ ...item, image: null })}
+                        />
                     </View>
                 )}
 

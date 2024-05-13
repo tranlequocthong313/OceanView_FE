@@ -92,10 +92,7 @@ function LockerDetailScreen({ route }) {
     const defaultItemImage = 'https://thudaumot.binhduong.gov.vn/Portals/0/images/default.jpg';
     const renderItem = ({ item: _item }) => (
         <TouchableOpacity style={styles.itemContainer} onPress={() => onEditItem(_item)}>
-            <Image
-                style={styles.image}
-                source={{ uri: _item?.image || defaultItemImage }}
-            />
+            <Image style={styles.image} source={{ uri: _item?.image || defaultItemImage }} />
             <View>
                 <Text style={styles.itemText}>Tên: {_item?.name}</Text>
                 <Text style={styles.itemText}>Số lượng: {_item?.quantity}</Text>
@@ -125,7 +122,7 @@ function LockerDetailScreen({ route }) {
 
     const handleAddItem = async () => {
         try {
-            setSubmitLoading(true)
+            setSubmitLoading(true);
             const { name, quantity, status, image } = item;
             if (!name || !quantity) {
                 // TODO: popping error up right here
@@ -148,29 +145,29 @@ function LockerDetailScreen({ route }) {
             ).post(lockerApis.itemPost(lockerId), formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                }
+                },
             });
             const newItem = response.data;
             setItems([newItem, ...items]);
             setIsAddModalVisible(false);
             Toast.show({
                 type: 'success',
-                text1: 'Thêm món hàng thành công'
+                text1: 'Thêm món hàng thành công',
             });
         } catch (error) {
             console.error('Error adding item:', error);
             Toast.show({
                 type: 'error',
-                text1: 'Thêm món hàng thất bại'
+                text1: 'Thêm món hàng thất bại',
             });
         } finally {
-            setSubmitLoading(false)
+            setSubmitLoading(false);
         }
     };
 
     const handleEditItem = async () => {
         try {
-            setSubmitLoading(true)
+            setSubmitLoading(true);
             const { name, quantity, status, image, id } = editedItem;
             if (!name || !quantity || !status || !id) {
                 // TODO: popping error up right here
@@ -187,7 +184,9 @@ function LockerDetailScreen({ route }) {
             formData.append('name', name);
             formData.append('quantity', quantity);
             formData.append('status', status);
-            const res = await (await authAPI()).patch(lockerApis.itemEdit(lockerId, id), formData, {
+            const res = await (
+                await authAPI()
+            ).patch(lockerApis.itemEdit(lockerId, id), formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             setItems((prev) =>
@@ -204,16 +203,16 @@ function LockerDetailScreen({ route }) {
             setIsEditModalVisible(false);
             Toast.show({
                 type: 'success',
-                text1: 'Chỉnh sửa món hàng thành công'
+                text1: 'Chỉnh sửa món hàng thành công',
             });
         } catch (error) {
             console.error(error);
             Toast.show({
                 type: 'error',
-                text1: 'Chỉnh sửa món hàng thất bại'
+                text1: 'Chỉnh sửa món hàng thất bại',
             });
         } finally {
-            setSubmitLoading(false)
+            setSubmitLoading(false);
         }
     };
     // TODO: Add images for items if they don't have one, then use a default one
