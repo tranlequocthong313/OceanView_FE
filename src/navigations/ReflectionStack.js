@@ -28,8 +28,6 @@ export default function ReflectionStackNav() {
                     title: 'Chỉnh sửa phản ánh',
                 }}
             />
-
-            
         </ReflectionStack.Navigator>
     );
 }

@@ -17,7 +17,6 @@ function MethodResetPasswordScreen({ navigation, route }) {
     const [method, setMethod] = useState('phoneNumber');
     const [submitLoading, setSubmitLoading] = useState(false);
 
-
     const { email, phone_number: phoneNumber } = methods;
 
     const hiddenPhoneNumber = phoneNumber.replace(/.(?=.{4})/g, '*');
@@ -26,7 +25,6 @@ function MethodResetPasswordScreen({ navigation, route }) {
 
     const getMethodText = (key) => {
         const texts = {
-
             email: `Gửi Link đến email (${hiddenEmail})`,
             phone_number: `Gửi OTP đến số điện thoại (${hiddenPhoneNumber})`,
         };

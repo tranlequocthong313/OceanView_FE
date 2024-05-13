@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 export default function DetailsProfileScreen() {
     const [profileData, setProfileData] = useState(null);
 
-
     const userDispatch = useUserDispatch();
 
     useEffect(() => {

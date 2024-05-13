@@ -95,7 +95,7 @@ export default function UpdateInfoScreen({ navigation }) {
                     index: 0,
                     routes: [{ name: 'HomeScreen' }],
                 });
-            } 
+            }
         } catch (error) {
             console.error('Error:', error);
         } finally {

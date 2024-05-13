@@ -268,7 +268,7 @@ export default function RegisterParkingCardScreen() {
             });
             if (response.status === 200) {
                 ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-            } 
+            }
             // else {
             //     ToastAndroid.showWithGravity(
             //         'Vui lòng nhập đúng số phòng của chủ sở hữu',

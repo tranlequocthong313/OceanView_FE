@@ -20,7 +20,7 @@ export { default as DetailsProfileScreen } from './Account/Profile/DetailsProfil
 export { default as ChatScreen } from './Account/Supports/ChatScreen';
 export { default as HistoryReflectionScreen } from './Account/Supports/HistoryReflectionScreen';
 export { default as CreateReflectionScreen } from './Account/Supports/CreateReflectionScreen';
-export { default as  EditReflectionScreen} from './Account/Supports/EditReflectionScreen';
+export { default as EditReflectionScreen } from './Account/Supports/EditReflectionScreen';
 
 // ApartmentInfoScreen
 export { default as ContactScreen } from './ApartmentInfo/ContactScreen';

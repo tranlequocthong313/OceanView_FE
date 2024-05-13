@@ -7,7 +7,6 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
-
 } from '~/screens';
 import LockerScreen from '~/screens/Locker/LockerScreen';
 import LockerDetailScreen from '~/screens/Locker/LockerDetailScreen';
@@ -75,7 +74,6 @@ export default function AccountStackNav() {
             <AccountStack.Screen
                 name="HistoryReflection"
                 component={ReflectionStackNav}
-
                 options={{
                     headerTitle: 'Danh sách phản ánh',
                 }}
