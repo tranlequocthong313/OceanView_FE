@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { Button, TextInput } from '~/components';
 import theme from '~/core/theme';
@@ -9,6 +9,12 @@ import getQuerys from '~/utils/url';
 import ModalItem from './ModalItem';
 
 const styles = StyleSheet.create({
+    image: {
+        width: 80,
+        height: 80,
+        resizeMode: 'contain',
+        marginRight: 10,
+    },
     container: {
         flex: 1,
         padding: 20,
@@ -17,6 +23,9 @@ const styles = StyleSheet.create({
         padding: 20,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'row',
     },
     itemText: {
         fontSize: 16,
@@ -40,7 +49,7 @@ const styles = StyleSheet.create({
 
 // TODO: CSS for this component looks better
 function LockerDetailScreen({ route }) {
-    const { locker } = route.params;
+    const { lockerId, forAdmin = true } = route.params;
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchLoading, setSearchLoading] = useState(false);
@@ -49,8 +58,8 @@ function LockerDetailScreen({ route }) {
     const [searchTerm, setSearchTerm] = useState('');
     const debouncedSearchTerm = useDebounce(searchTerm);
     const [nextPageUrl, setNextPageUrl] = useState(null);
-    const [item, setItem] = useState({ name: '', quantity: '' });
-    const [editedItem, setEditedItem] = useState({ name: '', quantity: '' });
+    const [item, setItem] = useState({ name: '', quantity: '', status: 'NOT_RECEIVED' });
+    const [editedItem, setEditedItem] = useState({ name: '', quantity: 'NOT_RECEIVED' });
 
     const fetchItems = async ({ url, callback }) => {
         try {
@@ -68,10 +77,10 @@ function LockerDetailScreen({ route }) {
 
     useEffect(() => {
         fetchItems({
-            url: `${lockerApis.lockerDetail(locker.id)}?q=${debouncedSearchTerm}`,
+            url: `${lockerApis.lockerDetail(lockerId)}?q=${debouncedSearchTerm}`,
             callback: setItems,
         });
-    }, [debouncedSearchTerm, locker.id]);
+    }, [debouncedSearchTerm, lockerId]);
 
     const onEditItem = (_item) => {
         setEditedItem(_item);
@@ -79,8 +88,12 @@ function LockerDetailScreen({ route }) {
     };
 
     const renderItem = ({ item: _item }) => (
-        <TouchableOpacity onPress={() => onEditItem(_item)}>
-            <View style={styles.itemContainer}>
+        <TouchableOpacity style={styles.itemContainer} onPress={() => onEditItem(_item)}>
+            <Image
+                style={styles.image}
+                source={{ uri: _item?.image || 'https://thudaumot.binhduong.gov.vn/Portals/0/images/default.jpg' }}
+            />
+            <View>
                 <Text style={styles.itemText}>Tên: {_item?.name}</Text>
                 <Text style={styles.itemText}>Số lượng: {_item?.quantity}</Text>
                 <Text style={styles.itemText}>Trạng thái: {_item?.status}</Text>
@@ -92,7 +105,7 @@ function LockerDetailScreen({ route }) {
         if (nextPageUrl && !loading) {
             const queries = getQuerys(nextPageUrl);
             fetchItems({
-                url: `${lockerApis.lockerDetail(locker.id)}?limit=${queries.limit}&offset=${queries.offset}&q=${debouncedSearchTerm}`,
+                url: `${lockerApis.lockerDetail(lockerId)}?limit=${queries.limit}&offset=${queries.offset}&q=${debouncedSearchTerm}`,
                 callback: (data) => setItems((prev) => [...prev, ...data]),
             });
         }
@@ -105,12 +118,11 @@ function LockerDetailScreen({ route }) {
 
     const onClearText = () => {
         setSearchTerm('');
-        setSearchLoading(true);
     };
 
     const handleAddItem = async () => {
         try {
-            const { name, quantity } = item;
+            const { name, quantity, status } = item;
             if (!name || !quantity) {
                 // TODO: popping error up right here
                 return;
@@ -118,9 +130,10 @@ function LockerDetailScreen({ route }) {
             // TODO: add image, created date
             const response = await (
                 await authAPI()
-            ).post(lockerApis.itemPost(locker.id), {
+            ).post(lockerApis.itemPost(lockerId), {
                 name,
                 quantity,
+                status,
             });
             const newItem = response.data;
             setItems([newItem, ...items]);
@@ -132,12 +145,12 @@ function LockerDetailScreen({ route }) {
 
     const handleEditItem = async () => {
         try {
-            const { name, quantity, id } = editedItem;
-            if (!name || !quantity || !id) {
+            const { name, quantity, status, id } = editedItem;
+            if (!name || !quantity || !id || !status) {
                 // TODO: popping error up right here
                 return;
             }
-            const res = await (await authAPI()).patch(lockerApis.itemEdit(locker.id, id), editedItem);
+            const res = await (await authAPI()).patch(lockerApis.itemEdit(lockerId, id), editedItem);
             setItems((prev) =>
                 prev.map((_item) => {
                     if (_item.id === res.data.id) {
@@ -173,25 +186,29 @@ function LockerDetailScreen({ route }) {
                 onEndReached={handleEndReached}
                 ListFooterComponent={loading && <ActivityIndicator color={theme.colors.primary} />}
             />
-            <Button mode="contained" onPress={() => setIsAddModalVisible(true)}>
-                Thêm món hàng
-            </Button>
-            <ModalItem
-                visible={isAddModalVisible}
-                onCancel={() => setIsAddModalVisible(false)}
-                onSubmit={handleAddItem}
-                item={item}
-                setItem={setItem}
-                submitText="Thêm"
-            />
-            <ModalItem
-                visible={isEditModalVisible}
-                onCancel={() => setIsEditModalVisible(false)}
-                onSubmit={handleEditItem}
-                item={editedItem}
-                setItem={setEditedItem}
-                submitText="Sửa"
-            />
+            {forAdmin && (
+                <>
+                    <Button mode="contained" onPress={() => setIsAddModalVisible(true)}>
+                        Thêm món hàng
+                    </Button>
+                    <ModalItem
+                        visible={isAddModalVisible}
+                        onCancel={() => setIsAddModalVisible(false)}
+                        onSubmit={handleAddItem}
+                        item={item}
+                        setItem={setItem}
+                        submitText="Thêm"
+                    />
+                    <ModalItem
+                        visible={isEditModalVisible}
+                        onCancel={() => setIsEditModalVisible(false)}
+                        onSubmit={handleEditItem}
+                        item={editedItem}
+                        setItem={setEditedItem}
+                        submitText="Sửa"
+                    />
+                </>
+            )}
         </View>
     );
 }

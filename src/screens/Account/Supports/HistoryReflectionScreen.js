@@ -10,7 +10,7 @@ import {
     ToastAndroid,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { authAPI, serviceApis } from '~/utils/api';
+import { authAPI, feedbackApis } from '~/utils/api';
 import { Button } from 'react-native-paper';
 import theme from '~/core/theme';
 
@@ -72,7 +72,7 @@ export default function HistoryReflectionScreen({ navigation }) {
         try {
             const response = await (
                 await authAPI()
-            ).get(serviceApis.feedback, {
+            ).get(feedbackApis.feedbacks, {
                 params: {
                     offset,
                     limit: LIMIT,
@@ -91,7 +91,9 @@ export default function HistoryReflectionScreen({ navigation }) {
     }, [fetchReflectionData]);
 
     const getTotalPages = () => {
-        if (!reflectionData || !reflectionData.count) return 1;
+        if (!reflectionData || !reflectionData.count) {
+            return 1;
+        }
         return Math.ceil(reflectionData.count / LIMIT);
     };
 
@@ -131,7 +133,7 @@ export default function HistoryReflectionScreen({ navigation }) {
                     onPress: async () => {
                         try {
                             // Gửi yêu cầu xóa phản ánh với id tương ứng
-                            await (await authAPI()).delete(`${serviceApis.feedback}${id}/`);
+                            await (await authAPI()).delete(`${feedbackApis.feedbacks}${id}/`);
                             ToastAndroid.showWithGravity(
                                 'Đã xoá phản ánh thành công',
                                 ToastAndroid.LONG,

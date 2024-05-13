@@ -11,7 +11,7 @@ import {
     ToastAndroid,
     Image,
 } from 'react-native';
-import { authAPI, serviceApis } from '~/utils/api';
+import { authAPI, feedbackApis } from '~/utils/api';
 import { AntDesign } from '@expo/vector-icons';
 import Button from '~/components/Button';
 import { Button as ButtonPaper } from 'react-native-paper';
@@ -86,13 +86,15 @@ export default function EditReflectionScreen({ navigation, route }) {
                 allowsEditing: true,
                 quality: 1,
             });
-            if (!result.canceled) setImage(result.assets[0]);
+            if (!result.canceled) {
+                setImage(result.assets[0]);
+            }
         }
     };
 
     const fetchReflectionData = useCallback(async () => {
         try {
-            const response = await (await authAPI()).get(`${serviceApis.feedback}${id}/`);
+            const response = await (await authAPI()).get(`${feedbackApis.feedbacks}${id}/`);
             console.log(response.data);
             setTitle((prevState) => ({ ...prevState, value: response.data.title, error: '' }));
             setDesc((prevState) => ({ ...prevState, value: response.data.content, error: '' }));
@@ -139,7 +141,7 @@ export default function EditReflectionScreen({ navigation, route }) {
             const response = await (
                 await authAPI()
             ).patch(
-                `${serviceApis.feedback}${id}/`,
+                `${feedbackApis.feedbacks}${id}/`,
                 formData,
                 {
                     headers: {

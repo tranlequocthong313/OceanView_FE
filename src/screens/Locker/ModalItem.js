@@ -1,9 +1,13 @@
 import { StyleSheet, View, Modal } from 'react-native'; // WARN: Don't use Modal from react-native-paper 💀💀💀
 import { Button, TextInput } from '~/components';
 import theme from '~/core/theme';
+import CheckBox from 'react-native-check-box';
 // import handleUploadImage from '~/utils/image';
 
 const styles = StyleSheet.create({
+    checkbox: {
+        margin: 12,
+    },
     container: {
         flex: 1,
         padding: 20,
@@ -67,6 +71,19 @@ function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText }) {
                         Thay đổi ảnh món hàng
                     </Button>
                 </View>
+
+                <CheckBox
+                    onClick={() =>
+                        setItem((prev) => ({
+                            ...prev,
+                            status: prev.status === 'RECEIVED' ? 'NOT_RECEIVED' : 'RECEIVED',
+                        }))
+                    }
+                    isChecked={item?.status === 'RECEIVED'}
+                    leftText="Đã nhận hàng"
+                    style={styles.checkbox}
+                />
+
                 <View style={styles.buttons}>
                     <Button
                         style={{ ...styles.button, backgroundColor: theme.colors.secondary }}

@@ -11,7 +11,7 @@ import {
     ToastAndroid,
     Image,
 } from 'react-native';
-import { authAPI, serviceApis } from '~/utils/api';
+import { authAPI, feedbackApis } from '~/utils/api';
 import { AntDesign } from '@expo/vector-icons';
 import Button from '~/components/Button';
 import { Button as ButtonPaper } from 'react-native-paper';
@@ -85,7 +85,9 @@ export default function CreateReflectionScreen({ navigation }) {
                 allowsEditing: true,
                 quality: 1,
             });
-            if (!result.canceled) setImage(result.assets[0]);
+            if (!result.canceled) {
+                setImage(result.assets[0]);
+            }
         }
     };
 
@@ -119,7 +121,7 @@ export default function CreateReflectionScreen({ navigation }) {
 
             const response = await (
                 await authAPI()
-            ).post(serviceApis.feedback, formData, {
+            ).post(feedbackApis.feedbackPost, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

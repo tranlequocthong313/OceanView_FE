@@ -18,11 +18,11 @@ export const userApis = {
 export const serviceApis = {
     accessCard: '/services/access-cards/',
     parkingCard: '/services/parking-cards/',
-
-    feedback: '/feedbacks/',
 };
 
+// TODO: Dung feedback apis ro rang
 export const feedbackApis = {
+    feedbacks: '/feedbacks/',
     feedbackPost: '/feedbacks/',
 };
 

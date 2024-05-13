@@ -10,7 +10,6 @@ import {
 } from '~/screens';
 import LockerScreen from '~/screens/Locker/LockerScreen';
 import LockerDetailScreen from '~/screens/Locker/LockerDetailScreen';
-import { Fragment } from 'react';
 import ReflectionStackNav from './ReflectionStack';
 
 const AccountStack = createNativeStackNavigator();
@@ -50,26 +49,27 @@ export default function AccountStackNav() {
                 }}
             />
             {user && user.is_staff && (
-                <>
-                    <AccountStack.Screen
-                        name="LockerScreen"
-                        component={LockerScreen}
-                        options={{
-                            headerTitle: 'Quản lý tủ đồ',
-                        }}
-                    />
-                    <AccountStack.Screen
-                        name="LockerDetailScreen"
-                        component={LockerDetailScreen}
-                        options={({ route }) => {
-                            const locker = route.params?.locker;
-                            return {
-                                title: `${locker?.owner?.resident_id} - ${locker?.owner?.personal_information?.full_name}`,
-                            };
-                        }}
-                    />
-                </>
+                <AccountStack.Screen
+                    name="LockerScreen"
+                    component={LockerScreen}
+                    options={{
+                        headerTitle: 'Quản lý tủ đồ',
+                    }}
+                />
             )}
+            <AccountStack.Screen
+                name="LockerDetailScreen"
+                component={LockerDetailScreen}
+                initialParams={{ lockerId: user?.locker, forAdmin: false }}
+                options={({ route }) => {
+                    const locker = route.params?.locker;
+                    return {
+                        title: locker
+                            ? `${locker?.owner?.resident_id} - ${locker?.owner?.personal_information?.full_name}`
+                            : `${user?.resident_id} - ${user?.personal_information?.full_name}`,
+                    };
+                }}
+            />
             {/* TODO: Move this outta here */}
             <AccountStack.Screen
                 name="HistoryReflection"

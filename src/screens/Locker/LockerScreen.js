@@ -14,6 +14,7 @@ function LockerScreen({ navigation }) {
     const [searchTerm, setSearchTerm] = useState('');
     const debouncedSearchTerm = useDebounce(searchTerm);
     const [nextPageUrl, setNextPageUrl] = useState('');
+    const [searchLoading, setSearchLoading] = useState(false);
 
     const fetchLockers = async ({ url, callback }) => {
         try {
@@ -25,6 +26,7 @@ function LockerScreen({ navigation }) {
             console.error(error);
         } finally {
             setLoading(false);
+            setSearchLoading(false);
         }
     };
 
@@ -36,7 +38,7 @@ function LockerScreen({ navigation }) {
     }, [debouncedSearchTerm]);
 
     const handleLockerClick = (locker) => {
-        navigation.navigate('LockerDetailScreen', { locker });
+        navigation.navigate('LockerDetailScreen', { locker, lockerId: locker.id, forAdmin: true });
     };
 
     const renderLockerItem = ({ item }) => (
@@ -59,9 +61,25 @@ function LockerScreen({ navigation }) {
         }
     };
 
+    const onChangeSearch = (text) => {
+        setSearchLoading(true);
+        setSearchTerm(text);
+    };
+
+    const onClearText = () => {
+        setSearchTerm('');
+    };
+
     return (
         <View style={{ flex: 1, padding: 20 }}>
-            <TextInput label="Từ khóa" value={searchTerm} onChangeText={setSearchTerm} />
+            <TextInput
+                label="Từ khóa"
+                value={searchTerm}
+                onChangeText={onChangeSearch}
+                loading={searchLoading}
+                onClearText={onClearText}
+                clearText={searchTerm && !searchLoading}
+            />
             <FlatList
                 data={lockers}
                 renderItem={renderLockerItem}

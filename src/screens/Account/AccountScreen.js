@@ -1,5 +1,5 @@
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import { MaterialIcons, AntDesign, Feather, Entypo } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackView } from '~/components';
 
 const styles = StyleSheet.create({
@@ -77,8 +77,15 @@ export default function AccountScreen({ navigation }) {
 
                 <StackView
                     navigation={navigation}
-                    icon={<Entypo name="new-message" size={24} color="black" />}
-                    title="Quản lý tủ đồ"
+                    icon={<MaterialCommunityIcons name="locker" size={24} color="black" />}
+                    title="Tủ đồ"
+                    destination="LockerDetailScreen"
+                />
+
+                <StackView
+                    navigation={navigation}
+                    icon={<MaterialCommunityIcons name="locker-multiple" size={24} color="black" />}
+                    title="Quản lý tủ đồ cho cư dân"
                     destination="LockerScreen"
                 />
 
