@@ -14,9 +14,8 @@ import {
 import { authAPI, feedbackApis } from '~/utils/api';
 import { AntDesign } from '@expo/vector-icons';
 import Button from '~/components/Button';
-import { Button as ButtonPaper } from 'react-native-paper';
+import { Button as ButtonPaper,TextInput } from 'react-native-paper';
 import formValidator from '~/helpers/formValidator';
-import TextInput from '~/components/TextInput';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';
 import theme from '~/core/theme';
@@ -86,13 +85,15 @@ export default function EditFeedbackScreen({ navigation, route }) {
                 allowsEditing: true,
                 quality: 1,
             });
-            if (!result.canceled) setImage(result.assets[0]);
+            if (!result.canceled) {
+                setImage(result.assets[0]);
+            }
         }
     };
 
     const fetchReflectionData = useCallback(async () => {
         try {
-            const response = await (await authAPI()).get(`${feedbackApis.feedback}${id}/`);
+            const response = await (await authAPI()).get(`${feedbackApis.feedbacks}${id}/`);
             console.log(response.data);
             setTitle((prevState) => ({ ...prevState, value: response.data.title, error: '' }));
             setDesc((prevState) => ({ ...prevState, value: response.data.content, error: '' }));
@@ -142,7 +143,7 @@ export default function EditFeedbackScreen({ navigation, route }) {
             const response = await (
                 await authAPI()
             ).patch(
-                `${feedbackApis.feedback}${id}/`,
+                `${feedbackApis.feedbackPatch}${id}/`,
                 formData,
                 {
                     headers: {

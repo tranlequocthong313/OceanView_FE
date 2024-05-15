@@ -85,7 +85,9 @@ export default function CreateFeedbackScreen({ navigation }) {
                 allowsEditing: true,
                 quality: 1,
             });
-            if (!result.canceled) setImage(result.assets[0]);
+            if (!result.canceled) {
+                setImage(result.assets[0]);
+            }
         }
     };
 
@@ -126,7 +128,7 @@ export default function CreateFeedbackScreen({ navigation }) {
 
             const response = await (
                 await authAPI()
-            ).post(feedbackApis.feedback, formData, {
+            ).post(feedbackApis.feedbackPost, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -54,3 +54,7 @@ export { default as ParkingCardMainScreen } from './Services/ParkingCard/Parking
 export { default as RegisterParkingCardScreen } from './Services/ParkingCard/RegisterParkingCardScreen';
 export { default as CancelParkingCardScreen } from './Services/ParkingCard/CancelParkingCardScreen';
 export { default as ReissueParkingCardScreen } from './Services/ParkingCard/ReissueParkingCardScreen';
+
+export { default as LockerScreen } from './Locker/LockerScreen';
+export { default as ModalItem } from './Locker/ModalItem';
+export { default as LockerDetailScreen } from './Locker/LockerDetailScreen';

@@ -1,6 +1,7 @@
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import { MaterialIcons, AntDesign, Feather, Entypo } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackView } from '~/components';
+import { useUser } from '~/hooks/useUser';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,6 +45,8 @@ const styles = StyleSheet.create({
 });
 
 export default function AccountScreen({ navigation }) {
+    const user = useUser();
+
     return (
         <View style={styles.container}>
             <View>
@@ -74,6 +77,22 @@ export default function AccountScreen({ navigation }) {
                     title="Danh sách phản ánh đã tạo"
                     destination="HistoryReflection"
                 />
+
+                <StackView
+                    navigation={navigation}
+                    icon={<MaterialCommunityIcons name="locker" size={24} color="black" />}
+                    title="Tủ đồ"
+                    destination="LockerDetailScreen"
+                />
+
+                {user && user.is_staff && (
+                    <StackView
+                        navigation={navigation}
+                        icon={<MaterialCommunityIcons name="locker-multiple" size={24} color="black" />}
+                        title="Quản lý tủ đồ cho cư dân"
+                        destination="LockerScreen"
+                    />
+                )}
 
                 <StackView
                     navigation={navigation}

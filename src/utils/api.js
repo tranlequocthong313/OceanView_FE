@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-// const HOST = 'https://oceanview-be.onrender.com';
 const HOST = 'https://oceanview-be.onrender.com';
 
 export const userApis = {
@@ -13,6 +12,7 @@ export const userApis = {
     sendResetPasswordEmail: '/users/email/',
     verifyOTP: '/users/otp-verification/',
     resetPassword: '/users/password/',
+    refreshToken: '/users/refresh-token/',
 };
 
 export const serviceApis = {
@@ -23,12 +23,26 @@ export const serviceApis = {
     listCard: '/services/',
 };
 
+// TODO: Dung feedback apis ro rang
+
 export const feedbackApis = {
-    feedback: '/feedbacks/',
+    feedbacks: '/feedbacks/',
+    feedbackDel: '/feedbacks/',
+    feedbackPost: '/feedbacks/',
+    feedbackPatch: '/feedbacks/',
+
 };
 
 export const invoiceApis = {
     invoice: '/invoices/',
+};
+
+export const lockerApis = {
+    lockers: '/lockers/',
+    lockerDetail: (lockerId) => `/lockers/${lockerId}/items/`,
+    itemPost: (lockerId) => `/lockers/${lockerId}/items/`,
+    itemDetail: (lockerId, itemId) => `/lockers/${lockerId}/items/${itemId}/`,
+    itemEdit: (lockerId, itemId) => `/lockers/${lockerId}/items/${itemId}/`,
 };
 export const authAPI = async () => {
     const token = await AsyncStorage.getItem('accessToken');
@@ -46,6 +60,29 @@ const api = axios.create({
     baseURL: HOST,
 });
 
+const refreshToken = async (error) => {
+    console.log(error.response.data);
+    console.log(error.response.status);
+    if (
+        error.response.status === 400 &&
+        error.response.data.message.includes('The ID Token is expired, revoked, malformed, or otherwise invalid.')
+    ) {
+        const token = await AsyncStorage.getItem('refreshToken');
+        console.log('Token: ', refreshToken);
+        const res = await api.post(userApis.refreshToken, { token });
+        await AsyncStorage.setItem('accessToken', res.data.access_token);
+        await AsyncStorage.setItem('refreshToken', res.data.refresh_token);
+        console.log('Refreshed token successfully');
+    }
+};
+
 // TODO: Intercept responses to refresh password
+axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        refreshToken(error);
+        return Promise.reject(error);
+    },
+);
 
 export default api;

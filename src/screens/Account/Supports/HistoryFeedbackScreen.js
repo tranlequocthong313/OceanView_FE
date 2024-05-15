@@ -8,7 +8,6 @@ import {
     ActivityIndicator,
     Alert,
     ToastAndroid,
-    RefreshControl,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { authAPI, feedbackApis } from '~/utils/api';
@@ -50,15 +49,19 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
         padding: 4,
     },
-    actionEdit: {
-        color: 'blue',
-        fontWeight: '500',
+    actionDel: {
         marginHorizontal: 4,
-    },
-    actionDelete: {
+        fontWeight: '500',
+        fontSize: 16,
         color: 'red',
-        fontWeight: '500',
+    },
+    actionEdit: {
         marginHorizontal: 4,
+        fontWeight: '500',
+        fontSize: 16,
+        color: 'blue',
+
+
     },
     currentPageButton: {
         backgroundColor: theme.colors.outline, // Màu nổi bật cho trang hiện tại
@@ -69,20 +72,18 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function HistoryFeedbackScreen({ navigation }) {
+export default function HistoryReflectionScreen({ navigation }) {
     const [reflectionData, setReflectionData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [offset, setOffset] = useState(0);
     const LIMIT = 10;
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [refreshing, setRefreshing] = useState(false);
-
     const fetchReflectionData = useCallback(async () => {
         try {
             const response = await (
                 await authAPI()
-            ).get(feedbackApis.feedback, {
+            ).get(feedbackApis.feedbacks, {
                 params: {
                     offset,
                     limit: LIMIT,
@@ -100,11 +101,6 @@ export default function HistoryFeedbackScreen({ navigation }) {
         fetchReflectionData();
     }, [fetchReflectionData]);
 
-    const onRefresh = () => {
-        setRefreshing(true);
-        fetchReflectionData();
-        setRefreshing(false);
-    };
     const getTotalPages = () => {
         if (!reflectionData || !reflectionData.count) return 1;
         return Math.ceil(reflectionData.count / LIMIT);
@@ -114,10 +110,10 @@ export default function HistoryFeedbackScreen({ navigation }) {
     const maxPageButtons = Math.min(totalPages, 5);
     const pageNumbers = Array.from({ length: maxPageButtons }, (_, index) => index + 1);
 
-    console.log('totalPages: ', totalPages);
-    console.log('pageNumbers: ', pageNumbers);
-    console.log('maxPageButtons: ', maxPageButtons);
-    console.log('reflectionData', reflectionData);
+    console.log(totalPages);
+    console.log(pageNumbers);
+    console.log(maxPageButtons);
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
         const newOffset = (pageNumber - 1) * LIMIT;
@@ -146,7 +142,7 @@ export default function HistoryFeedbackScreen({ navigation }) {
                     onPress: async () => {
                         try {
                             // Gửi yêu cầu xóa phản ánh với id tương ứng
-                            await (await authAPI()).delete(`${feedbackApis.feedback}${id}/`);
+                            await (await authAPI()).delete(`${feedbackApis.feedbackDel}${id}/`);
                             ToastAndroid.showWithGravity(
                                 'Đã xoá phản ánh thành công',
                                 ToastAndroid.LONG,
@@ -165,14 +161,11 @@ export default function HistoryFeedbackScreen({ navigation }) {
     };
 
     return (
-        <ScrollView
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            style={styles.container}
-        >
+        <ScrollView style={styles.container}>
             <Button
                 mode="contained"
                 onPress={() => {
-                    navigation.navigate('CreateFeedback');
+                    navigation.navigate('CreateReflection');
                 }}
             >
                 Tạo phản ánh mới
@@ -185,8 +178,8 @@ export default function HistoryFeedbackScreen({ navigation }) {
                     <ActivityIndicator size="large" color="#000" />
                 </View>
             ) : (
-                <>
-                    {reflectionData && reflectionData.results.length > 0 ? (
+                <ScrollView>
+                    {reflectionData !== null ? (
                         reflectionData.results.map((item) => (
                             <TouchableOpacity key={item.id} style={styles.wrapper}>
                                 <View style={styles.contentWrapper}>
@@ -218,7 +211,7 @@ export default function HistoryFeedbackScreen({ navigation }) {
                                         <TouchableOpacity onPress={() => handleDelete(item.id, item.title)}>
                                             <View style={styles.actionWrapper}>
                                                 <AntDesign name="delete" size={20} color="black" />
-                                                <Text style={styles.actionDelete}>Xoá</Text>
+                                                <Text style={styles.actionDel}>Xoá</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>
@@ -226,7 +219,7 @@ export default function HistoryFeedbackScreen({ navigation }) {
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                             <Text>Không có phản ánh nào.</Text>
                         </View>
                     )}
@@ -242,7 +235,7 @@ export default function HistoryFeedbackScreen({ navigation }) {
                             </Button>
                         ))}
                     </View>
-                </>
+                </ScrollView>
             )}
         </ScrollView>
     );

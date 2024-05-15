@@ -1,18 +1,22 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useUser } from '~/hooks/useUser';
 import {
     DetailsProfileScreen,
-    SettingsScreen,
     ContactScreen,
     AboutUsScreen,
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
+    LockerScreen,
+    LockerDetailScreen
 } from '~/screens';
-import ReflectionStackNav from './FeedbackStack';
+import FeedbackStackNav from './FeedbackStack';
 
 const AccountStack = createNativeStackNavigator();
 
 export default function AccountStackNav() {
+    const user = useUser();
+
     return (
         <AccountStack.Navigator initialRouteName="Profile">
             <AccountStack.Screen
@@ -30,13 +34,6 @@ export default function AccountStackNav() {
                 }}
             />
             <AccountStack.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{
-                    headerTitle: 'Cài đặt',
-                }}
-            />
-            <AccountStack.Screen
                 name="DetailsSettings"
                 component={DetailsSettingsScreen}
                 options={{
@@ -51,10 +48,32 @@ export default function AccountStackNav() {
                     headerTitle: 'Liên hệ',
                 }}
             />
+            {user && user.is_staff && (
+                <AccountStack.Screen
+                    name="LockerScreen"
+                    component={LockerScreen}
+                    options={{
+                        headerTitle: 'Quản lý tủ đồ',
+                    }}
+                />
+            )}
+            <AccountStack.Screen
+                name="LockerDetailScreen"
+                component={LockerDetailScreen}
+                initialParams={{ lockerId: user?.locker, forAdmin: false }}
+                options={({ route }) => {
+                    const locker = route.params?.locker;
+                    return {
+                        title: locker
+                            ? `${locker?.owner?.resident_id} - ${locker?.owner?.personal_information?.full_name}`
+                            : `${user?.resident_id} - ${user?.personal_information?.full_name}`,
+                    };
+                }}
+            />
             {/* TODO: Move this outta here */}
             <AccountStack.Screen
                 name="HistoryReflection"
-                component={ReflectionStackNav}
+                component={FeedbackStackNav}
                 options={{
                     headerTitle: 'Danh sách phản ánh',
                 }}

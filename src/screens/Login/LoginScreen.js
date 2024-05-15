@@ -70,10 +70,12 @@ export default function LoginScreen({ navigation }) {
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;
+                const refreshToken = response.data.token.refresh_token;
                 const { status } = response.data;
 
                 // Lưu trữ token vào AsyncStorage
                 await AsyncStorage.setItem('accessToken', token);
+                await AsyncStorage.setItem('refreshToken', refreshToken);
 
                 // console.log(token);
                 // console.log(status);
@@ -100,6 +102,7 @@ export default function LoginScreen({ navigation }) {
                 ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (error) {
+            console.error(error);
             setLoading(false);
             setShowInvalidLoginMessage(true);
         } finally {
