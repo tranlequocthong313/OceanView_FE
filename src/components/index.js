@@ -13,4 +13,4 @@ export { default as StackView } from './StackView';
 export { default as ServiceNavButton } from './ServiceNavButton';
 export { default as FormActionBtn } from './FormActionBtn';
 export { default as Invoice } from './Invoice';
-export { default as DetailsInvoice } from './DetailsInvoice';
+export { default as SubmitButton } from './SubmitButton';

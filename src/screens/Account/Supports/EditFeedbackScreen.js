@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -11,7 +11,7 @@ import {
     ToastAndroid,
     Image,
 } from 'react-native';
-import { authAPI, serviceApis } from '~/utils/api';
+import { authAPI, feedbackApis } from '~/utils/api';
 import { AntDesign } from '@expo/vector-icons';
 import Button from '~/components/Button';
 import { Button as ButtonPaper } from 'react-native-paper';
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function CreateReflectionScreen({ navigation }) {
+export default function EditFeedbackScreen({ navigation, route }) {
     const [title, setTitle] = useState({ value: '', error: '' });
     const [desc, setDesc] = useState({ value: '', error: '' });
 
@@ -73,6 +73,7 @@ export default function CreateReflectionScreen({ navigation }) {
         { label: 'Khác', value: 'OTHER' },
     ]);
 
+    const { id } = route.params;
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -88,6 +89,22 @@ export default function CreateReflectionScreen({ navigation }) {
             if (!result.canceled) setImage(result.assets[0]);
         }
     };
+
+    const fetchReflectionData = useCallback(async () => {
+        try {
+            const response = await (await authAPI()).get(`${feedbackApis.feedback}${id}/`);
+            console.log(response.data);
+            setTitle((prevState) => ({ ...prevState, value: response.data.title, error: '' }));
+            setDesc((prevState) => ({ ...prevState, value: response.data.content, error: '' }));
+            setValue(response.data.type);
+        } catch (error) {
+            console.log(error);
+        }
+    }, [id, setTitle, setDesc, setValue]);
+
+    useEffect(() => {
+        fetchReflectionData();
+    }, [fetchReflectionData]);
 
     const handleSubmit = async () => {
         const titleError = formValidator(title.value, 'Title');
@@ -106,28 +123,42 @@ export default function CreateReflectionScreen({ navigation }) {
         }
         try {
             setLoading(true);
+
             const formData = new FormData();
             // The image may not have a name, the server requires the image to have enough information to be decoded
-            formData.append('image', {
-                uri: image.uri,
-                name: image.filename ?? `avatar.${image.mimeType.split('/')[1]}`,
-                type: image.mimeType,
-            });
+            if (image !== null) {
+                formData.append('image', {
+                    uri: image.uri,
+                    name: image.filename ?? `avatar.${image.mimeType.split('/')[1]}`,
+                    type: image.mimeType,
+                });
+            } else {
+                formData.append('image', null);
+            }
             formData.append('title', title.value);
             formData.append('content', desc.value);
             formData.append('type', value);
 
             const response = await (
                 await authAPI()
-            ).post(serviceApis.feedback, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+            ).patch(
+                `${feedbackApis.feedback}${id}/`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
                 },
-            });
+                //     {
+                //     title: title.value,
+                //     content: desc.value,
+                //     type: value,
+                // }
+            );
             console.log(response.status);
-            if (response.status === 201) {
-                ToastAndroid.showWithGravity('Đã tạo phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-                navigation.navigate('Reflection');
+            if (response.status === 200) {
+                ToastAndroid.showWithGravity('Cập nhật phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+                navigation.navigate('Feedback');
             } else {
                 ToastAndroid.showWithGravity('Vui lòng kiểm tra lại!', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
@@ -201,7 +232,7 @@ export default function CreateReflectionScreen({ navigation }) {
                             {image ? (
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                     <Image
-                                        source={{ uri: image.uri }}
+                                        source={{ uri: image ? image.uri : null }}
                                         style={{
                                             width: 40,
                                             height: 40,
@@ -217,7 +248,7 @@ export default function CreateReflectionScreen({ navigation }) {
                             )}
                         </View>
                         <Button mode="contained" onPress={handleSubmit}>
-                            {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
+                            {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Cập nhật'}
                         </Button>
                     </SafeAreaView>
                 </ScrollView>

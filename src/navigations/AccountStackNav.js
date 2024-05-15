@@ -9,7 +9,7 @@ import {
     ChatScreen,
 
 } from '~/screens';
-import ReflectionStackNav from './ReflectionStack';
+import ReflectionStackNav from './FeedbackStack';
 
 const AccountStack = createNativeStackNavigator();
 

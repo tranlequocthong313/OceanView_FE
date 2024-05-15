@@ -91,12 +91,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function RegisterParkingCardScreen() {
+export default function RegisterParkingCardScreen({ navigation }) {
     const [vehicleType, setVehicleType] = useState('');
     const [licensePlates, setLicensePlates] = useState('');
 
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
     const [CCCD, setCCCD] = useState('');
     const [homeTown, setHomeTown] = useState('');
     const [SDT, setSDT] = useState('');
@@ -268,14 +267,8 @@ export default function RegisterParkingCardScreen() {
             });
             if (response.status === 200) {
                 ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-            } 
-            // else {
-            //     ToastAndroid.showWithGravity(
-            //         'Vui lòng nhập đúng số phòng của chủ sở hữu',
-            //         ToastAndroid.LONG,
-            //         ToastAndroid.CENTER,
-            //     );
-            // }
+                navigation.navigate('ListCard');
+            }
             console.log('Response success:', response.data);
         } catch (error) {
             console.log(error);
@@ -435,14 +428,6 @@ export default function RegisterParkingCardScreen() {
                                 value={SDT}
                                 onChangeText={(text) => {
                                     setSDT(text);
-                                }}
-                            />
-                            <TextInput
-                                style={styles.input}
-                                label="Email"
-                                value={email}
-                                onChangeText={(text) => {
-                                    setEmail(text);
                                 }}
                             />
                         </View>

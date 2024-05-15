@@ -18,14 +18,18 @@ export const userApis = {
 export const serviceApis = {
     accessCard: '/services/access-cards/',
     parkingCard: '/services/parking-cards/',
+    residentCard: '/services/resident-cards/',
 
-    feedback: '/feedbacks/',
+    listCard : '/services/',
 };
 
 export const feedbackApis = {
-    feedbackPost: '/feedbacks/',
+    feedback: '/feedbacks/',
 };
 
+export const invoiceApis = {
+    invoice: '/invoices/',
+};
 export const authAPI = async () => {
     const token = await AsyncStorage.getItem('accessToken');
     console.log('Token: ', token);

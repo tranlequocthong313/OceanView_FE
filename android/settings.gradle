@@ -1,4 +1,4 @@
-rootProject.name = 'OceanViewFE'
+rootProject.name = 'OceanView_FE'
 
 dependencyResolutionManagement {
   versionCatalogs {

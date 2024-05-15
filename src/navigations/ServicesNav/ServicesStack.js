@@ -1,12 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ServicesScreen } from '~/screens';
+import { ListCardScreen, ServicesScreen } from '~/screens';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import ParkingCardStack from './ParkingCardStackNav';
 import AccessCardStack from './AccessCardStackNav';
 import ResidentCardStack from './ResidentCardStackNav';
 
 const ServiceStack = createNativeStackNavigator();
 
-export default function ServiceStackNav() {
+export default function ServiceStackNav({ navigation }) {
     return (
         <ServiceStack.Navigator initialRouteName="Services" screenOptions={{ headerShown: false }}>
             <ServiceStack.Screen
@@ -15,9 +16,25 @@ export default function ServiceStackNav() {
                 options={{
                     title: 'Dịch vụ',
                     headerShown: true,
+                    headerRight: () => (
+                        <FontAwesome5
+                            name="history"
+                            size={24}
+                            color="black"
+                            onPress={() => navigation.navigate('ListCard')}
+                            style={{ padding: 8 }}
+                        />
+                    ),
                 }}
             />
-
+            <ServiceStack.Screen
+                name="ListCard"
+                component={ListCardScreen}
+                options={{
+                    headerShown: true,
+                    title: 'Danh sách thẻ đăng ký',
+                }}
+            />
             <ServiceStack.Screen
                 name="ParkingCardMain"
                 component={ParkingCardStack}

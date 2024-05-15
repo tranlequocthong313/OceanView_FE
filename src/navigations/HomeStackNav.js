@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen, InvoiceScreen, UtilityScreen } from '~/screens';
+import { DetailsInvoiceScreen, HomeScreen, InvoiceScreen, UtilityScreen, WebViewScreen } from '~/screens';
 import ServiceStackNav from './ServicesNav/ServicesStack';
 
 const HomeStack = createNativeStackNavigator();
@@ -35,6 +35,21 @@ export default function HomeStackNav() {
                 component={InvoiceScreen}
                 options={{
                     title: 'Hoá đơn',
+                }}
+            />
+            <HomeStack.Screen
+                name="DetailsInvoice"
+                component={DetailsInvoiceScreen}
+                options={{
+                    title: 'Chi tiết hoá đơn',
+                }}
+            />
+            <HomeStack.Screen
+                name="WebViewScreen"
+                component={WebViewScreen}
+                options={{
+                    title: 'Màn hình thanh toán',
+                    headerShown: false,
                 }}
             />
         </HomeStack.Navigator>

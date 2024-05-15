@@ -8,9 +8,10 @@ import {
     ActivityIndicator,
     Alert,
     ToastAndroid,
+    RefreshControl,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { authAPI, serviceApis } from '~/utils/api';
+import { authAPI, feedbackApis } from '~/utils/api';
 import { Button } from 'react-native-paper';
 import theme from '~/core/theme';
 
@@ -49,7 +50,14 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
         padding: 4,
     },
-    action: {
+    actionEdit: {
+        color: 'blue',
+        fontWeight: '500',
+        marginHorizontal: 4,
+    },
+    actionDelete: {
+        color: 'red',
+        fontWeight: '500',
         marginHorizontal: 4,
     },
     currentPageButton: {
@@ -61,18 +69,20 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function HistoryReflectionScreen({ navigation }) {
+export default function HistoryFeedbackScreen({ navigation }) {
     const [reflectionData, setReflectionData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [offset, setOffset] = useState(0);
     const LIMIT = 10;
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [refreshing, setRefreshing] = useState(false);
+
     const fetchReflectionData = useCallback(async () => {
         try {
             const response = await (
                 await authAPI()
-            ).get(serviceApis.feedback, {
+            ).get(feedbackApis.feedback, {
                 params: {
                     offset,
                     limit: LIMIT,
@@ -90,6 +100,11 @@ export default function HistoryReflectionScreen({ navigation }) {
         fetchReflectionData();
     }, [fetchReflectionData]);
 
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchReflectionData();
+        setRefreshing(false);
+    };
     const getTotalPages = () => {
         if (!reflectionData || !reflectionData.count) return 1;
         return Math.ceil(reflectionData.count / LIMIT);
@@ -99,17 +114,17 @@ export default function HistoryReflectionScreen({ navigation }) {
     const maxPageButtons = Math.min(totalPages, 5);
     const pageNumbers = Array.from({ length: maxPageButtons }, (_, index) => index + 1);
 
-    console.log(totalPages);
-    console.log(pageNumbers);
-    console.log(maxPageButtons);
-
+    console.log('totalPages: ', totalPages);
+    console.log('pageNumbers: ', pageNumbers);
+    console.log('maxPageButtons: ', maxPageButtons);
+    console.log('reflectionData', reflectionData);
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
         const newOffset = (pageNumber - 1) * LIMIT;
         setOffset(newOffset);
     };
     const navigateToEdit = (id) => {
-        navigation.navigate('EditReflection', { id });
+        navigation.navigate('EditFeedback', { id });
     };
 
     const handleEdit = (id) => {
@@ -131,7 +146,7 @@ export default function HistoryReflectionScreen({ navigation }) {
                     onPress: async () => {
                         try {
                             // Gửi yêu cầu xóa phản ánh với id tương ứng
-                            await (await authAPI()).delete(`${serviceApis.feedback}${id}/`);
+                            await (await authAPI()).delete(`${feedbackApis.feedback}${id}/`);
                             ToastAndroid.showWithGravity(
                                 'Đã xoá phản ánh thành công',
                                 ToastAndroid.LONG,
@@ -150,11 +165,14 @@ export default function HistoryReflectionScreen({ navigation }) {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            style={styles.container}
+        >
             <Button
                 mode="contained"
                 onPress={() => {
-                    navigation.navigate('CreateReflection');
+                    navigation.navigate('CreateFeedback');
                 }}
             >
                 Tạo phản ánh mới
@@ -167,8 +185,8 @@ export default function HistoryReflectionScreen({ navigation }) {
                     <ActivityIndicator size="large" color="#000" />
                 </View>
             ) : (
-                <ScrollView>
-                    {reflectionData !== null ? (
+                <>
+                    {reflectionData && reflectionData.results.length > 0 ? (
                         reflectionData.results.map((item) => (
                             <TouchableOpacity key={item.id} style={styles.wrapper}>
                                 <View style={styles.contentWrapper}>
@@ -193,14 +211,14 @@ export default function HistoryReflectionScreen({ navigation }) {
                                         >
                                             <View style={styles.actionWrapper}>
                                                 <AntDesign name="edit" size={20} color="black" />
-                                                <Text style={styles.action}>Chỉnh sửa</Text>
+                                                <Text style={styles.actionEdit}>Chỉnh sửa</Text>
                                             </View>
                                         </TouchableOpacity>
 
                                         <TouchableOpacity onPress={() => handleDelete(item.id, item.title)}>
                                             <View style={styles.actionWrapper}>
                                                 <AntDesign name="delete" size={20} color="black" />
-                                                <Text style={styles.action}>Xoá</Text>
+                                                <Text style={styles.actionDelete}>Xoá</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>
@@ -208,7 +226,7 @@ export default function HistoryReflectionScreen({ navigation }) {
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                             <Text>Không có phản ánh nào.</Text>
                         </View>
                     )}
@@ -224,7 +242,7 @@ export default function HistoryReflectionScreen({ navigation }) {
                             </Button>
                         ))}
                     </View>
-                </ScrollView>
+                </>
             )}
         </ScrollView>
     );

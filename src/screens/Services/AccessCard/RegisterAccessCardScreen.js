@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function RegisterAccessCardScreen() {
+export default function RegisterAccessCardScreen({ navigation }) {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('MALE');
     const genders = ['MALE', 'FEMALE'];
@@ -208,7 +208,7 @@ export default function RegisterAccessCardScreen() {
             });
 
             ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-
+            navigation.navigate('ListCard');
             console.log('Response success:', response.data);
         } catch (error) {
             console.log(error);
