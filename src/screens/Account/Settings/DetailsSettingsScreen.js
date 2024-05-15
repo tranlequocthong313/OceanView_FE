@@ -69,7 +69,6 @@ function DetailsSettingsScreen() {
         }, 1000);
     };
 
-
     const onResendOtpButtonPress = () => {
         setValue('');
         setResendButtonDisabledTime(RESEND_OTP_TIME_LIMIT);

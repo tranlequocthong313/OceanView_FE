@@ -20,7 +20,7 @@ export const serviceApis = {
     parkingCard: '/services/parking-cards/',
     residentCard: '/services/resident-cards/',
 
-    listCard : '/services/',
+    listCard: '/services/',
 };
 
 export const feedbackApis = {

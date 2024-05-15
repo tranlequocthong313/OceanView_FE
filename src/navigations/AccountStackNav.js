@@ -7,7 +7,6 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
-
 } from '~/screens';
 import ReflectionStackNav from './FeedbackStack';
 
@@ -56,7 +55,6 @@ export default function AccountStackNav() {
             <AccountStack.Screen
                 name="HistoryReflection"
                 component={ReflectionStackNav}
-
                 options={{
                     headerTitle: 'Danh sách phản ánh',
                 }}

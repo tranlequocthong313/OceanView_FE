@@ -28,8 +28,6 @@ export default function FeedbackStackNav() {
                     title: 'Chỉnh sửa phản ánh',
                 }}
             />
-
-            
         </FeedbackStack.Navigator>
     );
 }

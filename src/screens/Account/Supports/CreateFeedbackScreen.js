@@ -92,22 +92,22 @@ export default function CreateFeedbackScreen({ navigation }) {
     const handleSubmit = async () => {
         const titleError = formValidator(title.value, 'Title');
         const descError = formValidator(desc.value, 'Description');
-    
+
         if (value === null) {
             Alert.alert('Lỗi', 'Vui lòng chọn một mục trong nhóm phản ánh trước khi tạo!');
             return;
         }
-    
+
         if (titleError || descError) {
             setTitle({ ...title, error: titleError });
             setDesc({ ...desc, error: descError });
             return;
         }
-    
+
         try {
             setLoading(true);
             const formData = new FormData();
-    
+
             // Kiểm tra nếu image không null thì thêm vào form data
             if (image !== null) {
                 formData.append('image', {
@@ -119,11 +119,11 @@ export default function CreateFeedbackScreen({ navigation }) {
                 // Nếu image là null, thêm null vào form data
                 formData.append('image', null);
             }
-    
+
             formData.append('title', title.value);
             formData.append('content', desc.value);
             formData.append('type', value);
-    
+
             const response = await (
                 await authAPI()
             ).post(feedbackApis.feedback, formData, {
@@ -131,7 +131,7 @@ export default function CreateFeedbackScreen({ navigation }) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-    
+
             if (response.status === 201) {
                 ToastAndroid.showWithGravity('Đã tạo phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
                 navigation.navigate('Feedback');
@@ -145,7 +145,6 @@ export default function CreateFeedbackScreen({ navigation }) {
             setLoading(false);
         }
     };
-    
 
     return (
         <KeyboardAvoidingView>
@@ -209,7 +208,7 @@ export default function CreateFeedbackScreen({ navigation }) {
                             {image ? (
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                     <Image
-                                        source={{ uri: image? image.uri : null }}
+                                        source={{ uri: image ? image.uri : null }}
                                         style={{
                                             width: 40,
                                             height: 40,
@@ -218,7 +217,12 @@ export default function CreateFeedbackScreen({ navigation }) {
                                             marginRight: 16,
                                         }}
                                     />
-                                    <AntDesign name="closecircleo" size={22} color="black" onPress={() => setImage(null)} />
+                                    <AntDesign
+                                        name="closecircleo"
+                                        size={22}
+                                        color="black"
+                                        onPress={() => setImage(null)}
+                                    />
                                 </View>
                             ) : (
                                 ''

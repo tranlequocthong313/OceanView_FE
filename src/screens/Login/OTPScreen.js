@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet } from 'react-native';
 // import { Text, View, TouchableOpacity } from 'react-native';
 
-
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import api, { userApis } from '~/utils/api';
 import theme from '~/core/theme';
@@ -75,7 +74,6 @@ function OTPScreen({ navigation, route }) {
             setResendButtonDisabledTime((prev) => (prev <= 0 ? 0 : prev - 1));
         }, 1000);
     };
-
 
     const onResendOtpButtonPress = async () => {
         setValue('');

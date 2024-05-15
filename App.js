@@ -14,7 +14,6 @@ const AuthStack = createStackNavigator();
 
 export default function App() {
     return (
-
         <UserProvider>
             <Provider theme={theme}>
                 <NavigationContainer>

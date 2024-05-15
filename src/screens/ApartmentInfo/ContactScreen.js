@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Entypo, Ionicons, Feather } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({

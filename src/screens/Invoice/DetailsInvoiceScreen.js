@@ -183,8 +183,6 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
     //     dataPaymentHandler();
     // }, [dataPayment]);
 
-    
-
     const handlePayment = async () => {
         if (!selectedMethod) {
             Alert.alert('Thông báo', 'Vui lòng chọn hình thức thanh toán trước khi tiến hành thanh toán.');
@@ -194,8 +192,6 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
         try {
             const response = await (await authAPI()).post(`${invoiceApis.invoice}${id}/payment/${selectedMethod.id}/`);
             setDataPayment(response.data);
-            
-                
         } catch (err) {
             console.log(err);
         }

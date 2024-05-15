@@ -13,7 +13,6 @@ export { default as InvoiceScreen } from './Invoice/InvoiceScreen';
 export { default as DetailsInvoiceScreen } from './Invoice/DetailsInvoiceScreen';
 export { default as WebViewScreen } from './Invoice/WebViewScreen';
 
-
 // AccountScreen
 export { default as ProfileScreen } from './Account/AccountScreen';
 
@@ -24,7 +23,7 @@ export { default as DetailsProfileScreen } from './Account/Profile/DetailsProfil
 export { default as ChatScreen } from './Account/Supports/ChatScreen';
 export { default as HistoryFeedbackScreen } from './Account/Supports/HistoryFeedbackScreen';
 export { default as CreateFeedbackScreen } from './Account/Supports/CreateFeedbackScreen';
-export { default as  EditFeedbackScreen} from './Account/Supports/EditFeedbackScreen';
+export { default as EditFeedbackScreen } from './Account/Supports/EditFeedbackScreen';
 
 // ApartmentInfoScreen
 export { default as ContactScreen } from './ApartmentInfo/ContactScreen';

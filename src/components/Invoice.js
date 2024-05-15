@@ -39,7 +39,7 @@ function Invoice({ id, amount, status, name }) {
                 <Text style={styles.text}>{name || 'Hoá đơn dịch vụ'}</Text>
                 <View style={styles.row}>
                     <Text style={{ marginRight: 2 }}>{amount}đ</Text>
-                    {id? <AntDesign name="caretright" size={16} color="black" /> : ""}
+                    {id ? <AntDesign name="caretright" size={16} color="black" /> : ''}
                 </View>
             </View>
             <View style={styles.wrapContent}>
