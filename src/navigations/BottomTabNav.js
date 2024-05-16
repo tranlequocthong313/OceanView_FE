@@ -4,10 +4,13 @@ import theme from '~/core/theme';
 import ProfileStackNav from './AccountStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
+import { useUser } from '~/hooks/useUser';
 
 const BottomTab = createMaterialBottomTabNavigator();
 
 export default function SettingsTabNav() {
+    const user = useUser()
+
     return (
         <BottomTab.Navigator
             initialRouteName="HomeTab"
@@ -32,7 +35,7 @@ export default function SettingsTabNav() {
                 options={{
                     tabBarLabel: 'Thông báo',
                     tabBarIcon: ({ color }) => <Feather name="bell" size={24} color={color} />,
-                    tabBarBadge: 3,
+                    tabBarBadge: user?.number_of_unread_notifications || 0,
                 }}
             />
             <BottomTab.Screen
