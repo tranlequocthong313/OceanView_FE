@@ -1,15 +1,15 @@
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import theme from '~/core/theme';
+import { useUser } from '~/hooks/useUser';
 import ProfileStackNav from './AccountStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
-import { useUser } from '~/hooks/useUser';
 
 const BottomTab = createMaterialBottomTabNavigator();
 
 export default function SettingsTabNav() {
-    const user = useUser()
+    const user = useUser();
 
     return (
         <BottomTab.Navigator

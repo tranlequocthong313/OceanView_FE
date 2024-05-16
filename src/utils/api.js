@@ -38,8 +38,7 @@ export const notificationApis = {
     notifications: '/notifications/',
     readNotification: '/notifications/read/',
     fcmToken: '/fcm-tokens/',
-}
-
+};
 
 export const authAPI = async () => {
     const token = await AsyncStorage.getItem('accessToken');

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     desc: {
         fontSize: 14,
@@ -40,27 +40,27 @@ export default function NotificationScreen() {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                setLoading(true)
-                const res = await (await authAPI()).get(url)
-                setNotifications(prev => [...prev, ...res.data.results])
+                setLoading(true);
+                const res = await (await authAPI()).get(url);
+                setNotifications((prev) => [...prev, ...res.data.results]);
                 setNextPageUrl(res.data.next);
-                console.log(res.data)
+                console.log(res.data);
             } catch (error) {
-                console.error(error)
+                console.error(error);
                 Toast.show({
                     type: 'success',
                     text1: 'Lấy thông báo thất bại',
                 });
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }
+        };
         fetchNotifications();
-    }, [url])
+    }, [url]);
 
     const onPressNotificationItem = (item) => {
-        console.log(item)
-    }
+        console.log(item);
+    };
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.container} onPress={() => onPressNotificationItem(item)}>
@@ -76,7 +76,7 @@ export default function NotificationScreen() {
 
     const handleEndReached = async () => {
         if (nextPageUrl && !loading) {
-            setUrl(nextPageUrl)
+            setUrl(nextPageUrl);
         }
     };
 
