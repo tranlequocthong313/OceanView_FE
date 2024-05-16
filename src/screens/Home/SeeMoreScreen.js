@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import UtilityScreen from './UtilityScreen';
 
 const styles = StyleSheet.create({
@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
 export default function SeeMoreScreen() {
     return (
         <View style={styles.container}>
-            <Text>SeeMore Screen</Text>
             <UtilityScreen />
         </View>
     );
