@@ -7,9 +7,9 @@ import { useUser } from '~/hooks/useUser';
 const styles = StyleSheet.create({
     container: {},
     wrapHeader: {
-        marginTop: 40,
-        paddingTop: 40,
-        marginHorizontal: 4,
+        // marginTop: 40,
+        paddingTop: 50,
+        marginHorizontal: 2,
         backgroundColor: theme.colors.primary,
         height: 130,
         flexDirection: 'row',
@@ -80,7 +80,7 @@ export default function HomeScreen({ navigation }) {
             {/* header */}
             <View style={styles.wrapHeader}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ProfileTab')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('DetailsProfile')}>
                         <Image style={styles.image} source={{ uri: user.avatar }} />
                     </TouchableOpacity>
                     <View style={styles.contentWrapper}>
@@ -90,9 +90,9 @@ export default function HomeScreen({ navigation }) {
                 </View>
                 <View style={styles.iconsHeader}>
                     <View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('LockerDetailScreen')}>
                             <View style={styles.iconsWrap}>
-                                <AntDesign name="shoppingcart" size={24} color="black" />
+                                <MaterialCommunityIcons name="locker" size={24} color="black" />
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -134,7 +134,7 @@ export default function HomeScreen({ navigation }) {
                         icon={<AntDesign name="appstore-o" size={22} color="black" />}
                         tittle="Xem thêm"
                         navigation={navigation}
-                        destination="UtilityAll"
+                        destination="SeeMore"
                     />
                 </View>
             </View>

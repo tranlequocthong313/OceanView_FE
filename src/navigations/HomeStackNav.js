@@ -1,10 +1,22 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { DetailsInvoiceScreen, HomeScreen, InvoiceScreen, UtilityScreen, WebViewScreen } from '~/screens';
+import {
+    DetailsInvoiceScreen,
+    DetailsProfileScreen,
+    HomeScreen,
+    InvoiceScreen,
+    LockerDetailScreen,
+    SeeMoreScreen,
+    UtilityScreen,
+    WebViewScreen,
+} from '~/screens';
+import { useUser } from '~/hooks/useUser';
 import ServiceStackNav from './ServicesNav/ServicesStack';
 
 const HomeStack = createNativeStackNavigator();
 
 export default function HomeStackNav() {
+    const user = useUser();
+
     return (
         <HomeStack.Navigator initialRouteName="Home">
             <HomeStack.Screen
@@ -38,10 +50,37 @@ export default function HomeStackNav() {
                 }}
             />
             <HomeStack.Screen
+                name="SeeMore"
+                component={SeeMoreScreen}
+                options={{
+                    title: 'Tính năng nổi bật',
+                }}
+            />
+            <HomeStack.Screen
+                name="LockerDetailScreen"
+                component={LockerDetailScreen}
+                initialParams={{ lockerId: user?.locker, forAdmin: false }}
+                options={({ route }) => {
+                    const locker = route.params?.locker;
+                    return {
+                        title: locker
+                            ? `${locker?.owner?.resident_id} - ${locker?.owner?.personal_information?.full_name}`
+                            : `${user?.resident_id} - ${user?.personal_information?.full_name}`,
+                    };
+                }}
+            />
+            <HomeStack.Screen
                 name="DetailsInvoice"
                 component={DetailsInvoiceScreen}
                 options={{
                     title: 'Chi tiết hoá đơn',
+                }}
+            />
+            <HomeStack.Screen
+                name="DetailsProfile"
+                component={DetailsProfileScreen}
+                options={{
+                    title: 'Thông tin cá nhân',
                 }}
             />
             <HomeStack.Screen

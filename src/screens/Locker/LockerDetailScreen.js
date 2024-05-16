@@ -13,17 +13,23 @@ const styles = StyleSheet.create({
     image: {
         width: 80,
         height: 80,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
         marginRight: 10,
+        borderWidth: 1,
+        borderRadius: 8,
+        borderColor: '#fff',
     },
     container: {
         flex: 1,
         padding: 20,
     },
     itemContainer: {
+        margin: 8,
+        borderWidth: 1,
+        borderRadius: 8,
+        backgroundColor: '#CBAC7D',
         padding: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',
@@ -45,6 +51,12 @@ const styles = StyleSheet.create({
     button: {
         width: '45%',
         marginHorizontal: 8,
+    },
+    row: {
+        flexDirection: 'row',
+    },
+    text: {
+        fontWeight: '500',
     },
 });
 
@@ -93,10 +105,20 @@ function LockerDetailScreen({ route }) {
     const renderItem = ({ item: _item }) => (
         <TouchableOpacity style={styles.itemContainer} onPress={() => onEditItem(_item)}>
             <Image style={styles.image} source={{ uri: _item?.image || defaultItemImage }} />
+
             <View>
-                <Text style={styles.itemText}>Tên: {_item?.name}</Text>
-                <Text style={styles.itemText}>Số lượng: {_item?.quantity}</Text>
-                <Text style={styles.itemText}>Trạng thái: {_item?.status}</Text>
+                <View style={styles.row}>
+                    <Text style={styles.text}>Tên: </Text>
+                    <Text>{_item?.name}</Text>
+                </View>
+                <View style={styles.row}>
+                    <Text style={styles.text}>Số lượng: </Text>
+                    <Text>{_item?.quantity}</Text>
+                </View>
+                <View style={styles.row}>
+                    <Text style={styles.text}>Trạng thái: </Text>
+                    <Text>{_item?.status}</Text>
+                </View>
             </View>
         </TouchableOpacity>
     );

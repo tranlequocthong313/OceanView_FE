@@ -126,9 +126,10 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={(text) => setUsername({ value: text, error: '' })}
                 keyboardType="numeric"
                 error={!!username.error}
-                errorText={username.error}
                 maxLength={6}
             />
+            {username.error ? <Text style={{ color: 'red', alignSelf: 'flex-start' }}>{username.error}</Text> : null}
+
             <TextInput
                 secureTextEntry={!showPassword}
                 label="Mật khẩu"
@@ -136,7 +137,6 @@ export default function LoginScreen({ navigation }) {
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
                 error={!!password.error}
-                errorText={password.error}
                 right={
                     <Input.Icon
                         icon={showPassword ? 'eye' : 'eye-off'}
@@ -147,6 +147,7 @@ export default function LoginScreen({ navigation }) {
                 autoCorrect={false}
                 textContentType="password"
             />
+            {password.error ? <Text style={{ color: 'red', alignSelf: 'flex-start' }}>{password.error}</Text> : null}
 
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>

@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Image, Modal, StyleSheet, View } from 'react-native'; // WARN: Don't use Modal from react-native-paper 💀💀💀
+import { Image, Modal, Text, StyleSheet, View } from 'react-native'; // WARN: Don't use Modal from react-native-paper 💀💀💀
 import CheckBox from 'react-native-check-box';
 import { ActivityIndicator } from 'react-native-paper';
 import { Button, TextInput } from '~/components';
@@ -87,18 +87,21 @@ function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText, loa
                         />
                     </View>
                 )}
-
-                <CheckBox
-                    onClick={() =>
-                        setItem((prev) => ({
-                            ...prev,
-                            status: prev.status === 'RECEIVED' ? 'NOT_RECEIVED' : 'RECEIVED',
-                        }))
-                    }
-                    isChecked={item?.status === 'RECEIVED'}
-                    leftText="Đã nhận hàng"
-                    style={styles.checkbox}
-                />
+                <View
+                    style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 12 }}
+                >
+                    <Text style={{ fontWeight: '500', fontSize: 16 }}>Đã nhận hàng</Text>
+                    <CheckBox
+                        onClick={() =>
+                            setItem((prev) => ({
+                                ...prev,
+                                status: prev.status === 'RECEIVED' ? 'NOT_RECEIVED' : 'RECEIVED',
+                            }))
+                        }
+                        isChecked={item?.status === 'RECEIVED'}
+                        style={styles.checkbox}
+                    />
+                </View>
 
                 <View style={styles.buttons}>
                     <Button

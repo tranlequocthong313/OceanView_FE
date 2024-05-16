@@ -62,7 +62,7 @@ export default function AccountScreen({ navigation }) {
                     navigation={navigation}
                     icon={<AntDesign name="setting" size={22} color="black" />}
                     title="Cài đặt"
-                    destination="Settings"
+                    destination="SettingsScreen"
                 />
                 <StackView
                     navigation={navigation}

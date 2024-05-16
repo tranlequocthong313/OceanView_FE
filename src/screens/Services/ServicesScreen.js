@@ -5,7 +5,6 @@ import { ServiceNavButton } from '~/components';
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#EEEDEC',
-        flex: 1,
     },
     wrapper: {
         marginHorizontal: 12,
@@ -21,7 +20,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     wrapCard: {
-        flex: 1,
         borderRadius: 4,
         backgroundColor: '#fff',
         justifyContent: 'center',

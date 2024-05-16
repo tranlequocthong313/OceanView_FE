@@ -30,7 +30,6 @@ export const feedbackApis = {
     feedbackDel: '/feedbacks/',
     feedbackPost: '/feedbacks/',
     feedbackPatch: '/feedbacks/',
-
 };
 
 export const invoiceApis = {

@@ -171,18 +171,6 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
         fetchInvoiceData();
     }, [fetchInvoiceData]);
 
-    // const dataPaymentHandler = () => {
-    //     if (dataPayment && selectedMethod) {
-    //         navigation.navigate('WebViewScreen', {
-    //             dataPayment,
-    //             selectedMethodId: selectedMethod.id,
-    //         });
-    //     }
-    // };
-    // useEffect(() => {
-    //     dataPaymentHandler();
-    // }, [dataPayment]);
-
     const handlePayment = async () => {
         if (!selectedMethod) {
             Alert.alert('Thông báo', 'Vui lòng chọn hình thức thanh toán trước khi tiến hành thanh toán.');

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     },
     heading: {
         alignItems: 'flex-end',
-        width: 'calc(100% - 16px) ',
+        width: '100%',
         backgroundColor: '#D9C657',
         padding: 8,
         borderWidth: 2,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     content: {
         alignItems: 'flex-end',
-        width: 'calc(100% - 16px) ',
+        width: '100%',
         height: 110,
         padding: 8,
         backgroundColor: theme.colors.primary,
@@ -40,6 +40,14 @@ const styles = StyleSheet.create({
         color: '#D9C657',
         marginVertical: 8,
         fontSize: 16,
+    },
+    statusWrap: {
+        flex: 1,
+        marginVertical: 8,
+        justifyContent: 'flex-end',
+    },
+    status: {
+        color: '#D9C657',
     },
     footer: {
         backgroundColor: '#fff',
@@ -101,6 +109,9 @@ export default function ListCardScreen() {
                                 </View>
                                 <View style={styles.content}>
                                     <Text style={styles.id}>00000{item.id}</Text>
+                                    <View style={styles.statusWrap}>
+                                        <Text style={styles.status}>Trạng thái: {item.status}</Text>
+                                    </View>
                                 </View>
                                 <View style={styles.footer}>
                                     <Text>OceanView</Text>

@@ -27,7 +27,10 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
+        borderWidth: 1,
+        borderColor: '#000',
+        marginBottom: 20,
     },
     titleWrap: {
         flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { TextInput } from '~/components';
 import theme from '~/core/theme';
 import useDebounce from '~/hooks/useDebounce';
@@ -8,6 +8,15 @@ import { ActivityIndicator } from 'react-native-paper';
 import getQuerys from '~/utils/url';
 
 // TODO: CSS for this component looks better
+
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+    },
+    text: {
+        fontWeight: '500',
+    },
+});
 
 export default function LockerScreen({ navigation }) {
     const [lockers, setLockers] = useState([]);
@@ -43,11 +52,29 @@ export default function LockerScreen({ navigation }) {
     };
 
     const renderLockerItem = ({ item }) => (
-        <TouchableOpacity onPress={() => handleLockerClick(item)}>
-            <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                <Text>Mã: {item.id}</Text>
-                <Text>Chủ sở hữu: {`${item.owner.resident_id} - ${item.owner.personal_information.full_name}`}</Text>
-                <Text>Trạng thái: {item.status}</Text>
+        <TouchableOpacity
+            style={{
+                padding: 20,
+                backgroundColor: '#CBAC7D',
+                marginVertical: 8,
+                borderWidth: 1,
+                borderRadius: 8,
+            }}
+            onPress={() => handleLockerClick(item)}
+        >
+            <View>
+                <View style={styles.row}>
+                    <Text style={styles.text}>Mã cư dân: </Text>
+                    <Text>00000{item.id}</Text>
+                </View>
+                <View style={styles.row}>
+                    <Text style={styles.text}>Chủ sở hữu: </Text>
+                    <Text>{`${item.owner.resident_id} - ${item.owner.personal_information.full_name}`}</Text>
+                </View>
+                <View style={styles.row}>
+                    <Text style={styles.text}>Trạng thái: </Text>
+                    <Text>{item.status}</Text>
+                </View>
             </View>
         </TouchableOpacity>
     );
@@ -93,4 +120,3 @@ export default function LockerScreen({ navigation }) {
         </View>
     );
 }
-

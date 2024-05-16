@@ -8,7 +8,8 @@ import {
     DetailsSettingsScreen,
     ChatScreen,
     LockerScreen,
-    LockerDetailScreen
+    LockerDetailScreen,
+    SettingsScreen,
 } from '~/screens';
 import FeedbackStackNav from './FeedbackStack';
 
@@ -39,6 +40,13 @@ export default function AccountStackNav() {
                 options={{
                     headerTitle: 'Chi tiết cài đặt',
                     headerShown: false,
+                }}
+            />
+            <AccountStack.Screen
+                name="SettingsScreen"
+                component={SettingsScreen}
+                options={{
+                    headerTitle: 'Cài đặt',
                 }}
             />
             <AccountStack.Screen

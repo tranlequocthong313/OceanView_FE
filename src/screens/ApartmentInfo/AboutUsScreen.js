@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     wrapInfo: {
         borderRadius: 4,
         borderWidth: 1,
-        backgroundColor: '#D9C657',
+        backgroundColor: theme.colors.light,
         padding: 8,
         marginBottom: 12,
     },
