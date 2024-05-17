@@ -91,7 +91,7 @@ function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText, loa
                     style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 12 }}
                 >
                     <Text style={{ fontWeight: '500', fontSize: 16 }}>Đã nhận hàng</Text>
-                    <CheckBox
+                    <Checkbox
                         onClick={() =>
                             setItem((prev) => ({
                                 ...prev,

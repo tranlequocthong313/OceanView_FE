@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+
     headerNav: {
         flexDirection: 'row',
         paddingTop: 8,
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
     },
     wrapGuild: {
+        marginTop: 100,
         marginTop: 28,
         justifyContent: 'center',
         alignItems: 'center',
@@ -106,9 +108,9 @@ export default function InvoiceScreen({ navigation }) {
         setRefreshing(false);
     };
 
-    const filteredInvoices = invoices.filter(invoice => 
-        activedInvoice ? invoice.status !== 'PAID' : invoice.status === 'PAID'
-    );
+    const filteredInvoices = invoices
+        ? invoices.filter((invoice) => (activedInvoice ? invoice.status !== 'PAID' : invoice.status === 'PAID'))
+        : [];
 
     return (
         <View style={styles.container}>
@@ -132,28 +134,33 @@ export default function InvoiceScreen({ navigation }) {
                 </View>
 
                 {isLoading ? (
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100 }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 100 }}>
                         <ActivityIndicator size="large" color="#000" />
                     </View>
                 ) : (
-                    <View>
-                        <FlatList
-                            data={filteredInvoices}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    onPress={() => navigation.navigate('DetailsInvoice', { id: item.id })}
-                                >
-                                    <Invoice status={item.status} id={item.id} amount={item.total_amount} icon />
-                                </TouchableOpacity>
-                            )}
-                            keyExtractor={(item) => item.id.toString()}
-                            scrollEnabled={false}
-                            style={{ margin: 8 }}
-                        />
-                        {activedInvoice && (
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 100 }}>
+                        {filteredInvoices.length === 0 ? (
                             <View style={styles.wrapGuild}>
-                                <Text style={styles.guild}>Bấm chọn hoá đơn để thanh toán</Text>
+                                <Text style={styles.guild}>
+                                    {activedInvoice
+                                        ? 'Bấm chọn hoá đơn để thanh toán'
+                                        : 'Chưa có hoá đơn đã thanh toán'}
+                                </Text>
                             </View>
+                        ) : (
+                            <FlatList
+                                data={filteredInvoices}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate('DetailsInvoice', { id: item.id })}
+                                    >
+                                        <Invoice status={item.status} id={item.id} amount={item.total_amount} icon />
+                                    </TouchableOpacity>
+                                )}
+                                keyExtractor={(item) => item.id.toString()}
+                                scrollEnabled={false}
+                                style={{ margin: 8 }}
+                            />
                         )}
                     </View>
                 )}
