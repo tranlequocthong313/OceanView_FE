@@ -2,7 +2,6 @@
     "expo": {
         "name": "OceanView_FE",
         "slug": "OceanView_FE",
-        "scheme": "OceanView_FE",
         "version": "1.0.0",
         "assetBundlePatterns": ["**/*"],
         "userInterfaceStyle": "automatic",
@@ -13,10 +12,7 @@
                     "photosPermission": "The app accesses your photos to let you share them with your friends."
                 }
             ]
-        ],
-        "android": {
-            "permissions": ["android.permission.RECORD_AUDIO"],
-            "package": "com.anonymous.OceanView_FE"
-        }
-    }
+        ]
+    },
+    "name": "OceanView_FE"
 }

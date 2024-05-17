@@ -7,10 +7,10 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
+    LockerScreen,
+    LockerDetailScreen
 } from '~/screens';
-import LockerScreen from '~/screens/Locker/LockerScreen';
-import LockerDetailScreen from '~/screens/Locker/LockerDetailScreen';
-import ReflectionStackNav from './ReflectionStack';
+import FeedbackStackNav from './FeedbackStack';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -73,7 +73,7 @@ export default function AccountStackNav() {
             {/* TODO: Move this outta here */}
             <AccountStack.Screen
                 name="HistoryReflection"
-                component={ReflectionStackNav}
+                component={FeedbackStackNav}
                 options={{
                     headerTitle: 'Danh sách phản ánh',
                 }}

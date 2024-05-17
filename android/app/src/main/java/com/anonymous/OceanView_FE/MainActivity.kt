@@ -1,4 +1,4 @@
-package com.oceanviewfe
+package com.anonymous.OceanView_FE
 
 import android.os.Build
 import android.os.Bundle

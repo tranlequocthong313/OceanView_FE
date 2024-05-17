@@ -4,6 +4,7 @@ import { authAPI, userApis } from '~/utils/api';
 
 import { useUserDispatch } from '~/hooks/useUser';
 import { USER_ACTION_TYPE } from '~/reducers/userReducer';
+import { AntDesign, FontAwesome, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,6 +28,13 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 75,
         resizeMode: 'contain',
+    },
+    titleWrap: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    text: {
+        marginLeft: 6,
     },
 });
 
@@ -60,35 +68,59 @@ export default function DetailsProfileScreen() {
                         ''
                     )}
                     <View style={styles.viewWrapper}>
-                        <Text>Mã cư dân</Text>
+                        <View style={styles.titleWrap}>
+                            <MaterialCommunityIcons name="identifier" size={20} color="black" />
+                            <Text style={styles.text}>Mã cư dân</Text>
+                        </View>
                         <Text>{profileData.resident_id}</Text>
                     </View>
                     <View style={styles.viewWrapper}>
-                        <Text>Họ và tên</Text>
+                        <View style={styles.titleWrap}>
+                            <AntDesign name="user" size={20} color="black" />
+                            <Text style={styles.text}>Họ và tên</Text>
+                        </View>
                         <Text>{profileData.personal_information.full_name}</Text>
                     </View>
                     <View style={styles.viewWrapper}>
-                        <Text>Giới tính</Text>
+                        <View style={styles.titleWrap}>
+                            <FontAwesome name="transgender" size={20} color="black" />
+                            <Text style={styles.text}>Giới tính</Text>
+                        </View>
                         <Text>{profileData.personal_information.gender}</Text>
                     </View>
                     <View style={styles.viewWrapper}>
-                        <Text>Ngày sinh</Text>
+                        <View style={styles.titleWrap}>
+                            <AntDesign name="calendar" size={20} color="black" />
+                            <Text style={styles.text}>Ngày sinh</Text>
+                        </View>
                         <Text>{profileData.personal_information.date_of_birth}</Text>
                     </View>
                     <View style={styles.viewWrapper}>
-                        <Text>Quê quán</Text>
+                        <View style={styles.titleWrap}>
+                            <AntDesign name="home" size={20} color="black" />
+                            <Text style={styles.text}>Quê quán</Text>
+                        </View>
                         <Text>{profileData.personal_information.hometown}</Text>
                     </View>
                     <View style={styles.viewWrapper}>
-                        <Text>CCCD</Text>
+                        <View style={styles.titleWrap}>
+                            <AntDesign name="idcard" size={20} color="black" />
+                            <Text style={styles.text}>CCCD</Text>
+                        </View>
                         <Text>{profileData.personal_information.citizen_id}</Text>
                     </View>
                     <View style={styles.viewWrapper}>
-                        <Text>Email</Text>
+                        <View style={styles.titleWrap}>
+                            <Fontisto name="email" size={20} color="black" />
+                            <Text style={styles.text}>Email</Text>
+                        </View>
                         <Text>{profileData.personal_information.email}</Text>
                     </View>
                     <View style={styles.viewWrapper}>
-                        <Text>Số điện thoại</Text>
+                        <View style={styles.titleWrap}>
+                            <FontAwesome name="phone" size={20} color="black" />
+                            <Text style={styles.text}>Số điện thoại</Text>
+                        </View>
                         <Text>{profileData.personal_information.phone_number}</Text>
                     </View>
                 </>

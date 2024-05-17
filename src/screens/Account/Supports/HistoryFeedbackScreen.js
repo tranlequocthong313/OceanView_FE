@@ -49,8 +49,19 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
         padding: 4,
     },
-    action: {
+    actionDel: {
         marginHorizontal: 4,
+        fontWeight: '500',
+        fontSize: 16,
+        color: 'red',
+    },
+    actionEdit: {
+        marginHorizontal: 4,
+        fontWeight: '500',
+        fontSize: 16,
+        color: 'blue',
+
+
     },
     currentPageButton: {
         backgroundColor: theme.colors.outline, // Màu nổi bật cho trang hiện tại
@@ -91,9 +102,7 @@ export default function HistoryReflectionScreen({ navigation }) {
     }, [fetchReflectionData]);
 
     const getTotalPages = () => {
-        if (!reflectionData || !reflectionData.count) {
-            return 1;
-        }
+        if (!reflectionData || !reflectionData.count) return 1;
         return Math.ceil(reflectionData.count / LIMIT);
     };
 
@@ -111,7 +120,7 @@ export default function HistoryReflectionScreen({ navigation }) {
         setOffset(newOffset);
     };
     const navigateToEdit = (id) => {
-        navigation.navigate('EditReflection', { id });
+        navigation.navigate('EditFeedback', { id });
     };
 
     const handleEdit = (id) => {
@@ -133,7 +142,7 @@ export default function HistoryReflectionScreen({ navigation }) {
                     onPress: async () => {
                         try {
                             // Gửi yêu cầu xóa phản ánh với id tương ứng
-                            await (await authAPI()).delete(`${feedbackApis.feedbacks}${id}/`);
+                            await (await authAPI()).delete(`${feedbackApis.feedbackDel}${id}/`);
                             ToastAndroid.showWithGravity(
                                 'Đã xoá phản ánh thành công',
                                 ToastAndroid.LONG,
@@ -195,14 +204,14 @@ export default function HistoryReflectionScreen({ navigation }) {
                                         >
                                             <View style={styles.actionWrapper}>
                                                 <AntDesign name="edit" size={20} color="black" />
-                                                <Text style={styles.action}>Chỉnh sửa</Text>
+                                                <Text style={styles.actionEdit}>Chỉnh sửa</Text>
                                             </View>
                                         </TouchableOpacity>
 
                                         <TouchableOpacity onPress={() => handleDelete(item.id, item.title)}>
                                             <View style={styles.actionWrapper}>
                                                 <AntDesign name="delete" size={20} color="black" />
-                                                <Text style={styles.action}>Xoá</Text>
+                                                <Text style={styles.actionDel}>Xoá</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>

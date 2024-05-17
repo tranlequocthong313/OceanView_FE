@@ -18,12 +18,23 @@ export const userApis = {
 export const serviceApis = {
     accessCard: '/services/access-cards/',
     parkingCard: '/services/parking-cards/',
+    residentCard: '/services/resident-cards/',
+
+    listCard: '/services/',
 };
 
 // TODO: Dung feedback apis ro rang
+
 export const feedbackApis = {
     feedbacks: '/feedbacks/',
+    feedbackDel: '/feedbacks/',
     feedbackPost: '/feedbacks/',
+    feedbackPatch: '/feedbacks/',
+
+};
+
+export const invoiceApis = {
+    invoice: '/invoices/',
 };
 
 export const lockerApis = {
@@ -34,11 +45,15 @@ export const lockerApis = {
     itemEdit: (lockerId, itemId) => `/lockers/${lockerId}/items/${itemId}/`,
 };
 
+
+
 export const notificationApis = {
     notifications: '/notifications/',
     readNotification: '/notifications/read/',
     fcmToken: '/fcm-tokens/',
 };
+
+
 
 export const authAPI = async () => {
     const token = await AsyncStorage.getItem('accessToken');

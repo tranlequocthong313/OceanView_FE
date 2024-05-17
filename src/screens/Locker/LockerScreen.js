@@ -8,7 +8,8 @@ import { ActivityIndicator } from 'react-native-paper';
 import getQuerys from '~/utils/url';
 
 // TODO: CSS for this component looks better
-function LockerScreen({ navigation }) {
+
+export default function LockerScreen({ navigation }) {
     const [lockers, setLockers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -93,4 +94,3 @@ function LockerScreen({ navigation }) {
     );
 }
 
-export default LockerScreen;

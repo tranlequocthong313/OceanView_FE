@@ -2,7 +2,7 @@ import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navig
 import { AntDesign, Feather } from '@expo/vector-icons';
 import theme from '~/core/theme';
 import { useUser } from '~/hooks/useUser';
-import ProfileStackNav from './AccountStackNav';
+import AccountStackNav from './AccountStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
 
@@ -40,7 +40,7 @@ export default function SettingsTabNav() {
             />
             <BottomTab.Screen
                 name="ProfileTab"
-                component={ProfileStackNav}
+                component={AccountStackNav}
                 options={{
                     tabBarStyle: { display: 'none' },
                     tabBarLabel: 'Tài khoản',

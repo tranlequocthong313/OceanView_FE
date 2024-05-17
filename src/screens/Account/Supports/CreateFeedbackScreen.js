@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import {
     View,
     Text,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function EditReflectionScreen({ navigation, route }) {
+export default function CreateFeedbackScreen({ navigation }) {
     const [title, setTitle] = useState({ value: '', error: '' });
     const [desc, setDesc] = useState({ value: '', error: '' });
 
@@ -73,7 +73,6 @@ export default function EditReflectionScreen({ navigation, route }) {
         { label: 'Khác', value: 'OTHER' },
     ]);
 
-    const { id } = route.params;
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -92,23 +91,6 @@ export default function EditReflectionScreen({ navigation, route }) {
         }
     };
 
-    const fetchReflectionData = useCallback(async () => {
-        try {
-            const response = await (await authAPI()).get(`${feedbackApis.feedbacks}${id}/`);
-            console.log(response.data);
-            setTitle((prevState) => ({ ...prevState, value: response.data.title, error: '' }));
-            setDesc((prevState) => ({ ...prevState, value: response.data.content, error: '' }));
-            setImage({ uri: response.data.image });
-            setValue(response.data.type);
-        } catch (error) {
-            console.log(error);
-        }
-    }, [id, setTitle, setDesc, setImage, setValue]);
-
-    useEffect(() => {
-        fetchReflectionData();
-    }, [fetchReflectionData]);
-
     const handleSubmit = async () => {
         const titleError = formValidator(title.value, 'Title');
         const descError = formValidator(desc.value, 'Description');
@@ -121,43 +103,40 @@ export default function EditReflectionScreen({ navigation, route }) {
         if (titleError || descError) {
             setTitle({ ...title, error: titleError });
             setDesc({ ...desc, error: descError });
-
             return;
         }
+
         try {
             setLoading(true);
-
             const formData = new FormData();
-            // The image may not have a name, the server requires the image to have enough information to be decoded
-            formData.append('image', {
-                uri: image.uri,
-                name: image.filename ?? `avatar.${image.mimeType.split('/')[1]}`,
-                type: image.mimeType,
-            });
+
+            // Kiểm tra nếu image không null thì thêm vào form data
+            if (image !== null) {
+                formData.append('image', {
+                    uri: image.uri,
+                    name: image.filename ?? `avatar.${image.mimeType.split('/')[1]}`,
+                    type: image.mimeType,
+                });
+            } else {
+                // Nếu image là null, thêm null vào form data
+                formData.append('image', null);
+            }
+
             formData.append('title', title.value);
             formData.append('content', desc.value);
             formData.append('type', value);
 
             const response = await (
                 await authAPI()
-            ).patch(
-                `${feedbackApis.feedbacks}${id}/`,
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
+            ).post(feedbackApis.feedbackPost, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
-                //     {
-                //     title: title.value,
-                //     content: desc.value,
-                //     type: value,
-                // }
-            );
-            console.log(response.status);
-            if (response.status === 200) {
-                ToastAndroid.showWithGravity('Cập nhật phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-                navigation.navigate('Reflection');
+            });
+
+            if (response.status === 201) {
+                ToastAndroid.showWithGravity('Đã tạo phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+                navigation.navigate('Feedback');
             } else {
                 ToastAndroid.showWithGravity('Vui lòng kiểm tra lại!', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
@@ -231,7 +210,7 @@ export default function EditReflectionScreen({ navigation, route }) {
                             {image ? (
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                     <Image
-                                        source={{ uri: image.uri }}
+                                        source={{ uri: image ? image.uri : null }}
                                         style={{
                                             width: 40,
                                             height: 40,
@@ -240,14 +219,19 @@ export default function EditReflectionScreen({ navigation, route }) {
                                             marginRight: 16,
                                         }}
                                     />
-                                    <AntDesign name="closecircleo" size={22} color="black" onPress={() => setImage()} />
+                                    <AntDesign
+                                        name="closecircleo"
+                                        size={22}
+                                        color="black"
+                                        onPress={() => setImage(null)}
+                                    />
                                 </View>
                             ) : (
                                 ''
                             )}
                         </View>
                         <Button mode="contained" onPress={handleSubmit}>
-                            {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Cập nhật'}
+                            {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
                         </Button>
                     </SafeAreaView>
                 </ScrollView>

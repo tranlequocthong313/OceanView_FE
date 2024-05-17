@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
 });
 
 export default function LoginScreen({ navigation }) {
-    // TODO: Delete these 2 values after
     const [username, setUsername] = useState({ value: '240001', error: '' });
     const [password, setPassword] = useState({ value: 'tranlequocthong313', error: '' });
+
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
     const userDispatch = useUserDispatch();
@@ -65,6 +65,8 @@ export default function LoginScreen({ navigation }) {
             const response = await api.post(userApis.login, {
                 username: username.value,
                 password: password.value,
+                // username: '240002',
+                // password: 'minhha2k3',
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;
