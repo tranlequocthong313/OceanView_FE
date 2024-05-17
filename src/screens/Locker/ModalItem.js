@@ -87,7 +87,7 @@ function ModalItem({ visible, onCancel, onSubmit, item, setItem, submitText, loa
                     </View>
                 )}
 
-                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <Text>Đã nhận hàng</Text>
                     <Checkbox
                         onPress={() =>

@@ -14,7 +14,7 @@ import {
 import { authAPI, feedbackApis } from '~/utils/api';
 import { AntDesign } from '@expo/vector-icons';
 import Button from '~/components/Button';
-import { Button as ButtonPaper,TextInput } from 'react-native-paper';
+import { Button as ButtonPaper, TextInput } from 'react-native-paper';
 import formValidator from '~/helpers/formValidator';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as ImagePicker from 'expo-image-picker';

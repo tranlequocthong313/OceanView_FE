@@ -30,7 +30,6 @@ export const feedbackApis = {
     feedbackDel: '/feedbacks/',
     feedbackPost: '/feedbacks/',
     feedbackPatch: '/feedbacks/',
-
 };
 
 export const invoiceApis = {
@@ -45,15 +44,11 @@ export const lockerApis = {
     itemEdit: (lockerId, itemId) => `/lockers/${lockerId}/items/${itemId}/`,
 };
 
-
-
 export const notificationApis = {
     notifications: '/notifications/',
     readNotification: '/notifications/read/',
     fcmToken: '/fcm-tokens/',
 };
-
-
 
 export const authAPI = async () => {
     const token = await AsyncStorage.getItem('accessToken');

@@ -8,7 +8,7 @@ import {
     DetailsSettingsScreen,
     ChatScreen,
     LockerScreen,
-    LockerDetailScreen
+    LockerDetailScreen,
 } from '~/screens';
 import FeedbackStackNav from './FeedbackStack';
 

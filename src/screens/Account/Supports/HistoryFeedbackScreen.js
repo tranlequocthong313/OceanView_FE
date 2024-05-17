@@ -60,8 +60,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 16,
         color: 'blue',
-
-
     },
     currentPageButton: {
         backgroundColor: theme.colors.outline, // Màu nổi bật cho trang hiện tại
