@@ -54,8 +54,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
     },
     wrapGuild: {
-        marginTop: 100,
-        marginTop: 28,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 24,
