@@ -43,6 +43,13 @@ export const lockerApis = {
     itemDetail: (lockerId, itemId) => `/lockers/${lockerId}/items/${itemId}/`,
     itemEdit: (lockerId, itemId) => `/lockers/${lockerId}/items/${itemId}/`,
 };
+
+export const notificationApis = {
+    notifications: '/notifications/',
+    readNotification: '/notifications/read/',
+    fcmToken: '/fcm-tokens/',
+};
+
 export const authAPI = async () => {
     const token = await AsyncStorage.getItem('accessToken');
     console.log('Token: ', token);
@@ -59,6 +66,7 @@ const api = axios.create({
     baseURL: HOST,
 });
 
+// TODO: check if this interception really working
 const refreshToken = async (error) => {
     console.log(error.response.data);
     console.log(error.response.status);
@@ -75,7 +83,6 @@ const refreshToken = async (error) => {
     }
 };
 
-// TODO: Intercept responses to refresh password
 axios.interceptors.response.use(
     (response) => response,
     (error) => {

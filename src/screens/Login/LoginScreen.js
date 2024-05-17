@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
 });
 
 export default function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState({ value: '', error: '' });
-    const [password, setPassword] = useState({ value: '', error: '' });
+    const [username, setUsername] = useState({ value: '240001', error: '' });
+    const [password, setPassword] = useState({ value: 'tranlequocthong313', error: '' });
 
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);

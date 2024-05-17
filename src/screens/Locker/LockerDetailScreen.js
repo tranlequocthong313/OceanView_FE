@@ -237,7 +237,6 @@ function LockerDetailScreen({ route }) {
             setSubmitLoading(false);
         }
     };
-    // TODO: Add images for items if they don't have one, then use a default one
     return (
         <View style={styles.container}>
             <TextInput
