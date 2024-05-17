@@ -192,7 +192,6 @@ export default function RegisterResidentCardScreen({ navigation }) {
 
     const handleSubmit = async () => {
         console.log('Submit successfully');
-        console.log('Submit successfully');
         console.log('relationship:', relationship);
         console.log('CCCD:', CCCD);
         console.log('SDT:', SDT);

@@ -72,19 +72,16 @@ const styles = StyleSheet.create({
 
 export default function InvoiceScreen({ navigation }) {
     const [activedInvoice, setActivedInvoice] = useState(true);
-    const [activedUnInvoice, setActivedUnInvoice] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [invoices, setInvoices] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
     const handleInvoiceChange = () => {
         setActivedInvoice(true);
-        setActivedUnInvoice(false);
         console.log('handleInvoiceChange');
     };
 
     const handleUnInvoiceChange = () => {
-        setActivedUnInvoice(true);
         setActivedInvoice(false);
         console.log('handleUnInvoiceChange');
     };
@@ -109,7 +106,9 @@ export default function InvoiceScreen({ navigation }) {
         setRefreshing(false);
     };
 
-    console.log(invoices);
+    const filteredInvoices = invoices.filter(invoice => 
+        activedInvoice ? invoice.status !== 'PAID' : invoice.status === 'PAID'
+    );
 
     return (
         <View style={styles.container}>
@@ -125,10 +124,10 @@ export default function InvoiceScreen({ navigation }) {
                         <Text style={activedInvoice ? styles.titleNavActived : styles.titleNav}>Chưa thanh toán</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={activedUnInvoice ? styles.wrapNavActived : styles.wrapNav}
+                        style={!activedInvoice ? styles.wrapNavActived : styles.wrapNav}
                         onPress={handleUnInvoiceChange}
                     >
-                        <Text style={activedUnInvoice ? styles.titleNavActived : styles.titleNav}>Đã thanh toán</Text>
+                        <Text style={!activedInvoice ? styles.titleNavActived : styles.titleNav}>Đã thanh toán</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -139,7 +138,7 @@ export default function InvoiceScreen({ navigation }) {
                 ) : (
                     <View>
                         <FlatList
-                            data={invoices}
+                            data={filteredInvoices}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
                                     onPress={() => navigation.navigate('DetailsInvoice', { id: item.id })}
@@ -151,11 +150,11 @@ export default function InvoiceScreen({ navigation }) {
                             scrollEnabled={false}
                             style={{ margin: 8 }}
                         />
-                        {activedInvoice ? (
+                        {activedInvoice && (
                             <View style={styles.wrapGuild}>
                                 <Text style={styles.guild}>Bấm chọn hoá đơn để thanh toán</Text>
                             </View>
-                        ) : null}
+                        )}
                     </View>
                 )}
             </ScrollView>
