@@ -17,6 +17,7 @@ import { Invoice, SubmitButton } from '~/components';
 import { AntDesign } from '@expo/vector-icons';
 import momo from '~/assets/momo.png';
 import vnpay from '~/assets/vnpay.png';
+import theme from '~/core/theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -129,6 +130,28 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
     },
+    tranferWrap: {
+        marginTop: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    wrapGuild: {
+        marginTop: 28,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 24,
+    },
+    guild: {
+        backgroundColor: theme.colors.surface,
+        padding: 16,
+        borderWidth: 1,
+        borderRadius: 14,
+        borderColor: '#ccc',
+        fontSize: 16,
+        color: 'blue',
+        fontWeight: '500',
+        textAlign: 'center',
+    },
 });
 
 const paymentMethods = [
@@ -143,7 +166,6 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
     const [refreshing, setRefreshing] = useState(false);
     const [selectedMethod, setSelectedMethod] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const [dataPayment, setDataPayment] = useState({});
 
     const selectMethod = (method) => {
         setSelectedMethod(method);
@@ -179,18 +201,16 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
 
         try {
             const response = await (await authAPI()).post(`${invoiceApis.invoice}${id}/payment/${selectedMethod.id}/`);
-            setDataPayment(response.data);
+            navigation.navigate('WebViewScreen', {
+                dataPayment: response.data,
+            });
         } catch (err) {
             console.log(err);
-        }
-        if (Object.keys(dataPayment).length > 0) {
-            navigation.navigate('WebViewScreen', {
-                dataPayment,
-            });
         }
     };
 
     const handleSelectMethod = (item) => {
+        console.log(item);
         selectMethod(item);
     };
     if (isLoading) {
@@ -286,6 +306,14 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
                         </Modal>
                     </View>
                 ) : null}
+                <TouchableOpacity
+                    style={styles.wrapGuild}
+                    onPress={() => {
+                        navigation.navigate('FixedBankScreen', { totalAmount: detailInvoices.total_amount, id });
+                    }}
+                >
+                    <Text style={styles.guild}>Bạn cũng có thể chuyển vào tài khoản momo cố định tại đây.</Text>
+                </TouchableOpacity>
             </ScrollView>
             {detailInvoices.status !== 'PAID' ? (
                 <View style={styles.footer}>

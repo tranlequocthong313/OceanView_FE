@@ -10,6 +10,18 @@ import getQuerys from '~/utils/url';
 // TODO: CSS for this component looks better
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: '#CBAC7D',
+    },
+    wrapper: {
+        backgroundColor: theme.colors.light,
+        padding: 20,
+        marginVertical: 8,
+        borderWidth: 1,
+        borderRadius: 8,
+    },
     row: {
         flexDirection: 'row',
     },
@@ -52,16 +64,7 @@ export default function LockerScreen({ navigation }) {
     };
 
     const renderLockerItem = ({ item }) => (
-        <TouchableOpacity
-            style={{
-                padding: 20,
-                backgroundColor: '#CBAC7D',
-                marginVertical: 8,
-                borderWidth: 1,
-                borderRadius: 8,
-            }}
-            onPress={() => handleLockerClick(item)}
-        >
+        <TouchableOpacity style={styles.wrapper} onPress={() => handleLockerClick(item)}>
             <View>
                 <View style={styles.row}>
                     <Text style={styles.text}>Mã cư dân: </Text>
@@ -99,7 +102,7 @@ export default function LockerScreen({ navigation }) {
     };
 
     return (
-        <View style={{ flex: 1, padding: 20 }}>
+        <View style={styles.container}>
             <TextInput
                 label="Từ khóa"
                 value={searchTerm}

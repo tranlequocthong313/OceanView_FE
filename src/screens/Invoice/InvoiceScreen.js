@@ -90,6 +90,7 @@ export default function InvoiceScreen({ navigation }) {
     const fetchInvoiceData = async () => {
         try {
             const response = await (await authAPI()).get(invoiceApis.invoice);
+            console.log(response.data);
             setIsLoading(false);
             setInvoices(response.data['2024']);
         } catch (error) {
@@ -141,7 +142,11 @@ export default function InvoiceScreen({ navigation }) {
                         {filteredInvoices.length === 0 ? (
                             <View style={{ marginTop: 100 }}>
                                 <View style={styles.wrapGuild}>
-                                <Text style={styles.guild}>{activedInvoice ? "Không có hoá đơn chưa thanh toán" : "Không có hoá đơn đã thanh toán"}</Text>
+                                    <Text style={styles.guild}>
+                                        {activedInvoice
+                                            ? 'Không có hoá đơn chưa thanh toán'
+                                            : 'Không có hoá đơn đã thanh toán'}
+                                    </Text>
                                 </View>
                             </View>
                         ) : (

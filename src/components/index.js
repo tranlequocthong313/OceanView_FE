@@ -14,3 +14,4 @@ export { default as ServiceNavButton } from './ServiceNavButton';
 export { default as FormActionBtn } from './FormActionBtn';
 export { default as Invoice } from './Invoice';
 export { default as SubmitButton } from './SubmitButton';
+export { default as InfoView } from './InfoView';

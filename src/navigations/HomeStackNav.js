@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
     DetailsInvoiceScreen,
     DetailsProfileScreen,
+    FixedBankScreen,
     HomeScreen,
     InvoiceScreen,
     LockerDetailScreen,
@@ -89,6 +90,13 @@ export default function HomeStackNav() {
                 options={{
                     title: 'Màn hình thanh toán',
                     headerShown: false,
+                }}
+            />
+            <HomeStack.Screen
+                name="FixedBankScreen"
+                component={FixedBankScreen}
+                options={{
+                    title: 'Chuyển khoản ngân hàng',
                 }}
             />
         </HomeStack.Navigator>

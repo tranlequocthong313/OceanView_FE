@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
     },
 });
 
-function UtilityButton({ navigation, icon, tittle, destination }) {
+function UtilityButton({ navigation, icon, title, destination }) {
     console.log('UtilityButton render');
     return (
         <View style={styles.utilityWrap}>
             <TouchableOpacity onPress={() => navigation.navigate(destination)}>
                 <View style={styles.utilityIcon}>{icon}</View>
             </TouchableOpacity>
-            <Text style={styles.utilityText}>{tittle}</Text>
+            <Text style={styles.utilityText}>{title}</Text>
         </View>
     );
 }

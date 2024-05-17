@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView,
     ActivityIndicator,
+    RefreshControl,
     Alert,
     ToastAndroid,
 } from 'react-native';
@@ -76,6 +77,7 @@ export default function HistoryReflectionScreen({ navigation }) {
     const [offset, setOffset] = useState(0);
     const LIMIT = 10;
     const [currentPage, setCurrentPage] = useState(1);
+    const [refreshing, setRefreshing] = useState(false);
 
     const fetchReflectionData = useCallback(async () => {
         try {
@@ -98,6 +100,12 @@ export default function HistoryReflectionScreen({ navigation }) {
         setIsLoading(true);
         fetchReflectionData();
     }, [fetchReflectionData]);
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchReflectionData();
+        setRefreshing(false);
+    };
 
     const getTotalPages = () => {
         if (!reflectionData || !reflectionData.count) return 1;
@@ -159,11 +167,14 @@ export default function HistoryReflectionScreen({ navigation }) {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
             <Button
                 mode="contained"
                 onPress={() => {
-                    navigation.navigate('CreateReflection');
+                    navigation.navigate('CreateFeedback');
                 }}
             >
                 Tạo phản ánh mới

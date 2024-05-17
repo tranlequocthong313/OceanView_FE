@@ -13,6 +13,7 @@ export { default as SeeMoreScreen } from './Home/SeeMoreScreen';
 export { default as InvoiceScreen } from './Invoice/InvoiceScreen';
 export { default as DetailsInvoiceScreen } from './Invoice/DetailsInvoiceScreen';
 export { default as WebViewScreen } from './Invoice/WebViewScreen';
+export { default as FixedBankScreen } from './Invoice/FixedBankScreen';
 
 // AccountScreen
 export { default as ProfileScreen } from './Account/AccountScreen';

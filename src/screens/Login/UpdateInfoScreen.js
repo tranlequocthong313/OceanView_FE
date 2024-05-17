@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, View, ToastAndroid } from 'react-native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
-import { BackButton, Background, Button, Header, TextInput } from '~/components';
-import MessageInvalid from '~/components/MessageInvalid';
+import { BackButton, Background, Button, Header, TextInput, MessageInvalid } from '~/components';
 import theme from '~/core/theme';
 import passwordValidator from '~/helpers/passwordValidator';
 import { authAPI, userApis } from '~/utils/api';
@@ -91,6 +90,8 @@ export default function UpdateInfoScreen({ navigation }) {
                 },
             });
             if (response.status === 200) {
+                ToastAndroid.showWithGravity('Cập nhật thông tin thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'HomeScreen' }],

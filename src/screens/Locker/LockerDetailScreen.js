@@ -17,9 +17,10 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderWidth: 1,
         borderRadius: 8,
-        borderColor: '#fff',
+        borderColor: '#000',
     },
     container: {
+        backgroundColor: '#CBAC7D',
         flex: 1,
         padding: 20,
     },
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
         margin: 8,
         borderWidth: 1,
         borderRadius: 8,
-        backgroundColor: '#CBAC7D',
+        backgroundColor: theme.colors.light,
         padding: 20,
 
         display: 'flex',

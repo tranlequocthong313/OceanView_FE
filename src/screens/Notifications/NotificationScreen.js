@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginVertical: 4,
     },
     image: {
         width: 60,
@@ -20,6 +23,7 @@ const styles = StyleSheet.create({
     contentWrapper: {
         flex: 1,
         margin: 8,
+        justifyContent: 'center',
     },
     title: {
         fontSize: 16,
@@ -27,7 +31,6 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 14,
-        flexGrow: 1,
         flexWrap: 'wrap',
     },
 });
@@ -42,6 +45,7 @@ export default function NotificationScreen() {
             try {
                 setLoading(true);
                 const res = await (await authAPI()).get(url);
+                console.log(res.data.results);
                 setNotifications((prev) => [...prev, ...res.data.results]);
                 setNextPageUrl(res.data.next);
                 console.log(res.data);
@@ -63,7 +67,7 @@ export default function NotificationScreen() {
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.container} onPress={() => onPressNotificationItem(item)}>
+        <TouchableOpacity key={item.id} style={styles.container} onPress={() => onPressNotificationItem(item)}>
             <Image style={styles.image} source={{ uri: item?.content?.image }} />
             <View style={styles.contentWrapper}>
                 <Text style={styles.title}>{item?.message}</Text>

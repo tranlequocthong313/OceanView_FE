@@ -7,7 +7,6 @@ import { useUser } from '~/hooks/useUser';
 const styles = StyleSheet.create({
     container: {},
     wrapHeader: {
-        // marginTop: 40,
         paddingTop: 50,
         marginHorizontal: 2,
         backgroundColor: theme.colors.primary,
@@ -71,6 +70,33 @@ const styles = StyleSheet.create({
     },
 });
 
+const utilityButtons = [
+    {
+        id: 1,
+        icon: <MaterialCommunityIcons name="beach" size={24} color="black" />,
+        title: 'Tiện ích',
+        destination: 'UtilityScreen',
+    },
+    {
+        id: 2,
+        icon: <FontAwesome6 name="servicestack" size={24} color="black" />,
+        title: 'Dịch vụ',
+        destination: 'ServiceScreen',
+    },
+    {
+        id: 3,
+        icon: <FontAwesome6 name="file-invoice-dollar" size={22} color="black" />,
+        title: 'Hoá đơn',
+        destination: 'InvoiceScreen',
+    },
+    {
+        id: 4,
+        icon: <AntDesign name="appstore-o" size={22} color="black" />,
+        title: 'Xem thêm',
+        destination: 'SeeMore',
+    },
+];
+
 export default function HomeScreen({ navigation }) {
     const user = useUser();
     console.log(user);
@@ -109,33 +135,15 @@ export default function HomeScreen({ navigation }) {
             <View style={styles.contentWrap}>
                 {/* utility */}
                 <View style={styles.utilityContainer}>
-                    <UtilityButton
-                        icon={<MaterialCommunityIcons name="beach" size={24} color="black" />}
-                        tittle="Tiện ích"
-                        navigation={navigation}
-                        destination="UtilityScreen"
-                    />
-
-                    <UtilityButton
-                        icon={<FontAwesome6 name="servicestack" size={24} color="black" />}
-                        tittle="Dịch vụ"
-                        navigation={navigation}
-                        destination="ServiceScreen"
-                    />
-
-                    <UtilityButton
-                        icon={<FontAwesome6 name="file-invoice-dollar" size={22} color="black" />}
-                        tittle="Hoá đơn"
-                        navigation={navigation}
-                        destination="InvoiceScreen"
-                    />
-
-                    <UtilityButton
-                        icon={<AntDesign name="appstore-o" size={22} color="black" />}
-                        tittle="Xem thêm"
-                        navigation={navigation}
-                        destination="SeeMore"
-                    />
+                    {utilityButtons.map((button) => (
+                        <UtilityButton
+                            key={button.id}
+                            icon={button.icon}
+                            title={button.title}
+                            destination={button.destination}
+                            navigation={navigation}
+                        />
+                    ))}
                 </View>
             </View>
         </View>
