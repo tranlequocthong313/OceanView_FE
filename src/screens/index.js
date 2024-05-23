@@ -42,20 +42,14 @@ export { default as ListCardScreen } from './Services/ListCardScreen';
 // ServicesScreen -> AccessCardScreen
 export { default as AccessCardMainScreen } from './Services/AccessCard/AccessCardMainScreen';
 export { default as RegisterAccessCardScreen } from './Services/AccessCard/RegisterAccessCardScreen';
-export { default as CancelAccessCardScreen } from './Services/AccessCard/CancelAccessCardScreen';
-export { default as ReissueAccessCardScreen } from './Services/AccessCard/ReissueAccessCardScreen';
 
 // ServicesScreen -> ResidentCardScreen
 export { default as RegisterResidentCardScreen } from './Services/ResidentCard/RegisterResidentCardScreen';
 export { default as ResidentCardMainScreen } from './Services/ResidentCard/ResidentCardMainScreen';
-export { default as CancelResidentCardScreen } from './Services/ResidentCard/CancelResidentCardScreen';
-export { default as ReissueResidentCardScreen } from './Services/ResidentCard/ReissueResidentCardScreen';
 
 // ServicesScreen -> ParkingCardScreen
 export { default as ParkingCardMainScreen } from './Services/ParkingCard/ParkingCardMainScreen';
 export { default as RegisterParkingCardScreen } from './Services/ParkingCard/RegisterParkingCardScreen';
-export { default as CancelParkingCardScreen } from './Services/ParkingCard/CancelParkingCardScreen';
-export { default as ReissueParkingCardScreen } from './Services/ParkingCard/ReissueParkingCardScreen';
 
 export { default as LockerScreen } from './Locker/LockerScreen';
 export { default as ModalItem } from './Locker/ModalItem';

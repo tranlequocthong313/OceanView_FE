@@ -61,7 +61,14 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function ListCardScreen() {
+export default function ListCardScreen({ navigation, route }) {
+    const { title } = route.params;
+
+    useEffect(() => {
+        if (title) {
+            navigation.setOptions({ title });
+        }
+    }, [title, navigation]);
     const [listCardData, setListCardData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 

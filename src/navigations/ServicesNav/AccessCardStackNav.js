@@ -1,10 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-    AccessCardMainScreen,
-    RegisterAccessCardScreen,
-    CancelAccessCardScreen,
-    ReissueAccessCardScreen,
-} from '~/screens';
+import { AccessCardMainScreen, RegisterAccessCardScreen } from '~/screens';
 
 const AccessCardStack = createNativeStackNavigator();
 
@@ -23,20 +18,6 @@ export default function AccessCardStackNav() {
                 component={RegisterAccessCardScreen}
                 options={{
                     title: 'Đăng ký thẻ ra vào',
-                }}
-            />
-            <AccessCardStack.Screen
-                name="CancelAccessCard"
-                component={CancelAccessCardScreen}
-                options={{
-                    title: 'Huỷ thẻ ra vào',
-                }}
-            />
-            <AccessCardStack.Screen
-                name="ReissueAccessCard"
-                component={ReissueAccessCardScreen}
-                options={{
-                    title: 'Cấp lại thẻ ra vào',
                 }}
             />
         </AccessCardStack.Navigator>
