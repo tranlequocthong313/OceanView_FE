@@ -21,7 +21,7 @@ export default function ServiceStackNav({ navigation }) {
                             name="history"
                             size={24}
                             color="black"
-                            onPress={() => navigation.navigate('ListCard')}
+                            onPress={() => navigation.navigate('ListCard', { title: 'Danh sách thẻ đăng ký' })}
                             style={{ padding: 8 }}
                         />
                     ),

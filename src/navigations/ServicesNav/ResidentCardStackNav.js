@@ -1,10 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-    ResidentCardMainScreen,
-    RegisterResidentCardScreen,
-    CancelResidentCardScreen,
-    ReissueResidentCardScreen,
-} from '~/screens';
+import { ResidentCardMainScreen, RegisterResidentCardScreen } from '~/screens';
 
 const ResidentCardStack = createNativeStackNavigator();
 
@@ -23,20 +18,6 @@ export default function ResidentCardStackNav() {
                 component={RegisterResidentCardScreen}
                 options={{
                     title: 'Đăng ký thẻ cư dân',
-                }}
-            />
-            <ResidentCardStack.Screen
-                name="CancelResidentCard"
-                component={CancelResidentCardScreen}
-                options={{
-                    title: 'Huỷ thẻ cư dân',
-                }}
-            />
-            <ResidentCardStack.Screen
-                name="ReissueResidentCard"
-                component={ReissueResidentCardScreen}
-                options={{
-                    title: 'Cấp lại thẻ cư dân',
                 }}
             />
         </ResidentCardStack.Navigator>

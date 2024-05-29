@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     containerType: {
         flexDirection: 'row',
     },
-
     wrapType: {
         borderRadius: 4,
         borderWidth: 1,
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
         margin: 4,
-        width: 'calc(50% - 8px)',
         flex: 1,
     },
     type: {
@@ -92,17 +90,17 @@ const styles = StyleSheet.create({
 });
 
 export default function RegisterParkingCardScreen({ navigation }) {
-    const [vehicleType, setVehicleType] = useState('');
-    const [licensePlates, setLicensePlates] = useState('');
+    const [vehicleType, setVehicleType] = useState('BICYCLE');
+    const [licensePlates, setLicensePlates] = useState('AB28228');
 
-    const [name, setName] = useState('');
-    const [CCCD, setCCCD] = useState('');
-    const [homeTown, setHomeTown] = useState('');
-    const [SDT, setSDT] = useState('');
+    const [name, setName] = useState('Huỳnh Minh');
+    const [CCCD, setCCCD] = useState('051204319194');
+    const [homeTown, setHomeTown] = useState('Quảng Ninh');
+    const [SDT, setSDT] = useState('0335198056');
     const [selectedButton, setSelectedButton] = useState(null);
-    const [relationship, setRelationShip] = useState('');
+    const [relationship, setRelationShip] = useState('Bạn');
 
-    const [roomNumber, setRoomNumber] = useState('');
+    const [roomNumber, setRoomNumber] = useState('A-202');
     const [gender, setGender] = useState('MALE');
     const genders = ['MALE', 'FEMALE'];
 
@@ -128,39 +126,31 @@ export default function RegisterParkingCardScreen({ navigation }) {
         }
         // Xử lý ngày
         if (field === 'day') {
-            // Kiểm tra xem giá trị nhập vào có phải là số từ 1 đến 31 không
             const numericValue = Number(text);
             const monthValue = Number(month);
             if (!Number.isNaN(numericValue) && numericValue >= 1) {
                 if (monthValue === 2) {
-                    // Kiểm tra năm nhuận
                     const yearValue = Number(year);
                     const isLeapYear = (yearValue % 4 === 0 && yearValue % 100 !== 0) || yearValue % 400 === 0;
 
                     if (isLeapYear) {
-                        // Tháng 2 có 29 ngày trong năm nhuận
                         if (numericValue >= 1 && numericValue <= 29) {
                             newValue = numericValue.toString();
                         } else {
                             return;
                         }
                     } else if (numericValue >= 1 && numericValue <= 28) {
-                        // Tháng 2 có 28 ngày trong năm không nhuận
-
                         newValue = numericValue.toString();
                     } else {
                         return;
                     }
                 } else if ([4, 6, 9, 11].includes(monthValue)) {
-                    // Tháng có 30 ngày
                     if (numericValue >= 1 && numericValue <= 30) {
                         newValue = numericValue.toString();
                     } else {
                         return;
                     }
-                }
-                // Các tháng còn lại có 31 ngày
-                else if (numericValue >= 1 && numericValue <= 31) {
+                } else if (numericValue >= 1 && numericValue <= 31) {
                     newValue = numericValue.toString();
                 } else {
                     return;
@@ -168,21 +158,14 @@ export default function RegisterParkingCardScreen({ navigation }) {
             } else {
                 return;
             }
-        }
-        // Xử lý tháng
-        else if (field === 'month') {
-            // Kiểm tra xem giá trị nhập vào có phải là số từ 1 đến 12 không
+        } else if (field === 'month') {
             const numericValue = Number(text);
             if (!Number.isNaN(numericValue) && numericValue >= 1 && numericValue <= 12) {
                 newValue = numericValue.toString();
             } else {
                 return;
             }
-        }
-        // Xử lý năm
-        else if (field === 'year') {
-            // Tương tự, kiểm tra xem giá trị nhập vào có phải là số không
-            // Trong ví dụ này, tôi không thêm ràng buộc về giới hạn của năm
+        } else if (field === 'year') {
             const numericValue = Number(text);
             if (!Number.isNaN(numericValue)) {
                 newValue = numericValue.toString();
@@ -191,18 +174,15 @@ export default function RegisterParkingCardScreen({ navigation }) {
             }
         }
 
-        // Nếu giá trị hợp lệ, cập nhật state tương ứng
         if (field === 'day') {
             setDay(newValue);
-            console.log(text);
         } else if (field === 'month') {
             setMonth(newValue);
-            console.log(text);
         } else if (field === 'year') {
             setYear(newValue);
-            console.log(text);
         }
     };
+
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -212,7 +192,6 @@ export default function RegisterParkingCardScreen({ navigation }) {
     };
 
     const handleConfirm = (date) => {
-        console.log(date);
         setDay(date.getDate().toString());
         setMonth((date.getMonth() + 1).toString());
         setYear(date.getFullYear().toString());
@@ -222,7 +201,30 @@ export default function RegisterParkingCardScreen({ navigation }) {
     const handlePress = (buttonName) => {
         setSelectedButton(buttonName);
         setVehicleType(buttonName);
-        console.log(buttonName);
+    };
+
+    const validateFields = () => {
+        if (
+            !vehicleType ||
+            !licensePlates ||
+            !name ||
+            !CCCD ||
+            !homeTown ||
+            !SDT ||
+            !relationship ||
+            !roomNumber ||
+            !day ||
+            !month ||
+            !year
+        ) {
+            ToastAndroid.showWithGravity(
+                'Please fill in all the required fields',
+                ToastAndroid.LONG,
+                ToastAndroid.CENTER,
+            );
+            return false;
+        }
+        return true;
     };
 
     const handleSubmit = async () => {
@@ -238,26 +240,30 @@ export default function RegisterParkingCardScreen({ navigation }) {
         console.log('license_plate:', licensePlates);
         console.log('vehicle_type:', vehicleType);
 
-        try {
-            const requestData = {
-                relative: {
-                    relationship,
-                    personal_information: {
-                        citizen_id: CCCD,
-                        phone_number: SDT,
-                        full_name: name,
-                        date_of_birth: `${year}-${month}-${day}`,
-                        hometown: homeTown,
-                        gender,
-                    },
-                },
-                vehicle: {
-                    license_plate: licensePlates,
-                    vehicle_type: vehicleType,
-                },
-                room_number: roomNumber,
-            };
+        if (!validateFields()) {
+            return;
+        }
 
+        const requestData = {
+            relative: {
+                relationship,
+                personal_information: {
+                    citizen_id: CCCD,
+                    phone_number: SDT,
+                    full_name: name,
+                    date_of_birth: `${year}-${month}-${day}`,
+                    hometown: homeTown,
+                    gender,
+                },
+            },
+            vehicle: {
+                license_plate: licensePlates,
+                vehicle_type: vehicleType,
+            },
+            room_number: roomNumber,
+        };
+
+        try {
             const response = await (
                 await authAPI()
             ).post(serviceApis.parkingCard, requestData, {
@@ -265,13 +271,16 @@ export default function RegisterParkingCardScreen({ navigation }) {
                     'Content-Type': 'application/json',
                 },
             });
+
             if (response.status === 200) {
                 ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
                 navigation.navigate('ListCard');
+            } else {
+                ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thất bại', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
-            console.log('Response success:', response.data);
         } catch (error) {
             console.log(error);
+            ToastAndroid.showWithGravity('Đã xảy ra lỗi, vui lòng thử lại', ToastAndroid.LONG, ToastAndroid.CENTER);
         }
     };
 
@@ -408,7 +417,6 @@ export default function RegisterParkingCardScreen({ navigation }) {
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text>Giới tính: </Text>
 
-                                {/* Nút Radio */}
                                 {genders.map((g) => (
                                     <View key={g} style={styles.RadioButton}>
                                         <RadioButton
