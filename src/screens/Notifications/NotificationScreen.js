@@ -34,21 +34,21 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
 });
-export default function NotificationScreen({navigation}) {
+export default function NotificationScreen({ navigation }) {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
     const [nextPageUrl, setNextPageUrl] = useState(null);
     const [url, setUrl] = useState(notificationApis.notifications);
 
     const SCREEN_MAPPINGS = {
-        "INVOICE_CREATE": "DetailsInvoice",
-        "SERVICE_APPROVED": "ListCard",
-        "SERVICE_REJECTED": "ListCard",
-        "REISSUE_APPROVED": "ListCard",
-        "REISSUE_REJECTED": "ListCard",
-        "LOCKER_ITEM_ADD": "LockerDetailScreen",
+        INVOICE_CREATE: 'DetailsInvoice',
+        SERVICE_APPROVED: 'ListCard',
+        SERVICE_REJECTED: 'ListCard',
+        REISSUE_APPROVED: 'ListCard',
+        REISSUE_REJECTED: 'ListCard',
+        LOCKER_ITEM_ADD: 'LockerDetailScreen',
         // "NEWS_POST": "invoice", # TODO: Implement for news
-    }
+    };
 
     useEffect(() => {
         const fetchNotifications = async () => {
