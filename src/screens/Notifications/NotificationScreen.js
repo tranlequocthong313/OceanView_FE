@@ -34,21 +34,29 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
 });
-export default function NotificationScreen() {
+export default function NotificationScreen({navigation}) {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
     const [nextPageUrl, setNextPageUrl] = useState(null);
     const [url, setUrl] = useState(notificationApis.notifications);
+
+    const SCREEN_MAPPINGS = {
+        "INVOICE_CREATE": "DetailsInvoice",
+        "SERVICE_APPROVED": "ListCard",
+        "SERVICE_REJECTED": "ListCard",
+        "REISSUE_APPROVED": "ListCard",
+        "REISSUE_REJECTED": "ListCard",
+        "LOCKER_ITEM_ADD": "LockerDetailScreen",
+        // "NEWS_POST": "invoice", # TODO: Implement for news
+    }
 
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
                 setLoading(true);
                 const res = await (await authAPI()).get(url);
-                console.log(res.data.results);
                 setNotifications((prev) => [...prev, ...res.data.results]);
                 setNextPageUrl(res.data.next);
-                console.log(res.data);
             } catch (error) {
                 console.error(error);
                 Toast.show({
@@ -63,7 +71,7 @@ export default function NotificationScreen() {
     }, [url]);
 
     const onPressNotificationItem = (item) => {
-        console.log(item);
+        navigation.navigate(SCREEN_MAPPINGS[item?.content?.entity_type], { id: item?.content?.entity_id });
     };
 
     const renderItem = ({ item }) => (

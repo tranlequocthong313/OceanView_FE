@@ -8,13 +8,14 @@ const styles = StyleSheet.create({
     container: {},
     wrapHeader: {
         paddingTop: 50,
-        marginHorizontal: 2,
+        // marginHorizontal: 2,
         backgroundColor: theme.colors.primary,
         height: 130,
         flexDirection: 'row',
         justifyContent: 'space-between',
         position: 'relative',
-        borderRadius: 4,
+        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 4,
     },
     header: {
         flexDirection: 'row',

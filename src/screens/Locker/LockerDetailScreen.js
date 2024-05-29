@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 
 // TODO: CSS for this component looks better
 function LockerDetailScreen({ route }) {
-    const { lockerId, forAdmin = true } = route.params;
+    const { lockerId, forAdmin = false } = route.params;
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchLoading, setSearchLoading] = useState(false);

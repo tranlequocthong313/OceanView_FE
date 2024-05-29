@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
 });
 
 export default function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState({ value: '240002', error: '' });
-    const [password, setPassword] = useState({ value: 'minhha2k3', error: '' });
+    const [username, setUsername] = useState({ value: '240001', error: '' });
+    const [password, setPassword] = useState({ value: 'tranlequocthong313', error: '' });
 
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -65,8 +65,6 @@ export default function LoginScreen({ navigation }) {
             const response = await api.post(userApis.login, {
                 username: username.value,
                 password: password.value,
-                // username: '240002',
-                // password: 'minhha2k3',
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;
@@ -77,8 +75,6 @@ export default function LoginScreen({ navigation }) {
                 await AsyncStorage.setItem('accessToken', token);
                 await AsyncStorage.setItem('refreshToken', refreshToken);
 
-                // console.log(token);
-                // console.log(status);
                 console.log('Response:', response.data);
                 userDispatch({
                     type: USER_ACTION_TYPE.LOGIN,
