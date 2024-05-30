@@ -16,7 +16,14 @@
         ],
         "android": {
             "permissions": ["android.permission.RECORD_AUDIO"],
+            "package": "com.anonymous.OceanView_FE",
+            "googleServicesFile": "./google-services.json",
             "package": "com.anonymous.OceanView_FE"
-        }
-    }
+        },
+        "plugins": [
+            "@react-native-firebase/app",
+            "@react-native-firebase/messaging",
+        ]
+    },
+    "name": "OceanView_FE"
 }

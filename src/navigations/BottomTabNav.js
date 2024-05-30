@@ -35,7 +35,7 @@ export default function SettingsTabNav() {
                 options={{
                     tabBarLabel: 'Thông báo',
                     tabBarIcon: ({ color }) => <Feather name="bell" size={24} color={color} />,
-                    tabBarBadge: user?.number_of_unread_notifications || 0,
+                    tabBarBadge: user?.unread_notifications || 0,
                 }}
             />
             <BottomTab.Screen

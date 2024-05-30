@@ -3,6 +3,9 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { UtilityButton } from '~/components';
 import theme from '~/core/theme';
 import { useUser } from '~/hooks/useUser';
+import messaging from '@react-native-firebase/messaging';
+import saveTokenToDatabase from '~/firebase';
+import { useEffect } from 'react';
 
 const styles = StyleSheet.create({
     container: {},
@@ -101,6 +104,16 @@ const utilityButtons = [
 export default function HomeScreen({ navigation }) {
     const user = useUser();
     console.log(user);
+
+    useEffect(() => {
+        messaging()
+            .getToken()
+            .then(token => saveTokenToDatabase(token));
+
+        return messaging().onTokenRefresh(token => {
+            saveTokenToDatabase(token);
+        });
+    }, []);
 
     return (
         <View style={styles.container}>

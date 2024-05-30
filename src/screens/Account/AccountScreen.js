@@ -2,6 +2,7 @@ import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons, AntDesign, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackView } from '~/components';
 import { useUser } from '~/hooks/useUser';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     container: {
@@ -46,6 +47,14 @@ const styles = StyleSheet.create({
 
 export default function AccountScreen({ navigation }) {
     const user = useUser();
+
+    const logout = async () => {
+        await AsyncStorage.removeItem("fcmToken")
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'LoginScreen' }],
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -110,12 +119,7 @@ export default function AccountScreen({ navigation }) {
 
                 <TouchableOpacity
                     style={styles.wrapLogout}
-                    onPress={() => {
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'LoginScreen' }],
-                        });
-                    }}
+                    onPress={logout}
                 >
                     <View style={styles.viewWrapLogout}>
                         <View style={styles.wrapWithIcon}>
