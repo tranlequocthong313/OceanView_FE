@@ -12,11 +12,18 @@
                 {
                     "photosPermission": "The app accesses your photos to let you share them with your friends."
                 }
-            ]
+            ],
+            "@react-native-firebase/app"
         ],
         "android": {
             "permissions": ["android.permission.RECORD_AUDIO"],
+            "googleServicesFile": "./google-services.json",
             "package": "com.anonymous.OceanView_FE"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "5df601f6-7d59-4187-a544-a1e0799397a1"
+            }
         }
     }
 }

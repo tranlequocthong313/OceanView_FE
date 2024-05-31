@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './constants';
 
 const HOST = 'https://oceanview-be.onrender.com';
 
 export const userApis = {
     login: '/users/login/',
+    logout: '/users/logout/',
     activeUser: '/users/active/',
     currentUser: '/users/current/',
     methodResetPassword: '/users/forgot-password/',
@@ -53,7 +55,7 @@ export const notificationApis = {
 };
 
 export const authAPI = async () => {
-    const token = await AsyncStorage.getItem('accessToken');
+    const token = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
     console.log('Token: ', token);
 
     return axios.create({
@@ -76,11 +78,11 @@ const refreshToken = async (error) => {
         error.response.status === 400 &&
         error.response.data.message.includes('The ID Token is expired, revoked, malformed, or otherwise invalid.')
     ) {
-        const token = await AsyncStorage.getItem('refreshToken');
+        const token = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
         console.log('Token: ', refreshToken);
         const res = await api.post(userApis.refreshToken, { token });
-        await AsyncStorage.setItem('accessToken', res.data.access_token);
-        await AsyncStorage.setItem('refreshToken', res.data.refresh_token);
+        await AsyncStorage.setItem(ACCESS_TOKEN_KEY, res.data.access_token);
+        await AsyncStorage.setItem(REFRESH_TOKEN_KEY, res.data.refresh_token);
         console.log('Refreshed token successfully');
     }
 };
