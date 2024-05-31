@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet } from 'react-native';
+// import { Text, View, TouchableOpacity } from 'react-native';
+
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { Button, Background, Header, Logo, Paragraph } from '~/components';
 import theme from '~/core/theme';
@@ -82,7 +83,7 @@ function DetailsSettingsScreen() {
 
     const handleVerifyOTP = () => {
         if (!value || value.length !== 6) {
-            // ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
+            ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
             return;
         }
         console.log(value);

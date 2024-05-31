@@ -1,0 +1,48 @@
+{
+    "project_info": {
+        "project_number": "771961665424",
+        "project_id": "oceanview-9bd7c",
+        "storage_bucket": "oceanview-9bd7c.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:771961665424:android:fb081254fff56146a82515",
+                "android_client_info": {
+                    "package_name": "com.anonymous.OceanView_FE"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDukG95geAMDGVl63JfSrU-pHXE3vSgOus"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        },
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:771961665424:android:8322aced43dabedda82515",
+                "android_client_info": {
+                    "package_name": "com.example.android"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDukG95geAMDGVl63JfSrU-pHXE3vSgOus"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}

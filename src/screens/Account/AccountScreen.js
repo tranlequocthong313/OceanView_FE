@@ -1,6 +1,10 @@
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import { MaterialIcons, AntDesign, Feather, Entypo } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackView } from '~/components';
+import { useUser } from '~/hooks/useUser';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authAPI, userApis } from '~/utils/api';
+import { ACCESS_TOKEN_KEY, FCM_TOKEN_KEY, REFRESH_TOKEN_KEY } from '~/utils/constants';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,6 +48,31 @@ const styles = StyleSheet.create({
 });
 
 export default function AccountScreen({ navigation }) {
+    const user = useUser();
+
+    const logout = async () => {
+        try {
+            const fcmToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
+            const r = await (
+                await authAPI()
+            ).post(userApis.logout, {
+                fcm_token: fcmToken,
+                device_type: 'ANDROID',
+            });
+            if (r.status === 204) {
+                await AsyncStorage.removeItem(FCM_TOKEN_KEY);
+                await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
+                await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'LoginScreen' }],
+                });
+            }
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View>
@@ -59,7 +88,7 @@ export default function AccountScreen({ navigation }) {
                     navigation={navigation}
                     icon={<AntDesign name="setting" size={22} color="black" />}
                     title="Cài đặt"
-                    destination="Settings"
+                    destination="SettingsScreen"
                 />
                 <StackView
                     navigation={navigation}
@@ -71,9 +100,25 @@ export default function AccountScreen({ navigation }) {
                 <StackView
                     navigation={navigation}
                     icon={<Entypo name="new-message" size={24} color="black" />}
-                    title="Tạo phản ánh mới"
-                    destination="Feedback"
+                    title="Danh sách phản ánh đã tạo"
+                    destination="HistoryReflection"
                 />
+
+                <StackView
+                    navigation={navigation}
+                    icon={<MaterialCommunityIcons name="locker" size={24} color="black" />}
+                    title="Tủ đồ"
+                    destination="LockerDetailScreen"
+                />
+
+                {user && user.is_staff && (
+                    <StackView
+                        navigation={navigation}
+                        icon={<MaterialCommunityIcons name="locker-multiple" size={24} color="black" />}
+                        title="Quản lý tủ đồ cho cư dân"
+                        destination="LockerScreen"
+                    />
+                )}
 
                 <StackView
                     navigation={navigation}
@@ -89,15 +134,7 @@ export default function AccountScreen({ navigation }) {
                     destination="AboutUs"
                 />
 
-                <TouchableOpacity
-                    style={styles.wrapLogout}
-                    onPress={() => {
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'LoginScreen' }],
-                        });
-                    }}
-                >
+                <TouchableOpacity style={styles.wrapLogout} onPress={logout}>
                     <View style={styles.viewWrapLogout}>
                         <View style={styles.wrapWithIcon}>
                             <Entypo name="log-out" size={24} color="red" />

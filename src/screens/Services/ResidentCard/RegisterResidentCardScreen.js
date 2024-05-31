@@ -1,7 +1,8 @@
-import { SafeAreaView, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, ToastAndroid } from 'react-native';
 import { TextInput, RadioButton, Button } from 'react-native-paper';
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import { authAPI, serviceApis } from '~/utils/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const styles = StyleSheet.create({
@@ -21,6 +22,8 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: '500',
         fontSize: 16,
+        marginTop: 26,
+        marginBottom: 12,
     },
     note: {
         marginVertical: 12,
@@ -62,10 +65,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function RegisterResidentCardScreen() {
+export default function RegisterResidentCardScreen({ navigation }) {
     const [name, setName] = useState('');
-    const [gender, setGender] = useState('Nam');
-    const genders = ['Nam', 'Nữ'];
+    const [gender, setGender] = useState('MALE');
+    const genders = ['MALE', 'FEMALE'];
 
     const [CCCD, setCCCD] = useState('');
     const [homeTown, setHomeTown] = useState('');
@@ -78,6 +81,7 @@ export default function RegisterResidentCardScreen() {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const [relationship, setRelationShip] = useState('');
+    const [roomNumber, setRoomNumber] = useState('');
 
     const handleInputChange = (text, field) => {
         let newValue = text;
@@ -186,8 +190,48 @@ export default function RegisterResidentCardScreen() {
         hideDatePicker();
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log('Submit successfully');
+        console.log('relationship:', relationship);
+        console.log('CCCD:', CCCD);
+        console.log('SDT:', SDT);
+        console.log('name:', name);
+        console.log('date_of_birth:', `${year}-${month}-${day}`);
+        console.log('homeTown:', homeTown);
+        console.log('gender:', gender);
+        console.log('email:', email);
+        console.log('room_number:', roomNumber);
+
+        try {
+            const requestData = {
+                relative: {
+                    relationship,
+                    personal_information: {
+                        citizen_id: CCCD,
+                        full_name: name,
+                        date_of_birth: `${year}-${month}-${day}`,
+                        phone_number: SDT,
+                        email,
+                        hometown: homeTown,
+                        gender,
+                    },
+                },
+                room_number: roomNumber,
+            };
+
+            const response = await (
+                await authAPI()
+            ).post(serviceApis.residentCard, requestData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            ToastAndroid.showWithGravity('Đăng ký thẻ cư dân thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+            navigation.navigate('ListCard');
+            console.log('Response success:', response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -198,7 +242,16 @@ export default function RegisterResidentCardScreen() {
                         <View style={styles.note}>
                             <Text style={styles.textNote}>Thông tin này sẽ được sử dụng khi đăng ký</Text>
                         </View>
-                        <Text style={styles.title}>Đăng ký cấp phát tài khoản cho người thân </Text>
+                        <Text style={styles.title}>Số phòng</Text>
+                        <TextInput
+                            style={styles.input}
+                            label="Số phòng"
+                            value={roomNumber}
+                            onChangeText={(text) => {
+                                setRoomNumber(text);
+                            }}
+                        />
+                        <Text style={styles.title}>Thông tin người đăng ký</Text>
 
                         <TextInput
                             style={styles.input}

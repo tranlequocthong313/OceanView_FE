@@ -1,13 +1,16 @@
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { AntDesign, Feather } from '@expo/vector-icons';
+import { useNotification } from '~/hooks/useNotification';
 import theme from '~/core/theme';
-import ProfileStackNav from './AccountStackNav';
+import AccountStackNav from './AccountStackNav';
 import HomeStackNav from './HomeStackNav';
 import NotifyStackNav from './NotifyStackNav';
 
 const BottomTab = createMaterialBottomTabNavigator();
 
 export default function SettingsTabNav() {
+    const { badge } = useNotification();
+
     return (
         <BottomTab.Navigator
             initialRouteName="HomeTab"
@@ -32,12 +35,12 @@ export default function SettingsTabNav() {
                 options={{
                     tabBarLabel: 'Thông báo',
                     tabBarIcon: ({ color }) => <Feather name="bell" size={24} color={color} />,
-                    tabBarBadge: 3,
+                    tabBarBadge: badge,
                 }}
             />
             <BottomTab.Screen
                 name="ProfileTab"
-                component={ProfileStackNav}
+                component={AccountStackNav}
                 options={{
                     tabBarStyle: { display: 'none' },
                     tabBarLabel: 'Tài khoản',

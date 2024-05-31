@@ -1,10 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-    ParkingCardMainScreen,
-    RegisterParkingCardScreen,
-    CancelParkingCardScreen,
-    ReissueParkingCardScreen,
-} from '~/screens';
+import { ParkingCardMainScreen, RegisterParkingCardScreen } from '~/screens';
 
 const ParkingCardStack = createNativeStackNavigator();
 
@@ -23,20 +18,6 @@ export default function ParkingCardStackNav() {
                 component={RegisterParkingCardScreen}
                 options={{
                     title: 'Đăng ký thẻ giữ xe',
-                }}
-            />
-            <ParkingCardStack.Screen
-                name="CancelParkingCard"
-                component={CancelParkingCardScreen}
-                options={{
-                    title: 'Huỷ thẻ giữ xe',
-                }}
-            />
-            <ParkingCardStack.Screen
-                name="ReissueParkingCard"
-                component={ReissueParkingCardScreen}
-                options={{
-                    title: 'Cấp lại thẻ giữ xe',
                 }}
             />
         </ParkingCardStack.Navigator>

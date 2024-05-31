@@ -1,14 +1,18 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { TextInput as Input } from 'react-native-paper';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, TextInput as Input } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import theme from '../core/theme';
 
 const styles = StyleSheet.create({
     container: {
         width: '100%',
         marginVertical: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     input: {
+        flex: 1,
         backgroundColor: theme.colors.surface,
     },
     description: {
@@ -21,9 +25,13 @@ const styles = StyleSheet.create({
         color: theme.colors.error,
         paddingTop: 8,
     },
+    icon: {
+        paddingHorizontal: 10,
+    },
 });
 
-function TextInput({ errorText, description, ...props }) {
+// TODO: Fix this clear text button
+function TextInput({ errorText, description, loading, clearText, onClearText, ...props }) {
     return (
         <View style={styles.container}>
             <Input
@@ -33,6 +41,12 @@ function TextInput({ errorText, description, ...props }) {
                 mode="outlined"
                 {...props}
             />
+            {loading && <ActivityIndicator style={styles.icon} />}
+            {clearText && (
+                <TouchableOpacity style={styles.icon} onPress={() => onClearText && onClearText()}>
+                    <Ionicons name="close-circle-outline" size={24} color="gray" />
+                </TouchableOpacity>
+            )}
             {description && !errorText ? <Text style={styles.description}>{description}</Text> : null}
             {errorText ? <Text style={styles.error}>{errorText}</Text> : null}
         </View>

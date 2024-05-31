@@ -1,11 +1,24 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
-import Button from '~/components/Button';
-import formValidator from '~/helpers/formValidator';
-import TextInput from '~/components/TextInput';
-import DropDownPicker from 'react-native-dropdown-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+    View,
+    Text,
+    StyleSheet,
+    SafeAreaView,
+    ScrollView,
+    KeyboardAvoidingView,
+    ActivityIndicator,
+    Alert,
+    ToastAndroid,
+    Image,
+} from 'react-native';
 import { authAPI, feedbackApis } from '~/utils/api';
+import { AntDesign } from '@expo/vector-icons';
+import Button from '~/components/Button';
+import { Button as ButtonPaper, TextInput } from 'react-native-paper';
+import formValidator from '~/helpers/formValidator';
+import DropDownPicker from 'react-native-dropdown-picker';
+import * as ImagePicker from 'expo-image-picker';
+import theme from '~/core/theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -35,80 +48,116 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         paddingTop: 16,
     },
-
+    upload: {
+        minWidth: 100,
+        color: theme.colors.surface,
+        fontWeight: 'bold',
+        marginRight: 16,
+    },
     submit: {
         margin: 8,
     },
 });
 
-// TODO: Add image field
-export default function CreateFeedbackScreen() {
+export default function CreateFeedbackScreen({ navigation }) {
     const [title, setTitle] = useState({ value: '', error: '' });
-    const [content, setContent] = useState({ value: '', error: '' });
+    const [desc, setDesc] = useState({ value: '', error: '' });
 
     const [open, setOpen] = useState(false);
-    const [type, setType] = useState(null);
-    const [types, setTypes] = useState([
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
         { label: 'Thắc mắc', value: 'QUESTION' },
         { label: 'Yêu cầu hỗ trợ', value: 'SUPPORT' },
         { label: 'Phàn nàn', value: 'COMPLAIN' },
         { label: 'Khác', value: 'OTHER' },
     ]);
 
+    const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleUploadImage = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            console.log('Permissions denied!');
+        } else {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                quality: 1,
+            });
+            if (!result.canceled) {
+                setImage(result.assets[0]);
+            }
+        }
+    };
+
     const handleSubmit = async () => {
         const titleError = formValidator(title.value, 'Title');
-        const descError = formValidator(content.value, 'Description');
+        const descError = formValidator(desc.value, 'Description');
 
-        if (type === null) {
+        if (value === null) {
             Alert.alert('Lỗi', 'Vui lòng chọn một mục trong nhóm phản ánh trước khi tạo!');
             return;
         }
 
         if (titleError || descError) {
             setTitle({ ...title, error: titleError });
-            setContent({ ...content, error: descError });
-
+            setDesc({ ...desc, error: descError });
             return;
         }
+
         try {
-            // TODO: Can we send the access token in just one place? Keep it simple and Don't repeat yourself
-            const token = await AsyncStorage.getItem('accessToken');
-            console.log(token);
+            setLoading(true);
+            const formData = new FormData();
 
-            const headers = {
-                Authorization: `Bearer ${token}`,
-            };
+            // Kiểm tra nếu image không null thì thêm vào form data
+            if (image !== null) {
+                formData.append('image', {
+                    uri: image.uri,
+                    name: image.filename ?? `avatar.${image.mimeType.split('/')[1]}`,
+                    type: image.mimeType,
+                });
+            } else {
+                // Nếu image là null, thêm null vào form data
+                formData.append('image', null);
+            }
 
-            // TODO: Add image
+            formData.append('title', title.value);
+            formData.append('content', desc.value);
+            formData.append('type', value);
+
             const response = await (
                 await authAPI()
-            ).post(
-                feedbackApis.feedbackPost,
-                {
-                    type,
-                    title: title.value,
-                    content: content.value,
+            ).post(feedbackApis.feedbackPost, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
-                headers,
-            );
+            });
 
-            console.log(response.data);
+            if (response.status === 201) {
+                ToastAndroid.showWithGravity('Đã tạo phản ánh thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+                navigation.navigate('Feedback');
+            } else {
+                ToastAndroid.showWithGravity('Vui lòng kiểm tra lại!', ToastAndroid.LONG, ToastAndroid.CENTER);
+            }
+            console.log('Response success:', response.data);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <KeyboardAvoidingView>
             <View style={styles.container}>
-                <Text style={styles.titleName}>Loại phản ánh </Text>
+                <Text style={styles.titleName}>Nhóm phản ánh </Text>
                 <DropDownPicker
                     open={open}
-                    value={type}
-                    items={types}
+                    value={value}
+                    items={items}
                     setOpen={setOpen}
-                    setValue={setType}
-                    setItems={setTypes}
+                    setValue={setValue}
+                    setItems={setItems}
                     placeholder="-----Chọn-----"
                 />
 
@@ -118,6 +167,7 @@ export default function CreateFeedbackScreen() {
 
                         <TextInput
                             style={styles.input}
+                            autoCapitalize="words"
                             value={title.value}
                             onChangeText={(text) => {
                                 setTitle({ ...title, value: text });
@@ -132,15 +182,55 @@ export default function CreateFeedbackScreen() {
                             multiline
                             numberOfLines={6}
                             style={styles.inputDesc}
-                            value={content.value}
+                            autoCapitalize="words"
+                            value={desc.value}
                             onChangeText={(text) => {
-                                setContent({ ...content, value: text });
+                                setDesc({ ...desc, value: text });
                             }}
-                            error={!!content.error}
-                            errorText={content.error}
+                            error={!!desc.error}
+                            errorText={desc.error}
                         />
-                        <Button icon="arrow-right-circle" mode="contained" onPress={handleSubmit}>
-                            Tạo
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                margin: 16,
+                            }}
+                        >
+                            <ButtonPaper
+                                mode="contained-tonal"
+                                icon="file-upload-outline"
+                                style={styles.upload}
+                                onPress={handleUploadImage}
+                            >
+                                Ảnh minh chứng
+                            </ButtonPaper>
+                            {image ? (
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Image
+                                        source={{ uri: image ? image.uri : null }}
+                                        style={{
+                                            width: 40,
+                                            height: 40,
+                                            borderColor: 'black',
+                                            borderWidth: 1,
+                                            marginRight: 16,
+                                        }}
+                                    />
+                                    <AntDesign
+                                        name="closecircleo"
+                                        size={22}
+                                        color="black"
+                                        onPress={() => setImage(null)}
+                                    />
+                                </View>
+                            ) : (
+                                ''
+                            )}
+                        </View>
+                        <Button mode="contained" onPress={handleSubmit}>
+                            {loading ? <ActivityIndicator color={theme.colors.surface} /> : 'Hoàn tất'}
                         </Button>
                     </SafeAreaView>
                 </ScrollView>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet } from 'react-native';
+// import { Text, View, TouchableOpacity } from 'react-native';
 
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import api, { userApis } from '~/utils/api';
@@ -95,7 +95,7 @@ function OTPScreen({ navigation, route }) {
     const handleVerifyOTP = async () => {
         try {
             if (!value || value.length !== 6) {
-                // ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity('You must provide a valid OTP', ToastAndroid.SHORT, ToastAndroid.CENTER);
                 return;
             }
             const res = await api.post(userApis.verifyOTP, {
@@ -104,7 +104,7 @@ function OTPScreen({ navigation, route }) {
             });
             console.log(res.data);
             if (res.status === 401) {
-                // ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
                 setValue('');
             } else {
                 navigation.navigate('ResetPasswordScreen', { token: res.data?.token });

@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { authAPI, userApis } from '~/utils/api';
 import { useUserDispatch } from '~/hooks/useUser';
 import { USER_ACTION_TYPE } from '~/reducers/userReducer';
+import { AntDesign, FontAwesome, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons';
+import { InfoView } from '~/components';
 
 const styles = StyleSheet.create({
     container: {
         marginTop: 20,
-    },
-    viewWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 10,
-        paddingHorizontal: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        borderStyle: 'solid',
     },
     imageWrapper: {
         justifyContent: 'center',
@@ -25,9 +18,63 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
+        borderWidth: 1,
+        borderColor: '#000',
+        marginBottom: 20,
     },
 });
+
+const userDataConfig = [
+    {
+        id: 1,
+        icon: <MaterialCommunityIcons name="identifier" size={20} color="black" />,
+        label: 'Mã cư dân',
+        field: 'resident_id',
+    },
+    {
+        id: 2,
+        icon: <AntDesign name="user" size={20} color="black" />,
+        label: 'Họ và tên',
+        field: 'personal_information.full_name',
+    },
+    {
+        id: 3,
+        icon: <FontAwesome name="transgender" size={20} color="black" />,
+        label: 'Giới tính',
+        field: 'personal_information.gender',
+    },
+    {
+        id: 4,
+        icon: <AntDesign name="calendar" size={20} color="black" />,
+        label: 'Ngày sinh',
+        field: 'personal_information.date_of_birth',
+    },
+    {
+        id: 5,
+        icon: <AntDesign name="home" size={20} color="black" />,
+        label: 'Quê quán',
+        field: 'personal_information.hometown',
+    },
+    {
+        id: 6,
+        icon: <AntDesign name="idcard" size={20} color="black" />,
+        label: 'CCCD',
+        field: 'personal_information.citizen_id',
+    },
+    {
+        id: 7,
+        icon: <Fontisto name="email" size={20} color="black" />,
+        label: 'Email',
+        field: 'personal_information.email',
+    },
+    {
+        id: 8,
+        icon: <FontAwesome name="phone" size={20} color="black" />,
+        label: 'Số điện thoại',
+        field: 'personal_information.phone_number',
+    },
+];
 
 export default function DetailsProfileScreen() {
     const [profileData, setProfileData] = useState(null);
@@ -40,7 +87,7 @@ export default function DetailsProfileScreen() {
                 userDispatch({ type: USER_ACTION_TYPE.CURRENT, payload: response.data });
                 setProfileData(response.data);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
         fetchProfileData();
@@ -50,45 +97,23 @@ export default function DetailsProfileScreen() {
         <View style={styles.container}>
             {profileData && (
                 <>
-                    {profileData.avatar ? (
+                    {profileData.avatar && (
                         <View style={styles.imageWrapper}>
-                            <Image style={styles.image} source={{ uri: profileData.avatar }} />
+                            <Image
+                                style={styles.image}
+                                source={{ uri: profileData.avatar ? profileData.avatar : '' }}
+                            />
                         </View>
-                    ) : (
-                        ''
                     )}
-                    <View style={styles.viewWrapper}>
-                        <Text>Mã cư dân</Text>
-                        <Text>{profileData.resident_id}</Text>
-                    </View>
-                    <View style={styles.viewWrapper}>
-                        <Text>Họ và tên</Text>
-                        <Text>{profileData.personal_information.full_name}</Text>
-                    </View>
-                    <View style={styles.viewWrapper}>
-                        <Text>Giới tính</Text>
-                        <Text>{profileData.personal_information.gender}</Text>
-                    </View>
-                    <View style={styles.viewWrapper}>
-                        <Text>Ngày sinh</Text>
-                        <Text>{profileData.personal_information.date_of_birth}</Text>
-                    </View>
-                    <View style={styles.viewWrapper}>
-                        <Text>Quê quán</Text>
-                        <Text>{profileData.personal_information.hometown}</Text>
-                    </View>
-                    <View style={styles.viewWrapper}>
-                        <Text>CCCD</Text>
-                        <Text>{profileData.personal_information.citizen_id}</Text>
-                    </View>
-                    <View style={styles.viewWrapper}>
-                        <Text>Email</Text>
-                        <Text>{profileData.personal_information.email}</Text>
-                    </View>
-                    <View style={styles.viewWrapper}>
-                        <Text>Số điện thoại</Text>
-                        <Text>{profileData.personal_information.phone_number}</Text>
-                    </View>
+                    <InfoView
+                        icon={<AntDesign name="user" size={20} color="black" />}
+                        title="Họ và tên"
+                        content={profileData.personal_information.full_name}
+                    />
+                    {userDataConfig.map(({ id, icon, label, field }) => {
+                        const content = field.split('.').reduce((acc, part) => acc?.[part], profileData);
+                        return <InfoView key={id} icon={icon} title={label} content={content} />;
+                    })}
                 </>
             )}
         </View>

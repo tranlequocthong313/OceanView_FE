@@ -1,5 +1,4 @@
-import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
-// import { Text, View, StyleSheet,  ActivityIndicator, ToastAndroid } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator, ToastAndroid } from 'react-native';
 import { RadioButton, Button } from 'react-native-paper';
 import React, { useState } from 'react';
 import api, { userApis } from '~/utils/api';
@@ -14,8 +13,8 @@ const styles = StyleSheet.create({
 
 function MethodResetPasswordScreen({ navigation, route }) {
     const { methods } = route.params;
-
-    const [method, setMethod] = useState('phone_number');
+    console.log(methods);
+    const [method, setMethod] = useState('phoneNumber');
     const [submitLoading, setSubmitLoading] = useState(false);
 
     const { email, phone_number: phoneNumber } = methods;
@@ -37,13 +36,13 @@ function MethodResetPasswordScreen({ navigation, route }) {
         setSubmitLoading(true);
         try {
             if (!(method in methods)) {
-                // ToastAndroid.showWithGravity('You must choose a method', ToastAndroid.LONG, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity('You must choose a method', ToastAndroid.LONG, ToastAndroid.CENTER);
                 console.log(`method not allowed ${method}`);
                 return;
             }
             let endpoint = userApis.sendResetPasswordOTP;
             let data = {
-                phone_number: methods[method],
+                phoneNumber: methods[method],
             };
             if (method === 'email') {
                 endpoint = userApis.sendResetPasswordEmail;
@@ -55,14 +54,13 @@ function MethodResetPasswordScreen({ navigation, route }) {
             console.log(res.data);
             if (res.status === 200) {
                 if (method === 'email') {
-                    // ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
+                    ToastAndroid.showWithGravity(res.data, ToastAndroid.LONG, ToastAndroid.CENTER);
                     navigation.navigate('LoginScreen');
                 } else {
-                    // navigation.navigate('OTPScreen', { phoneNumber: methods[method] });
                     navigation.navigate('OTPScreen', { phoneNumber: methods[method] });
                 }
             } else {
-                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
         } catch (ex) {
             console.error(ex);

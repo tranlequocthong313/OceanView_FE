@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, ActivityIndicator } from 'react-native';
-// import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native';
 import { Text, TextInput as Input } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign } from '@expo/vector-icons';
@@ -9,6 +8,9 @@ import { Background, Logo, Header, Paragraph, Button, TextInput, MessageInvalid 
 import { passwordValidator, formValidator } from '~/helpers';
 import { useUserDispatch } from '~/hooks/useUser';
 import { USER_ACTION_TYPE } from '~/reducers/userReducer';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '~/utils/constants';
+import { useNotificationDispatch } from '~/hooks/useNotification';
+import { NOTIFICATION_ACTION_TYPE } from '~/reducers/notificationReducer';
 import theme from '../../core/theme';
 
 const styles = StyleSheet.create({
@@ -37,12 +39,13 @@ const styles = StyleSheet.create({
 });
 
 export default function LoginScreen({ navigation }) {
-    // TODO: Delete these 2 values after
     const [username, setUsername] = useState({ value: '240001', error: '' });
     const [password, setPassword] = useState({ value: 'tranlequocthong313', error: '' });
+
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
     const userDispatch = useUserDispatch();
+    const notificationDispatch = useNotificationDispatch();
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
@@ -66,22 +69,26 @@ export default function LoginScreen({ navigation }) {
             const response = await api.post(userApis.login, {
                 username: username.value,
                 password: password.value,
-                // username: '240003',
-                // password: 'minhha2k3',
             });
             if (response.status === 200) {
                 const token = response.data.token.access_token;
+                const refreshToken = response.data.token.refresh_token;
                 const { status } = response.data;
 
                 // Lưu trữ token vào AsyncStorage
-                await AsyncStorage.setItem('accessToken', token);
+                await AsyncStorage.setItem(ACCESS_TOKEN_KEY, token);
+                await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
-                console.log(token);
-                console.log(status);
                 console.log('Response:', response.data);
                 userDispatch({
                     type: USER_ACTION_TYPE.LOGIN,
                     payload: response.data,
+                });
+                notificationDispatch({
+                    type: NOTIFICATION_ACTION_TYPE.UPDATE_BADGE,
+                    payload: {
+                        badge: response.data.unread_notifications,
+                    },
                 });
                 if (status === 'ACTIVE') {
                     navigation.reset({
@@ -91,17 +98,17 @@ export default function LoginScreen({ navigation }) {
                 } else if (status === 'ISSUED') {
                     navigation.navigate('UpdateInfoScreen');
                 } else {
-                    // TODO: Handle case account is banned or not issued yet
-                    // const messages = {
-                    //     NOT_ISSUED_YET: 'Account is not issued yet',
-                    //     BANNED: 'You are banned',
-                    // };
-                    // ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                    const messages = {
+                        NOT_ISSUED_YET: 'Account is not issued yet',
+                        BANNED: 'You are banned',
+                    };
+                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
                 }
             } else {
-                // ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
+                ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (error) {
+            console.error(error);
             setLoading(false);
             setShowInvalidLoginMessage(true);
         } finally {
@@ -125,9 +132,10 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={(text) => setUsername({ value: text, error: '' })}
                 keyboardType="numeric"
                 error={!!username.error}
-                errorText={username.error}
                 maxLength={6}
             />
+            {username.error ? <Text style={{ color: 'red', alignSelf: 'flex-start' }}>{username.error}</Text> : null}
+
             <TextInput
                 secureTextEntry={!showPassword}
                 label="Mật khẩu"
@@ -135,7 +143,6 @@ export default function LoginScreen({ navigation }) {
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
                 error={!!password.error}
-                errorText={password.error}
                 right={
                     <Input.Icon
                         icon={showPassword ? 'eye' : 'eye-off'}
@@ -146,6 +153,7 @@ export default function LoginScreen({ navigation }) {
                 autoCorrect={false}
                 textContentType="password"
             />
+            {password.error ? <Text style={{ color: 'red', alignSelf: 'flex-start' }}>{password.error}</Text> : null}
 
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
