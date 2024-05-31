@@ -175,6 +175,7 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
     const fetchInvoiceData = useCallback(async () => {
         try {
             const response = await (await authAPI()).get(`${invoiceApis.invoice}${id}/`);
+            console.log(response.data);
             setDetailInvoices(response.data);
             setIsLoading(false);
         } catch (err) {
@@ -258,7 +259,7 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
                 ) : (
                     <Text>Không có chi tiết dịch vụ.</Text>
                 )}
-                {detailInvoices.status !== 'PAID' ? (
+                {detailInvoices.status === 'PENDING' ? (
                     <View style={styles.wrapPayment}>
                         <Text style={styles.textPayment}>Hình thức thanh toán</Text>
                         <TouchableOpacity style={styles.dropdown} onPress={() => setModalVisible(true)}>
@@ -304,26 +305,29 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
                                 </View>
                             </View>
                         </Modal>
+                        <TouchableOpacity
+                            style={styles.wrapGuild}
+                            onPress={() => {
+                                navigation.navigate('FixedBankScreen', {
+                                    totalAmount: detailInvoices.total_amount,
+                                    id,
+                                });
+                            }}
+                        >
+                            <Text style={styles.guild}>Bạn cũng có thể chuyển vào tài khoản momo cố định tại đây.</Text>
+                        </TouchableOpacity>
                     </View>
                 ) : null}
-                <TouchableOpacity
-                    style={styles.wrapGuild}
-                    onPress={() => {
-                        navigation.navigate('FixedBankScreen', { totalAmount: detailInvoices.total_amount, id });
-                    }}
-                >
-                    <Text style={styles.guild}>Bạn cũng có thể chuyển vào tài khoản momo cố định tại đây.</Text>
-                </TouchableOpacity>
             </ScrollView>
-            {detailInvoices.status !== 'PAID' ? (
-                <View style={styles.footer}>
-                    <View style={styles.total}>
-                        <Text style={styles.title}>Tổng tiền:</Text>
-                        <Text style={styles.money}>{detailInvoices.total_amount}đ</Text>
+                {detailInvoices.status === 'PENDING' ? (
+                    <View style={styles.footer}>
+                        <View style={styles.total}>
+                            <Text style={styles.title}>Tổng tiền:</Text>
+                            <Text style={styles.money}>{detailInvoices.total_amount}đ</Text>
+                        </View>
+                        <SubmitButton title="Thanh toán" onPress={handlePayment} />
                     </View>
-                    <SubmitButton title="Thanh toán" onPress={handlePayment} />
-                </View>
-            ) : null}
+                ) : null}
         </View>
     );
 }

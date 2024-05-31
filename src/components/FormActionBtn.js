@@ -38,8 +38,9 @@ const styles = StyleSheet.create({
 });
 
 export default function FormActionBtn({ navigation, type }) {
-    const handleNavigate = (action, title) => {
-        navigation.navigate(action, { title });
+    console.log('type ', type);
+    const handleNavigate = (destination, title, _status, action) => {
+        navigation.navigate(destination, { title, type, _status, action });
     };
     return (
         <View style={styles.wrapper}>
@@ -53,7 +54,10 @@ export default function FormActionBtn({ navigation, type }) {
                         <Text>Đăng ký thẻ</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.wrapCard} onPress={() => handleNavigate('ListCard', 'Huỷ thẻ')}>
+                <TouchableOpacity
+                    style={styles.wrapCard}
+                    onPress={() => handleNavigate('ListCard', 'Huỷ thẻ', 'CANCELED', 'delete')}
+                >
                     <View style={styles.center}>
                         <MaterialIcons name="cancel" size={24} color="red" />
                         <Text>Huỷ thẻ</Text>
@@ -61,7 +65,10 @@ export default function FormActionBtn({ navigation, type }) {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.residentCard} onPress={() => handleNavigate('ListCard', 'Cấp lại thẻ')}>
+            <TouchableOpacity
+                style={styles.residentCard}
+                onPress={() => handleNavigate('ListCard', 'Cấp lại thẻ', 'WAITING_FOR_APPROVAL', 'reissue')}
+            >
                 <View style={styles.center}>
                     <Ionicons name="refresh-circle" size={24} color="green" />
                     <Text>Cấp lại thẻ</Text>

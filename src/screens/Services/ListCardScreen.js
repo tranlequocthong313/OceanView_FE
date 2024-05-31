@@ -1,5 +1,15 @@
-import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useEffect, useState, useCallback } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    RefreshControl,
+    Alert,
+    ActivityIndicator,
+    TouchableOpacity,
+    ToastAndroid,
+} from 'react-native';
 import theme from '~/core/theme';
 import { authAPI, serviceApis } from '~/utils/api';
 
@@ -7,7 +17,7 @@ const styles = StyleSheet.create({
     container: {
         margin: 12,
     },
-    tittle: {
+    title: {
         fontSize: 16,
         fontWeight: '500',
     },
@@ -59,45 +69,88 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         paddingVertical: 2,
     },
+    emptyMessage: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+    },
 });
 
 export default function ListCardScreen({ navigation, route }) {
-    const { title } = route.params;
+    const { title, type, _status, action } = route.params || {};
+    console.log(route.params);
 
     useEffect(() => {
         if (title) {
             navigation.setOptions({ title });
         }
     }, [title, navigation]);
+
     const [listCardData, setListCardData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
     const [refreshing, setRefreshing] = useState(false);
 
-    const fetchListCardData = async () => {
+    const fetchListCardData = useCallback(async () => {
         try {
-            const response = await (await authAPI()).get(serviceApis.listCard);
-            setIsLoading(false);
+            const apiUrl = `${serviceApis.listCard}?category=${type?.toLowerCase()}`;
+            const response = await (await authAPI()).get(_status ? `${apiUrl}&_status=${_status}` : apiUrl);
+            console.log(response.data);
             setListCardData(response.data);
         } catch (error) {
-            console.log(error);
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
-    };
+    }, [type, _status]);
 
     useEffect(() => {
         fetchListCardData();
-    }, []);
+    }, [fetchListCardData]);
+
     const onRefresh = () => {
         setRefreshing(true);
-        fetchListCardData();
-        setRefreshing(false);
+        fetchListCardData().finally(() => setRefreshing(false));
     };
 
-    console.log(listCardData);
+    const handleDelete = async (id) => {
+        try {
+            await (await authAPI()).delete(`${serviceApis.deleteCard}${id}/`);
+            ToastAndroid.showWithGravity('Xoá thẻ thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+            fetchListCardData(); // Refresh the list after deletion
+        } catch (error) {
+            console.error('Error deleting card:', error);
+            Alert.alert('Error', 'Không thể xoá thẻ. Vui lòng thử lại.');
+        }
+    };
+
+    const handleReissue = async (id) => {
+        try {
+            await (await authAPI()).post(`${serviceApis.reissueCard}${id}/reissue/`);
+            ToastAndroid.showWithGravity('Yêu cầu cấp lại thẻ thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
+            fetchListCardData(); // Refresh the list after reissue
+        } catch (error) {
+            console.error('Error reissuing card:', error);
+            Alert.alert('Error', 'Không thể cấp lại thẻ. Vui lòng thử lại.');
+        }
+    };
+
+    const handleClick = (id) => {
+        console.log(`${serviceApis.reissueCard}${id}/reissue/`);
+        const alertTitle = action === 'delete' ? 'Xoá thẻ' : 'Cấp lại thẻ';
+        const alertMessage = action === 'delete'
+            ? `Bạn có chắc chắn muốn huỷ thẻ có id là 00000${id} không?`
+            : `Bạn có chắc chắn muốn cấp lại thẻ có id là 00000${id} không?`;
+        const onPressAction = action === 'delete' ? () => handleDelete(id) : () => handleReissue(id);
+
+        Alert.alert(alertTitle, alertMessage, [
+            { text: 'Không', style: 'cancel' },
+            { text: 'Có', onPress: onPressAction },
+        ], { cancelable: true });
+    };
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.tittle}>Danh sách các thẻ</Text>
+            <Text style={styles.title}>Danh sách các thẻ</Text>
             {isLoading ? (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <ActivityIndicator size="large" color="#000" />
@@ -107,9 +160,13 @@ export default function ListCardScreen({ navigation, route }) {
                     style={styles.wrapper}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {listCardData !== null ? (
+                    {listCardData?.results?.length > 0 ? (
                         listCardData.results.map((item) => (
-                            <TouchableOpacity key={item.id} style={styles.contentWrapper}>
+                            <TouchableOpacity
+                                key={item.id}
+                                style={styles.contentWrapper}
+                                onPress={() => handleClick(item.id)}
+                            >
                                 <View style={styles.heading}>
                                     <Text style={styles.name}>{item.service.name}</Text>
                                     <Text>{item.service.id}</Text>
@@ -127,7 +184,7 @@ export default function ListCardScreen({ navigation, route }) {
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                        <View style={styles.emptyMessage}>
                             <Text>Bạn chưa đăng ký thẻ nào.</Text>
                         </View>
                     )}

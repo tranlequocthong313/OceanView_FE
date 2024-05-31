@@ -227,7 +227,7 @@ export default function RegisterResidentCardScreen({ navigation }) {
                 },
             });
             ToastAndroid.showWithGravity('Đăng ký thẻ cư dân thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-            navigation.navigate('ListCard');
+            navigation.navigate('ListCard', { title: 'Danh sách thẻ đăng ký' });
             console.log('Response success:', response.data);
         } catch (error) {
             console.log(error);

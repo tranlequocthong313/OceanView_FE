@@ -208,7 +208,7 @@ export default function RegisterAccessCardScreen({ navigation }) {
             });
 
             ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-            navigation.navigate('ListCard');
+            navigation.navigate('ListCard', { title: 'Danh sách thẻ đăng ký' });
             console.log('Response success:', response.data);
         } catch (error) {
             console.log(error);

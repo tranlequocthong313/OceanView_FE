@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -33,22 +34,28 @@ const styles = StyleSheet.create({
 });
 
 function Invoice({ id, amount, status, name }) {
+    const getStatusText = () => {
+        if (status === 'PAID') {
+            return <Text style={styles.paid}>Đã thanh toán</Text>;
+        }
+        if (status === 'WAITING_FOR_APPROVAL') {
+            return <Text style={styles.pending}>Đợi xét duyệt</Text>;
+        }
+        return <Text style={styles.pending}>Đang chờ</Text>;
+    };
+
     return (
         <View style={styles.listItem}>
             <View style={styles.wrapContent}>
                 <Text style={styles.text}>{name || 'Hoá đơn dịch vụ'}</Text>
                 <View style={styles.row}>
                     <Text style={{ marginRight: 2 }}>{amount}đ</Text>
-                    {id ? <AntDesign name="caretright" size={16} color="black" /> : ''}
+                    {id ? <AntDesign name="caretright" size={16} color="black" /> : null}
                 </View>
             </View>
             <View style={styles.wrapContent}>
                 <Text>{id}</Text>
-                {status !== 'PENDING' ? (
-                    <Text style={styles.paid}>Đã thanh toán</Text>
-                ) : (
-                    <Text style={styles.pending}>Đang chờ</Text>
-                )}
+                {getStatusText()}
             </View>
         </View>
     );

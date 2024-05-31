@@ -21,6 +21,8 @@ export const serviceApis = {
     residentCard: '/services/resident-cards/',
 
     listCard: '/services/',
+    deleteCard: '/services/',
+    reissueCard: '/services/',
 };
 
 // TODO: Dung feedback apis ro rang

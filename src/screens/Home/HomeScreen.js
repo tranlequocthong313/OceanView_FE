@@ -7,6 +7,7 @@ import { useUser } from '~/hooks/useUser';
 const styles = StyleSheet.create({
     container: {},
     wrapHeader: {
+        marginTop: 28,
         paddingTop: 50,
         marginHorizontal: 2,
         backgroundColor: theme.colors.primary,

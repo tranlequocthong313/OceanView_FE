@@ -274,7 +274,7 @@ export default function RegisterParkingCardScreen({ navigation }) {
 
             if (response.status === 200) {
                 ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thành công', ToastAndroid.LONG, ToastAndroid.CENTER);
-                navigation.navigate('ListCard');
+                navigation.navigate('ListCard', { title: 'Danh sách thẻ đăng ký' });
             } else {
                 ToastAndroid.showWithGravity('Đăng ký thẻ ra vào thất bại', ToastAndroid.LONG, ToastAndroid.CENTER);
             }
