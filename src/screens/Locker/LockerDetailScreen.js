@@ -152,6 +152,7 @@ function LockerDetailScreen({ route }) {
                 return;
             }
             const formData = new FormData();
+            console.log(image);
             if (image) {
                 formData.append('image', {
                     uri: image.uri,

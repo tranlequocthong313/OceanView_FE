@@ -3,6 +3,8 @@ import { MaterialIcons, AntDesign, Feather, Entypo, MaterialCommunityIcons } fro
 import { StackView } from '~/components';
 import { useUser } from '~/hooks/useUser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authAPI, userApis } from '~/utils/api';
+import { ACCESS_TOKEN_KEY, FCM_TOKEN_KEY, REFRESH_TOKEN_KEY } from '~/utils/constants';
 
 const styles = StyleSheet.create({
     container: {
@@ -49,12 +51,27 @@ export default function AccountScreen({ navigation }) {
     const user = useUser();
 
     const logout = async () => {
-        await AsyncStorage.removeItem("fcmToken")
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'LoginScreen' }],
-        });
-    }
+        try {
+            const fcmToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
+            const r = await (
+                await authAPI()
+            ).post(userApis.logout, {
+                fcm_token: fcmToken,
+                device_type: 'ANDROID',
+            });
+            if (r.status === 204) {
+                await AsyncStorage.removeItem(FCM_TOKEN_KEY);
+                await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
+                await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'LoginScreen' }],
+                });
+            }
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -117,10 +134,7 @@ export default function AccountScreen({ navigation }) {
                     destination="AboutUs"
                 />
 
-                <TouchableOpacity
-                    style={styles.wrapLogout}
-                    onPress={logout}
-                >
+                <TouchableOpacity style={styles.wrapLogout} onPress={logout}>
                     <View style={styles.viewWrapLogout}>
                         <View style={styles.wrapWithIcon}>
                             <Entypo name="log-out" size={24} color="red" />

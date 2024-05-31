@@ -8,6 +8,9 @@ import { Background, Logo, Header, Paragraph, Button, TextInput, MessageInvalid 
 import { passwordValidator, formValidator } from '~/helpers';
 import { useUserDispatch } from '~/hooks/useUser';
 import { USER_ACTION_TYPE } from '~/reducers/userReducer';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '~/utils/constants';
+import { useNotificationDispatch } from '~/hooks/useNotification';
+import { NOTIFICATION_ACTION_TYPE } from '~/reducers/notificationReducer';
 import theme from '../../core/theme';
 
 const styles = StyleSheet.create({
@@ -42,6 +45,7 @@ export default function LoginScreen({ navigation }) {
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
     const userDispatch = useUserDispatch();
+    const notificationDispatch = useNotificationDispatch();
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
@@ -72,13 +76,19 @@ export default function LoginScreen({ navigation }) {
                 const { status } = response.data;
 
                 // Lưu trữ token vào AsyncStorage
-                await AsyncStorage.setItem('accessToken', token);
-                await AsyncStorage.setItem('refreshToken', refreshToken);
+                await AsyncStorage.setItem(ACCESS_TOKEN_KEY, token);
+                await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
                 console.log('Response:', response.data);
                 userDispatch({
                     type: USER_ACTION_TYPE.LOGIN,
                     payload: response.data,
+                });
+                notificationDispatch({
+                    type: NOTIFICATION_ACTION_TYPE.UPDATE_BADGE,
+                    payload: {
+                        badge: response.data.unread_notifications,
+                    },
                 });
                 if (status === 'ACTIVE') {
                     navigation.reset({

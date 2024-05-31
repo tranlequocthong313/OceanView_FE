@@ -36,4 +36,4 @@ yarn-error.*
 
 .vscode
 
-google-services.json
+# google-services.json

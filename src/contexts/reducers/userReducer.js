@@ -4,8 +4,6 @@ export const USER_ACTION_TYPE = {
     LOGOUT: 2,
 };
 
-export const initialUserState = {};
-
 function userReducer(state, action) {
     switch (action.type) {
         case USER_ACTION_TYPE.LOGIN:

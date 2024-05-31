@@ -3,9 +3,20 @@ import { FlatList, Text, View, StyleSheet, Image, TouchableOpacity } from 'react
 import { ActivityIndicator } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import theme from '~/core/theme';
+import { useNotification, useNotificationAPI, useNotificationDispatch } from '~/hooks/useNotification';
+import { NOTIFICATION_ACTION_TYPE } from '~/reducers/notificationReducer';
 import { authAPI, notificationApis } from '~/utils/api';
+import getQuerys from '~/utils/url';
 
+// TODO: This looks terrible pls upgrade it
 const styles = StyleSheet.create({
+    not_read_container: {
+        backgroundColor: theme.colors.primary,
+        opacity: 0.9,
+    },
+    not_read_text: {
+        color: 'white',
+    },
     container: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -35,27 +46,30 @@ const styles = StyleSheet.create({
     },
 });
 export default function NotificationScreen({ navigation }) {
-    const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
     const [nextPageUrl, setNextPageUrl] = useState(null);
     const [url, setUrl] = useState(notificationApis.notifications);
+    const [isNext, setIsNext] = useState(false);
 
-    const SCREEN_MAPPINGS = {
-        INVOICE_CREATE: 'DetailsInvoice',
-        SERVICE_APPROVED: 'ListCard',
-        SERVICE_REJECTED: 'ListCard',
-        REISSUE_APPROVED: 'ListCard',
-        REISSUE_REJECTED: 'ListCard',
-        LOCKER_ITEM_ADD: 'LockerDetailScreen',
-        // "NEWS_POST": "invoice", # TODO: Implement for news
-    };
+    const notificationDispatch = useNotificationDispatch();
+    const { data: notifications, limit, offset } = useNotification();
+    const apis = useNotificationAPI();
 
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
                 setLoading(true);
                 const res = await (await authAPI()).get(url);
-                setNotifications((prev) => [...prev, ...res.data.results]);
+                const { limit: _limit, offset: _offset } = getQuerys(res.data.next);
+                notificationDispatch({
+                    type: isNext ? NOTIFICATION_ACTION_TYPE.INFINITE_SCROLL : NOTIFICATION_ACTION_TYPE.LOAD,
+                    payload: {
+                        badge: res.data.badge,
+                        data: res.data.results,
+                        limit: Number(_limit),
+                        offset: Number(_offset),
+                    },
+                });
                 setNextPageUrl(res.data.next);
             } catch (error) {
                 console.error(error);
@@ -68,18 +82,27 @@ export default function NotificationScreen({ navigation }) {
             }
         };
         fetchNotifications();
-    }, [url]);
+    }, [notificationDispatch, url, isNext]);
 
-    const onPressNotificationItem = (item) => {
-        navigation.navigate(SCREEN_MAPPINGS[item?.content?.entity_type], { id: item?.content?.entity_id });
+    // TODO: Fix bug stack navigations not ready to navigate
+    const onPressNotificationItem = async (item) => {
+        await apis.readNotification({ navigation, notification: item });
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity key={item.id} style={styles.container} onPress={() => onPressNotificationItem(item)}>
+        <TouchableOpacity
+            key={item.id}
+            style={[styles.container, !item.has_been_read && styles.not_read_container]}
+            onPress={() => onPressNotificationItem(item)}
+        >
             <Image style={styles.image} source={{ uri: item?.content?.image }} />
             <View style={styles.contentWrapper}>
-                <Text style={styles.title}>{item?.message}</Text>
-                <Text style={styles.desc} numberOfLines={2} ellipsizeMode="tail">
+                <Text style={[styles.title, !item.has_been_read && styles.not_read_text]}>{item?.message}</Text>
+                <Text
+                    style={[styles.desc, !item.has_been_read && styles.not_read_text]}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                >
                     {item?.created_date}
                 </Text>
             </View>
@@ -88,7 +111,9 @@ export default function NotificationScreen({ navigation }) {
 
     const handleEndReached = async () => {
         if (nextPageUrl && !loading) {
-            setUrl(nextPageUrl);
+            setIsNext(true);
+            console.log(`LIMIT::::${limit}::::OFFSET::::${offset}`);
+            setUrl(`${notificationApis.notifications}?limit=${String(limit)}&offset=${String(offset)}`);
         }
     };
 
