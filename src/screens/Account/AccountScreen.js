@@ -123,8 +123,8 @@ export default function AccountScreen({ navigation }) {
                 <StackView
                     navigation={navigation}
                     icon={<AntDesign name="message1" size={22} color="black" />}
-                    title="Chat với ban quản trị"
-                    destination="Chat"
+                    title="Inbox"
+                    destination="Inbox"
                 />
 
                 <StackView

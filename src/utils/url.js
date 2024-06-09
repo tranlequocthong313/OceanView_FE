@@ -1,9 +1,7 @@
 export default function getQuerys(url) {
-    try {
-        const { searchParams } = new URL(url);
+    const { searchParams } = new URL(url);
+    if (searchParams) {
         return Object.fromEntries([...searchParams.entries()]);
-    } catch (error) {
-        console.error(error);
     }
-    return Object.fromEntries([]);
+    return {};
 }

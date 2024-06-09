@@ -24,8 +24,9 @@
         "@react-native-async-storage/async-storage": "^1.23.1",
         "@react-native-community/datetimepicker": "^7.7.0",
         "@react-native-community/masked-view": "^0.1.11",
-        "@react-native-firebase/app": "^20.0.0",
-        "@react-native-firebase/messaging": "^20.0.0",
+        "@react-native-firebase/app": "^20.1.0",
+        "@react-native-firebase/firestore": "^20.1.0",
+        "@react-native-firebase/messaging": "^20.1.0",
         "@react-native/assets-registry": "^0.74.83",
         "@react-navigation/bottom-tabs": "^6.5.20",
         "@react-navigation/native": "^6.1.17",
@@ -35,6 +36,7 @@
         "expo": "^51.0.2",
         "expo-dev-client": "~4.0.15",
         "expo-image-picker": "^15.0.4",
+        "expo-notifications": "~0.28.4",
         "expo-splash-screen": "^0.27.4",
         "expo-status-bar": "^1.12.1",
         "is-docker": "^3.0.0",
@@ -44,6 +46,7 @@
         "react-native-dotenv": "^3.4.11",
         "react-native-dropdown-picker": "^5.4.6",
         "react-native-gesture-handler": "~2.14.0",
+        "react-native-gifted-chat": "^2.4.0",
         "react-native-modal-datetime-picker": "^17.1.0",
         "react-native-paper": "^5.12.3",
         "react-native-reanimated": "^3.10.1",
@@ -52,8 +55,7 @@
         "react-native-status-bar-height": "^2.6.0",
         "react-native-toast-message": "^2.2.0",
         "react-native-web": "^0.19.10",
-        "react-native-webview": "^13.10.2",
-        "expo-notifications": "~0.28.4"
+        "react-native-webview": "^13.10.2"
     },
     "devDependencies": {
         "@babel/core": "^7.20.0",

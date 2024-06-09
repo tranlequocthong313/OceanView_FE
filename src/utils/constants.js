@@ -10,6 +10,7 @@ const SCREEN_MAPPINGS = {
     REISSUE_REJECTED: 'ListCard',
     LOCKER_ITEM_ADD: 'LockerDetailScreen',
     // "NEWS_POST": "invoice", # TODO: Implement for news
+    CHAT_SEND_MESSAGE: 'Chat',
 };
 
 export { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, FCM_TOKEN_KEY, SCREEN_MAPPINGS };
