@@ -9,7 +9,7 @@ export default function WebViewScreen({ route }) {
         <WebView
             style={{ marginTop: 28 }}
             source={{
-                uri: dataPayment.payment_url ? dataPayment.payment_url : dataPayment.pay_url,
+                uri: dataPayment.payment_url || dataPayment.pay_url,
             }}
             startInLoadingState
             renderLoading={() => (

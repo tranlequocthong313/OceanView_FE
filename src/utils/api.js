@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './constants';
 
 const HOST = 'https://oceanview-be.onrender.com';
+// const HOST = 'https://6e76-27-3-17-224.ngrok-free.app';
 
 export const userApis = {
     login: '/users/login/',
@@ -15,6 +16,7 @@ export const userApis = {
     verifyOTP: '/users/otp-verification/',
     resetPassword: '/users/password/',
     refreshToken: '/users/refresh-token/',
+    users: '/users/',
 };
 
 export const serviceApis = {
@@ -59,6 +61,13 @@ export const newApis = {
     getNew: '/news-categories/',
     getAllNewsByCategory: '/news-categories/',
     getNewsByCategory: '/news-categories/',
+};
+
+export const chatApis = {
+    inboxes: '/inboxes/',
+    createInbox: '/inboxes/',
+    messages: (inboxId) => `/inboxes/${inboxId}/messages/`,
+    sendMessage: (inboxId) => `/inboxes/${inboxId}/messages/`,
 };
 
 export const authAPI = async () => {

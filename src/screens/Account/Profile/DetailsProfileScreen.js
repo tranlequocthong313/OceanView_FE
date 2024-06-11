@@ -99,10 +99,7 @@ export default function DetailsProfileScreen() {
                 <>
                     {profileData.avatar && (
                         <View style={styles.imageWrapper}>
-                            <Image
-                                style={styles.image}
-                                source={{ uri: profileData.avatar ? profileData.avatar : '' }}
-                            />
+                            <Image style={styles.image} source={{ uri: profileData.avatar || '' }} />
                         </View>
                     )}
                     <InfoView

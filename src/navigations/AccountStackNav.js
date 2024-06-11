@@ -7,6 +7,7 @@ import {
     ProfileScreen,
     DetailsSettingsScreen,
     ChatScreen,
+    InboxScreen,
     LockerScreen,
     LockerDetailScreen,
     SettingsScreen,
@@ -87,10 +88,17 @@ export default function AccountStackNav() {
                 }}
             />
             <AccountStack.Screen
+                name="Inbox"
+                component={InboxScreen}
+                options={{
+                    headerTitle: 'Inbox',
+                }}
+            />
+            <AccountStack.Screen
                 name="Chat"
                 component={ChatScreen}
                 options={{
-                    headerTitle: 'Chat với ban quản trị',
+                    headerTitle: 'Chat',
                 }}
             />
             <AccountStack.Screen
