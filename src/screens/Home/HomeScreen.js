@@ -393,7 +393,10 @@ export default function HomeScreen({ navigation }) {
                                 <TouchableOpacity
                                     key={item.id}
                                     onPress={() =>
-                                        navigation.navigate('DetailsNewScreen', { id: item.id, category: item.category })
+                                        navigation.navigate('DetailsNewScreen', {
+                                            id: item.id,
+                                            category: item.category,
+                                        })
                                     }
                                 >
                                     <Image

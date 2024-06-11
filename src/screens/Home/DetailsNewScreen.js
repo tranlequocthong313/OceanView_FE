@@ -73,10 +73,7 @@ export default function DetailsNewScreen({ route }) {
             {news ? (
                 <View>
                     <Text style={styles.title}>{news.title}</Text>
-                    <Image
-                        source={{ uri: news.thumbnail }}
-                        style={styles.image}
-                    />
+                    <Image source={{ uri: news.thumbnail }} style={styles.image} />
                     <RenderHtml
                         contentWidth={screenWidth}
                         source={{ html: news.content }}

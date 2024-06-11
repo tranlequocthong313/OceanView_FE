@@ -101,7 +101,11 @@ export default function LoginScreen({ navigation }) {
                         NOT_ISSUED_YET: 'Account is not issued yet',
                         BANNED: 'You are banned',
                     };
-                    ToastAndroid.showWithGravity(messages[response.data.status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                    ToastAndroid.showWithGravity(
+                        messages[response.data.status],
+                        ToastAndroid.LONG,
+                        ToastAndroid.CENTER,
+                    );
                 }
             } else {
                 ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);

@@ -63,7 +63,9 @@ export default function AccountScreen({ navigation }) {
         setIsLoading(true);
         try {
             const fcmToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
-            const r = await (await authAPI()).post(userApis.logout, {
+            const r = await (
+                await authAPI()
+            ).post(userApis.logout, {
                 fcm_token: fcmToken,
                 device_type: 'ANDROID',
             });
