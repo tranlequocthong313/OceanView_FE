@@ -15,3 +15,4 @@ export { default as FormActionBtn } from './FormActionBtn';
 export { default as Invoice } from './Invoice';
 export { default as SubmitButton } from './SubmitButton';
 export { default as InfoView } from './InfoView';
+export { default as CustomAlert } from './CustomAlert';

@@ -8,7 +8,6 @@ import getQuerys from '~/utils/url';
 
 export default function ChatScreen({ route }) {
     const user = useUser();
-
     const { id: inboxId } = route.params;
     const [messages, setMessages] = useState([]);
     const [isNextMessage, setIsNextMessage] = useState(false);

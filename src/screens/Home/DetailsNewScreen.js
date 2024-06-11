@@ -40,29 +40,26 @@ export default function DetailsNewScreen({ route }) {
             console.error('Failed to fetch category data:', error);
         }
     }, [category, id]);
+
     useEffect(() => {
         fetchNewData();
     }, [fetchNewData]);
 
     const tagsStyles = {
         p: {
+            display: 'block',
             fontSize: 16,
             color: 'black',
             marginBottom: 10,
-        },
-        strong: {
-            fontWeight: 'bold',
-        },
-        span: {
-            color: 'black',
-            backgroundColor: 'white',
+            backgroundColor: '#fff',
+            padding: 8,
         },
     };
 
     const renderersProps = {
         root: {
             style: {
-                backgroundColor: 'white', // Set the background color here
+                backgroundColor: 'white',
                 paddingHorizontal: 12,
             },
         },
@@ -78,7 +75,7 @@ export default function DetailsNewScreen({ route }) {
                         contentWidth={screenWidth}
                         source={{ html: news.content }}
                         tagsStyles={tagsStyles}
-                        renderersProps={renderersProps} // Apply custom styles to the root renderer
+                        renderersProps={renderersProps}
                     />
                 </View>
             ) : (
@@ -87,3 +84,4 @@ export default function DetailsNewScreen({ route }) {
         </ScrollView>
     );
 }
+

@@ -111,7 +111,7 @@ export default function AccountScreen({ navigation }) {
                     navigation={navigation}
                     icon={<Entypo name="new-message" size={24} color="black" />}
                     title="Danh sách phản ánh đã tạo"
-                    destination="HistoryReflection"
+                    destination="HistoryFeedbackScreen"
                 />
                 <StackView
                     navigation={navigation}

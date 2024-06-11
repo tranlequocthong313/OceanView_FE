@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NotificationScreen, DetailsNotifyScreen } from '~/screens';
+import { NotificationScreen, ListCardScreen } from '~/screens';
 
 const NotifyStack = createNativeStackNavigator();
 
@@ -14,10 +14,10 @@ export default function NotifyStackNav() {
                 }}
             />
             <NotifyStack.Screen
-                name="Details"
-                component={DetailsNotifyScreen}
+                name="ListCard"
+                component={ListCardScreen}
                 options={{
-                    title: 'Chi tiết',
+                    title: 'Danh sách thẻ đăng ký',
                 }}
             />
         </NotifyStack.Navigator>

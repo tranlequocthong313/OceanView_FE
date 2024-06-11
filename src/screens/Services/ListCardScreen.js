@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     ToastAndroid,
 } from 'react-native';
+import { CustomAlert } from '~/components';
 import theme from '~/core/theme';
 import { authAPI, serviceApis } from '~/utils/api';
 
@@ -89,6 +90,8 @@ export default function ListCardScreen({ navigation, route }) {
     const [listCardData, setListCardData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [currentId, setCurrentId] = useState(null);
 
     const fetchListCardData = useCallback(async () => {
         try {
@@ -135,23 +138,17 @@ export default function ListCardScreen({ navigation, route }) {
     };
 
     const handleClick = (id) => {
-        console.log(`${serviceApis.reissueCard}${id}/reissue/`);
-        const alertTitle = action === 'delete' ? 'Xoá thẻ' : 'Cấp lại thẻ';
-        const alertMessage =
-            action === 'delete'
-                ? `Bạn có chắc chắn muốn huỷ thẻ có id là 00000${id} không?`
-                : `Bạn có chắc chắn muốn cấp lại thẻ có id là 00000${id} không?`;
-        const onPressAction = action === 'delete' ? () => handleDelete(id) : () => handleReissue(id);
+        setCurrentId(id);
+        setAlertVisible(true);
+    };
 
-        Alert.alert(
-            alertTitle,
-            alertMessage,
-            [
-                { text: 'Không', style: 'cancel' },
-                { text: 'Có', onPress: onPressAction },
-            ],
-            { cancelable: true },
-        );
+    const handleAlertConfirm = () => {
+        setAlertVisible(false);
+        if (action === 'delete') {
+            handleDelete(currentId);
+        } else if (action === 'reissue') {
+            handleReissue(currentId);
+        }
     };
 
     return (
@@ -196,6 +193,17 @@ export default function ListCardScreen({ navigation, route }) {
                     )}
                 </ScrollView>
             )}
+            <CustomAlert
+                isVisible={alertVisible}
+                onClose={() => setAlertVisible(false)}
+                title={action === 'delete' ? 'Xoá thẻ' : 'Cấp lại thẻ'}
+                message={
+                    action === 'delete'
+                        ? `Bạn có chắc chắn muốn huỷ thẻ có id là 00000${currentId} không?`
+                        : `Bạn có chắc chắn muốn cấp lại thẻ có id là 00000${currentId} không?`
+                }
+                onConfirm={handleAlertConfirm}
+            />
         </ScrollView>
     );
 }

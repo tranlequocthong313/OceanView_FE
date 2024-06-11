@@ -9,7 +9,7 @@ import {
     View,
     ScrollView,
 } from 'react-native';
-import { AntDesign, FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
 import messaging from '@react-native-firebase/messaging';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Notifications from 'expo-notifications';
@@ -22,7 +22,9 @@ import { authAPI, newApis } from '~/utils/api';
 import { UtilityButton } from '~/components';
 
 const styles = StyleSheet.create({
-    container: {},
+    container: {
+        flex: 1,
+    },
     wrapHeader: {
         marginTop: 28,
         paddingTop: 50,
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 4,
+        margin: 8,
     },
     contentWrap: {
         backgroundColor: '#EEEDEC',
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         marginVertical: 20,
         flexDirection: 'row',
-        justifyContent: 'center',
+        flexWrap: 'wrap',
     },
     newContainer: {
         marginHorizontal: 12,
@@ -118,41 +120,68 @@ const styles = StyleSheet.create({
     },
     titleImage: {
         alignSelf: 'center',
-        marginVertical: 4,
+        fontSize: 14,
+        marginBottom: 20,
+        marginTop: 2,
     },
+
 });
-
-const utilityButtons = [
-    {
-        id: 1,
-        icon: <MaterialCommunityIcons name="beach" size={24} color="black" />,
-        title: 'Tiện ích',
-        destination: 'UtilityScreen',
-    },
-    {
-        id: 2,
-        icon: <FontAwesome6 name="servicestack" size={24} color="black" />,
-        title: 'Dịch vụ',
-        destination: 'ServiceScreen',
-    },
-    {
-        id: 3,
-        icon: <FontAwesome6 name="file-invoice-dollar" size={22} color="black" />,
-        title: 'Hoá đơn',
-        destination: 'InvoiceScreen',
-    },
-    {
-        id: 4,
-        icon: <AntDesign name="appstore-o" size={22} color="black" />,
-        title: 'Xem thêm',
-        destination: 'SeeMore',
-    },
-];
-
-const screenWidth = Dimensions.get('window').width - 24;
 
 export default function HomeScreen({ navigation }) {
     const user = useUser();
+
+    const utilityButtons = [
+        {
+            id: 1,
+            icon: <MaterialCommunityIcons name="beach" size={24} color="black" />,
+            title: 'Tiện ích',
+            destination: 'UtilityScreen',
+        },
+        {
+            id: 2,
+            icon: <FontAwesome6 name="servicestack" size={24} color="black" />,
+            title: 'Dịch vụ',
+            destination: 'ServiceScreen',
+        },
+        {
+            id: 3,
+            icon: <FontAwesome6 name="file-invoice-dollar" size={22} color="black" />,
+            title: 'Hoá đơn',
+            destination: 'InvoiceScreen',
+        },
+        {
+            id: 4,
+            icon: <Entypo name="new-message" size={24} color="black" />,
+            title: 'Phản ánh',
+            destination: 'HistoryFeedbackScreen',
+        },
+        {
+            id: 5,
+            icon: <MaterialCommunityIcons name="locker" size={24} color="black" />,
+            title: 'Tủ đồ',
+            destination: 'LockerDetailScreen',
+        },
+        {
+            id: 7,
+            icon: <Feather name="phone" size={20} color="black" />,
+            title: 'Liên hệ',
+            destination: 'Contact',
+        },
+    ];
+
+    if (user.is_superuser) {
+        utilityButtons.push({
+            id: 6,
+            icon: <MaterialCommunityIcons name="locker-multiple" size={24} color="black" />,
+            title: 'Quản lý tủ đồ',
+            destination: 'LockerScreen',
+        });
+    }
+
+    const screenWidth = Dimensions.get('window').width - 24;
+
+    console.log(user);
+
     const notificationDispatch = useNotificationDispatch();
     const apis = useNotificationAPI();
 
@@ -161,6 +190,7 @@ export default function HomeScreen({ navigation }) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(1);
     const [items, setItems] = useState([]);
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
     const fetchCategoryData = async (categoryId) => {
         console.log(`${newApis.getNew}${categoryId}`);
@@ -313,6 +343,17 @@ export default function HomeScreen({ navigation }) {
         };
     }, [navigation, notificationDispatch, apis]);
 
+    const handleScroll = (event) => {
+        const contentWidth = event.nativeEvent.contentSize.width;
+        const offsetX = event.nativeEvent.contentOffset.x;
+        const threshold = contentWidth * 0.5;
+
+        const newIndex = Math.floor((offsetX + threshold) / screenWidth);
+        if (newIndex !== selectedIndex) {
+            setSelectedIndex(newIndex);
+        }
+    };
+
     return (
         <View style={styles.container}>
             {/* header */}
@@ -328,14 +369,7 @@ export default function HomeScreen({ navigation }) {
                 </View>
                 <View style={styles.iconsHeader}>
                     <View>
-                        <TouchableOpacity onPress={() => navigation.navigate('LockerDetailScreen')}>
-                            <View style={styles.iconsWrap}>
-                                <MaterialCommunityIcons name="locker" size={24} color="black" />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('InboxScreen')}>
                             <View style={styles.iconsWrap}>
                                 <AntDesign name="message1" size={24} color="black" />
                             </View>
@@ -363,6 +397,7 @@ export default function HomeScreen({ navigation }) {
                         <Text style={styles.titleText}>Danh mục</Text>
                         {newCategories && newCategories.results && (
                             <DropDownPicker
+                                autoScroll={false}
                                 style={styles.picker}
                                 open={open}
                                 value={value}
@@ -387,7 +422,7 @@ export default function HomeScreen({ navigation }) {
                         )}
                     </View>
 
-                    <ScrollView horizontal style={{ zIndex: 1 }}>
+                    <ScrollView horizontal onScroll={handleScroll} style={{ zIndex: 1 }}>
                         {news &&
                             news.map((item) => (
                                 <TouchableOpacity
@@ -408,6 +443,7 @@ export default function HomeScreen({ navigation }) {
                                             borderRadius: 4,
                                         }}
                                     />
+                                    
                                     <Text style={styles.titleImage}>{item.title}</Text>
                                 </TouchableOpacity>
                             ))}

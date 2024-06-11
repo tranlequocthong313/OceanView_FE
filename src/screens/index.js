@@ -35,7 +35,6 @@ export { default as AboutUsScreen } from './ApartmentInfo/AboutUsScreen';
 
 // NotificationsScreen
 export { default as NotificationScreen } from './Notifications/NotificationScreen';
-export { default as DetailsNotifyScreen } from './Notifications/DetailsNotifyScreen';
 
 // ServicesScreen
 export { default as ServicesScreen } from './Services/ServicesScreen';

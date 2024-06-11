@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
+    InboxScreen,
     DetailsInvoiceScreen,
     DetailsNewScreen,
     DetailsProfileScreen,
@@ -10,9 +11,11 @@ import {
     SeeMoreScreen,
     UtilityScreen,
     WebViewScreen,
+    ContactScreen,
 } from '~/screens';
 import { useUser } from '~/hooks/useUser';
 import ServiceStackNav from './ServicesNav/ServicesStack';
+import FeedbackStackNav from './FeedbackStack';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -101,10 +104,31 @@ export default function HomeStackNav() {
                 }}
             />
             <HomeStack.Screen
+                name="InboxScreen"
+                component={InboxScreen}
+                options={{
+                    title: 'Inbox',
+                }}
+            />
+            <HomeStack.Screen
+                name="Contact"
+                component={ContactScreen}
+                options={{
+                    title: 'Liên hệ với chúng tôi',
+                }}
+            />
+            <HomeStack.Screen
                 name="FixedBankScreen"
                 component={FixedBankScreen}
                 options={{
                     title: 'Chuyển khoản ngân hàng',
+                }}
+            />
+            <HomeStack.Screen
+                name="HistoryFeedbackScreen"
+                component={FeedbackStackNav}
+                options={{
+                    title: 'Danh sách phản ánh',
                 }}
             />
         </HomeStack.Navigator>
