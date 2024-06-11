@@ -319,15 +319,15 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
                     </View>
                 ) : null}
             </ScrollView>
-                {detailInvoices.status === 'PENDING' ? (
-                    <View style={styles.footer}>
-                        <View style={styles.total}>
-                            <Text style={styles.title}>Tổng tiền:</Text>
-                            <Text style={styles.money}>{detailInvoices.total_amount}đ</Text>
-                        </View>
-                        <SubmitButton title="Thanh toán" onPress={handlePayment} />
+            {detailInvoices.status === 'PENDING' ? (
+                <View style={styles.footer}>
+                    <View style={styles.total}>
+                        <Text style={styles.title}>Tổng tiền:</Text>
+                        <Text style={styles.money}>{detailInvoices.total_amount}đ</Text>
                     </View>
-                ) : null}
+                    <SubmitButton title="Thanh toán" onPress={handlePayment} />
+                </View>
+            ) : null}
         </View>
     );
 }

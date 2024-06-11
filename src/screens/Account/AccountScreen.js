@@ -1,4 +1,5 @@
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { MaterialIcons, AntDesign, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackView } from '~/components';
 import { useUser } from '~/hooks/useUser';
@@ -10,6 +11,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 12,
         marginTop: 10,
+        flex: 1,
     },
     classify: {
         fontWeight: '500',
@@ -45,17 +47,23 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         color: 'red',
     },
+    loadingSpinner: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
+    },
 });
 
 export default function AccountScreen({ navigation }) {
     const user = useUser();
+    const [isLoading, setIsLoading] = useState(false);
 
     const logout = async () => {
+        setIsLoading(true);
         try {
             const fcmToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
-            const r = await (
-                await authAPI()
-            ).post(userApis.logout, {
+            const r = await (await authAPI()).post(userApis.logout, {
                 fcm_token: fcmToken,
                 device_type: 'ANDROID',
             });
@@ -70,6 +78,8 @@ export default function AccountScreen({ navigation }) {
             }
         } catch (error) {
             console.error('Logout failed', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -83,7 +93,6 @@ export default function AccountScreen({ navigation }) {
                     title="Thông tin cá nhân"
                     destination="DetailsProfile"
                 />
-
                 <StackView
                     navigation={navigation}
                     icon={<AntDesign name="setting" size={22} color="black" />}
@@ -96,21 +105,18 @@ export default function AccountScreen({ navigation }) {
                     title="Liên hệ với chúng tôi"
                     destination="Contact"
                 />
-
                 <StackView
                     navigation={navigation}
                     icon={<Entypo name="new-message" size={24} color="black" />}
                     title="Danh sách phản ánh đã tạo"
                     destination="HistoryReflection"
                 />
-
                 <StackView
                     navigation={navigation}
                     icon={<MaterialCommunityIcons name="locker" size={24} color="black" />}
                     title="Tủ đồ"
                     destination="LockerDetailScreen"
                 />
-
                 {user && user.is_staff && (
                     <StackView
                         navigation={navigation}
@@ -119,21 +125,18 @@ export default function AccountScreen({ navigation }) {
                         destination="LockerScreen"
                     />
                 )}
-
                 <StackView
                     navigation={navigation}
                     icon={<AntDesign name="message1" size={22} color="black" />}
                     title="Chat với ban quản trị"
                     destination="Chat"
                 />
-
                 <StackView
                     navigation={navigation}
                     icon={<AntDesign name="infocirlce" size={20} color="black" />}
                     title="Về chúng tôi"
                     destination="AboutUs"
                 />
-
                 <TouchableOpacity style={styles.wrapLogout} onPress={logout}>
                     <View style={styles.viewWrapLogout}>
                         <View style={styles.wrapWithIcon}>
@@ -144,6 +147,11 @@ export default function AccountScreen({ navigation }) {
                     </View>
                 </TouchableOpacity>
             </View>
+            {isLoading && (
+                <View style={styles.loadingSpinner}>
+                    <ActivityIndicator size="large" color="#000" />
+                </View>
+            )}
         </View>
     );
 }

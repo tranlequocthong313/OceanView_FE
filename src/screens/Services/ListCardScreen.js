@@ -137,15 +137,21 @@ export default function ListCardScreen({ navigation, route }) {
     const handleClick = (id) => {
         console.log(`${serviceApis.reissueCard}${id}/reissue/`);
         const alertTitle = action === 'delete' ? 'Xoá thẻ' : 'Cấp lại thẻ';
-        const alertMessage = action === 'delete'
-            ? `Bạn có chắc chắn muốn huỷ thẻ có id là 00000${id} không?`
-            : `Bạn có chắc chắn muốn cấp lại thẻ có id là 00000${id} không?`;
+        const alertMessage =
+            action === 'delete'
+                ? `Bạn có chắc chắn muốn huỷ thẻ có id là 00000${id} không?`
+                : `Bạn có chắc chắn muốn cấp lại thẻ có id là 00000${id} không?`;
         const onPressAction = action === 'delete' ? () => handleDelete(id) : () => handleReissue(id);
 
-        Alert.alert(alertTitle, alertMessage, [
-            { text: 'Không', style: 'cancel' },
-            { text: 'Có', onPress: onPressAction },
-        ], { cancelable: true });
+        Alert.alert(
+            alertTitle,
+            alertMessage,
+            [
+                { text: 'Không', style: 'cancel' },
+                { text: 'Có', onPress: onPressAction },
+            ],
+            { cancelable: true },
+        );
     };
 
     return (

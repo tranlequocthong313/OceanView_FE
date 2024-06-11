@@ -1,14 +1,25 @@
+import React, { useState, useEffect } from 'react';
+import {
+    PermissionsAndroid,
+    Image,
+    Dimensions,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    ScrollView,
+} from 'react-native';
 import { AntDesign, FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
-import { PermissionsAndroid, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { UtilityButton } from '~/components';
-import { useUser } from '~/hooks/useUser';
 import messaging from '@react-native-firebase/messaging';
+import DropDownPicker from 'react-native-dropdown-picker';
 import * as Notifications from 'expo-notifications';
+import { useUser } from '~/hooks/useUser';
 import { useNotificationAPI, useNotificationDispatch } from '~/hooks/useNotification';
 import { NOTIFICATION_ACTION_TYPE } from '~/reducers/notificationReducer';
 import saveTokenToDatabase from '~/firebase';
 import theme from '~/core/theme';
-import { useEffect } from 'react';
+import { authAPI, newApis } from '~/utils/api';
+import { UtilityButton } from '~/components';
 
 const styles = StyleSheet.create({
     container: {},
@@ -75,6 +86,40 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
+    newContainer: {
+        marginHorizontal: 12,
+    },
+    textWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        display: 'block',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 6,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        elevation: 3,
+        marginBottom: 8,
+        zIndex: 10, // Ensure this view has higher zIndex
+    },
+    picker: {
+        maxWidth: 180,
+        zIndex: 11, // Ensure the DropDownPicker has a higher zIndex
+    },
+    titleText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginRight: 40,
+    },
+    wrapNews: {
+        flexDirection: 'row',
+    },
+    titleImage: {
+        alignSelf: 'center',
+        marginVertical: 4,
+    },
 });
 
 const utilityButtons = [
@@ -104,28 +149,63 @@ const utilityButtons = [
     },
 ];
 
+const screenWidth = Dimensions.get('window').width - 24;
+
 export default function HomeScreen({ navigation }) {
     const user = useUser();
-    console.log(user);
     const notificationDispatch = useNotificationDispatch();
     const apis = useNotificationAPI();
 
+    const [newCategories, setNewCategories] = useState(null);
+    const [news, setNews] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(1);
+    const [items, setItems] = useState([]);
+
+    const fetchCategoryData = async (categoryId) => {
+        console.log(`${newApis.getNew}${categoryId}`);
+        try {
+            const response = await (await authAPI()).get(`${newApis.getAllNewsByCategory}${categoryId}/news/`);
+            setNews(response.data.results);
+        } catch (error) {
+            console.error('Failed to fetch category data:', error);
+        }
+    };
+
     useEffect(() => {
-        // NOTE: On Android API level 32 and below, you do not need to request user permission. This method can still
-        // be called on Android devices; however, and will always resolve successfully. For API level 33+ you will need
-        // to request the permission manually using either the built-in react-native PermissionsAndroid APIs or a related
-        // module such as react-native-permissions
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then((permissionStatus) => {
+        const fetchNewCategories = async () => {
+            try {
+                const response = await (await authAPI()).get(newApis.getNewCategories);
+                const categories = response.data.results.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                }));
+                setNewCategories(response.data);
+                setItems(categories);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        const requestPermissionsAndFetchToken = async () => {
+            const permissionStatus = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+            );
             console.log('PERMISSION:::', permissionStatus);
 
             if (permissionStatus !== 'denied') {
-                messaging()
-                    .getToken()
-                    .then((deviceToken) => {
-                        saveTokenToDatabase(deviceToken);
-                    });
+                const deviceToken = await messaging().getToken();
+                saveTokenToDatabase(deviceToken);
             }
-        });
+        };
+
+        Promise.all([fetchNewCategories(), requestPermissionsAndFetchToken()])
+            .then(() => {
+                console.log('All promises resolved');
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
         return messaging().onTokenRefresh((token) => {
             saveTokenToDatabase(token);
@@ -150,7 +230,6 @@ export default function HomeScreen({ navigation }) {
             await apis.readNotification({ navigation, notification: response?.notification?.request?.content?.data });
         };
 
-        // Listen for user clicking on a notification
         const notificationClickSubscription =
             Notifications.addNotificationResponseReceivedListener(handleNotificationClick);
 
@@ -175,7 +254,6 @@ export default function HomeScreen({ navigation }) {
         };
         openAppFromBackgroundNotification();
 
-        // NOTE: Can't test this in development build?
         const openAppFromQuitNotification = () => {
             messaging()
                 .getInitialNotification()
@@ -221,14 +299,12 @@ export default function HomeScreen({ navigation }) {
 
             dispatchNotification(data);
 
-            // Schedule the notification with a null trigger to show immediately
             await Notifications.scheduleNotificationAsync({
                 content: notification,
                 trigger: null,
             });
         };
 
-        // Listen for push notifications when the app is in the foreground
         const unsubscribe = messaging().onMessage(handleForegroundNotification);
 
         return () => {
@@ -280,6 +356,59 @@ export default function HomeScreen({ navigation }) {
                             navigation={navigation}
                         />
                     ))}
+                </View>
+
+                <View style={styles.newContainer}>
+                    <View style={styles.textWrapper}>
+                        <Text style={styles.titleText}>Danh mục</Text>
+                        {newCategories && newCategories.results && (
+                            <DropDownPicker
+                                style={styles.picker}
+                                open={open}
+                                value={value}
+                                items={items}
+                                setOpen={setOpen}
+                                setValue={setValue}
+                                setItems={setItems}
+                                placeholder="--All--"
+                                dropDownContainerStyle={{
+                                    backgroundColor: '#dfdfdf',
+                                    maxWidth: 180,
+                                    zIndex: 1000, // Ensure the dropdown container has the highest zIndex
+                                }}
+                                selectedItemContainerStyle={{
+                                    backgroundColor: 'grey',
+                                }}
+                                onChangeValue={(id) => {
+                                    console.log('Selected categoryId:', id);
+                                    fetchCategoryData(id);
+                                }}
+                            />
+                        )}
+                    </View>
+
+                    <ScrollView horizontal style={{ zIndex: 1 }}>
+                        {news &&
+                            news.map((item) => (
+                                <TouchableOpacity
+                                    key={item.id}
+                                    onPress={() =>
+                                        navigation.navigate('DetailsNewScreen', { id: item.id, category: item.category })
+                                    }
+                                >
+                                    <Image
+                                        source={{ uri: item.thumbnail }}
+                                        style={{
+                                            width: screenWidth,
+                                            height: 200,
+                                            resizeMode: 'cover',
+                                            borderRadius: 4,
+                                        }}
+                                    />
+                                    <Text style={styles.titleImage}>{item.title}</Text>
+                                </TouchableOpacity>
+                            ))}
+                    </ScrollView>
                 </View>
             </View>
         </View>

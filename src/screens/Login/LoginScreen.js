@@ -36,22 +36,24 @@ const styles = StyleSheet.create({
         color: theme.colors.secondary,
         textDecorationLine: 'underline',
     },
+    errorText: {
+        color: 'red',
+        alignSelf: 'flex-start',
+    },
 });
 
 export default function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState({ value: '240001', error: '' });
-    const [password, setPassword] = useState({ value: 'tranlequocthong313', error: '' });
-
+    const [username, setUsername] = useState({ value: '240002', error: '' });
+    const [password, setPassword] = useState({ value: 'minhha2k3', error: '' });
     const [showInvalidLoginMessage, setShowInvalidLoginMessage] = useState(false);
     const [loading, setLoading] = useState(false);
     const userDispatch = useUserDispatch();
     const notificationDispatch = useNotificationDispatch();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleCloseInvalidLoginMessage = () => {
         setShowInvalidLoginMessage(false);
     };
-
-    const [showPassword, setShowPassword] = useState(false);
 
     const onLoginPressed = async () => {
         const usernameError = formValidator(username.value, 'Username');
@@ -70,53 +72,47 @@ export default function LoginScreen({ navigation }) {
                 username: username.value,
                 password: password.value,
             });
+
             if (response.status === 200) {
-                const token = response.data.token.access_token;
-                const refreshToken = response.data.token.refresh_token;
-                const { status } = response.data;
+                console.log(response.data.token);
 
-                // Lưu trữ token vào AsyncStorage
-                await AsyncStorage.setItem(ACCESS_TOKEN_KEY, token);
-                await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+                await AsyncStorage.setItem(ACCESS_TOKEN_KEY, response.data.token.access_token);
+                await AsyncStorage.setItem(REFRESH_TOKEN_KEY, response.data.token.refresh_token);
 
-                console.log('Response:', response.data);
                 userDispatch({
                     type: USER_ACTION_TYPE.LOGIN,
                     payload: response.data,
                 });
+
                 notificationDispatch({
                     type: NOTIFICATION_ACTION_TYPE.UPDATE_BADGE,
-                    payload: {
-                        badge: response.data.unread_notifications,
-                    },
+                    payload: { badge: response.data.unread_notifications },
                 });
-                if (status === 'ACTIVE') {
+
+                if (response.data.status === 'ACTIVE') {
                     navigation.reset({
                         index: 0,
                         routes: [{ name: 'HomeScreen' }],
                     });
-                } else if (status === 'ISSUED') {
+                } else if (response.data.status === 'ISSUED') {
                     navigation.navigate('UpdateInfoScreen');
                 } else {
                     const messages = {
                         NOT_ISSUED_YET: 'Account is not issued yet',
                         BANNED: 'You are banned',
                     };
-                    ToastAndroid.showWithGravity(messages[status], ToastAndroid.LONG, ToastAndroid.CENTER);
+                    ToastAndroid.showWithGravity(messages[response.data.status], ToastAndroid.LONG, ToastAndroid.CENTER);
                 }
             } else {
                 ToastAndroid.showWithGravity('Something went wrong', ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (error) {
-            console.error(error);
-            setLoading(false);
             setShowInvalidLoginMessage(true);
         } finally {
             setLoading(false);
         }
     };
 
-    // TODO: Chuyển cái Logo Header Paragraph này thành 1 Compoent, rồi sau đó tất cả Screen liên quan đếnLogin, ForgotPassword dều là children của Component này => Tránh duplicate code
     return (
         <Background>
             <Logo />
@@ -134,12 +130,12 @@ export default function LoginScreen({ navigation }) {
                 error={!!username.error}
                 maxLength={6}
             />
-            {username.error ? <Text style={{ color: 'red', alignSelf: 'flex-start' }}>{username.error}</Text> : null}
+            {username.error ? <Text style={styles.errorText}>{username.error}</Text> : null}
 
             <TextInput
                 secureTextEntry={!showPassword}
                 label="Mật khẩu"
-                returnKeyType="next"
+                returnKeyType="done"
                 value={password.value}
                 onChangeText={(text) => setPassword({ value: text, error: '' })}
                 error={!!password.error}
@@ -153,7 +149,7 @@ export default function LoginScreen({ navigation }) {
                 autoCorrect={false}
                 textContentType="password"
             />
-            {password.error ? <Text style={{ color: 'red', alignSelf: 'flex-start' }}>{password.error}</Text> : null}
+            {password.error ? <Text style={styles.errorText}>{password.error}</Text> : null}
 
             <View style={styles.forgotPassword}>
                 <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>

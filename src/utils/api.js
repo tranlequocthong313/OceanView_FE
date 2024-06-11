@@ -54,6 +54,13 @@ export const notificationApis = {
     fcmToken: '/fcm-tokens/',
 };
 
+export const newApis = {
+    getNewCategories: '/news-categories/',
+    getNew: '/news-categories/',
+    getAllNewsByCategory: '/news-categories/',
+    getNewsByCategory: '/news-categories/',
+};
+
 export const authAPI = async () => {
     const token = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
     console.log('Token: ', token);
