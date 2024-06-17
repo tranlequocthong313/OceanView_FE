@@ -16,7 +16,12 @@ export default function NotificationProvider({ children }) {
 
     const readNotification = async ({ notification, navigation }) => {
         if (!notification || !navigation) {
-            console.error('params missing');
+            return;
+        }
+        if (notification?.content?.entity_type === 'CHAT_SEND_MESSAGE') {
+            navigation.navigate(SCREEN_MAPPINGS[notification?.content?.entity_type], {
+                id: notification?.content?.entity_id,
+            });
             return;
         }
         try {

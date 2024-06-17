@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './constants';
 
 const HOST = 'https://oceanview-be.onrender.com';
-// const HOST = 'https://6e76-27-3-17-224.ngrok-free.app';
+// const HOST = 'https://0b33-27-3-17-224.ngrok-free.app';
 
 export const userApis = {
     login: '/users/login/',
@@ -60,7 +60,8 @@ export const newApis = {
     getNewCategories: '/news-categories/',
     getNew: '/news-categories/',
     getAllNewsByCategory: '/news-categories/',
-    getNewsByCategory: '/news-categories/',
+    getNewsByCategory: (category, id) => `/news-categories/${category}/news/${id}/`,
+    getANews: (id) => `/news/${id}/`,
 };
 
 export const chatApis = {

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function CustomAlert  ({ isVisible, onClose, title, message, onConfirm }) {
+export default function CustomAlert({ isVisible, onClose, title, message, onConfirm }) {
     return (
         <Modal isVisible={isVisible}>
             <View style={styles.modalContainer}>
@@ -57,8 +57,4 @@ export default function CustomAlert  ({ isVisible, onClose, title, message, onCo
             </View>
         </Modal>
     );
-};
-
-
-
- 
+}

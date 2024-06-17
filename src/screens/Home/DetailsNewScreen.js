@@ -33,7 +33,9 @@ export default function DetailsNewScreen({ route }) {
 
     const fetchNewData = useCallback(async () => {
         try {
-            const response = await (await authAPI()).get(`${newApis.getNewsByCategory}${category}/news/${id}/`);
+            const response = await (
+                await authAPI()
+            ).get(category ? newApis.getNewsByCategory(category, id) : newApis.getANews(id));
             console.log('response: ', response.data);
             setNews(response.data);
         } catch (error) {
@@ -84,4 +86,3 @@ export default function DetailsNewScreen({ route }) {
         </ScrollView>
     );
 }
-

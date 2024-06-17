@@ -9,7 +9,7 @@ const SCREEN_MAPPINGS = {
     REISSUE_APPROVED: 'ListCard',
     REISSUE_REJECTED: 'ListCard',
     LOCKER_ITEM_ADD: 'LockerDetailScreen',
-    // "NEWS_POST": "invoice", # TODO: Implement for news
+    NEWS_POST: 'DetailsNewScreen',
     CHAT_SEND_MESSAGE: 'Chat',
 };
 

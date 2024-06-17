@@ -9,7 +9,7 @@ import {
     View,
     ScrollView,
 } from 'react-native';
-import { AntDesign, Entypo, Feather, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
+import { AntDesign, Entypo, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
 import messaging from '@react-native-firebase/messaging';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as Notifications from 'expo-notifications';
@@ -83,13 +83,11 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
         backgroundColor: '#fff',
         borderRadius: 6,
-        marginHorizontal: 12,
+        // marginHorizontal: 12,
         marginVertical: 20,
         flexDirection: 'row',
         flexWrap: 'wrap',
-    },
-    newContainer: {
-        marginHorizontal: 12,
+        justifyContent: 'space-evenly',
     },
     textWrapper: {
         flexDirection: 'row',
@@ -124,19 +122,18 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 2,
     },
-
 });
 
 export default function HomeScreen({ navigation }) {
     const user = useUser();
 
     const utilityButtons = [
-        {
-            id: 1,
-            icon: <MaterialCommunityIcons name="beach" size={24} color="black" />,
-            title: 'Tiện ích',
-            destination: 'UtilityScreen',
-        },
+        // {
+        //     id: 1,
+        //     icon: <MaterialCommunityIcons name="beach" size={24} color="black" />,
+        //     title: 'Tiện ích',
+        //     destination: 'UtilityScreen',
+        // },
         {
             id: 2,
             icon: <FontAwesome6 name="servicestack" size={24} color="black" />,
@@ -161,24 +158,24 @@ export default function HomeScreen({ navigation }) {
             title: 'Tủ đồ',
             destination: 'LockerDetailScreen',
         },
-        {
-            id: 7,
-            icon: <Feather name="phone" size={20} color="black" />,
-            title: 'Liên hệ',
-            destination: 'Contact',
-        },
+        // {
+        //     id: 7,
+        //     icon: <Feather name="phone" size={20} color="black" />,
+        //     title: 'Liên hệ',
+        //     destination: 'Contact',
+        // },
     ];
 
     if (user.is_superuser) {
         utilityButtons.push({
             id: 6,
             icon: <MaterialCommunityIcons name="locker-multiple" size={24} color="black" />,
-            title: 'Quản lý tủ đồ',
+            title: 'Quản lý',
             destination: 'LockerScreen',
         });
     }
 
-    const screenWidth = Dimensions.get('window').width - 24;
+    const screenWidth = Dimensions.get('window').width;
 
     console.log(user);
 
@@ -392,7 +389,7 @@ export default function HomeScreen({ navigation }) {
                     ))}
                 </View>
 
-                <View style={styles.newContainer}>
+                <View>
                     <View style={styles.textWrapper}>
                         <Text style={styles.titleText}>Danh mục</Text>
                         {newCategories && newCategories.results && (
@@ -443,7 +440,7 @@ export default function HomeScreen({ navigation }) {
                                             borderRadius: 4,
                                         }}
                                     />
-                                    
+
                                     <Text style={styles.titleImage}>{item.title}</Text>
                                 </TouchableOpacity>
                             ))}

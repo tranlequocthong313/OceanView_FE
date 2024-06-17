@@ -211,10 +211,7 @@ export default function InboxScreen({ navigation }) {
     const renderInboxItem = ({ item }) => (
         <TouchableOpacity style={styles.inboxItem} onPress={() => onPressInbox(item)}>
             <View style={styles.avatarContainer}>
-                <Avatar.Image
-                    size={48}
-                    source={{ uri: item.user.avatar || DEFAULT_AVATAR }}
-                />
+                <Avatar.Image size={48} source={{ uri: item.user.avatar || DEFAULT_AVATAR }} />
             </View>
             <View style={styles.inboxDetails}>
                 <Text style={styles.inboxName}>{item.user.full_name}</Text>
@@ -224,21 +221,17 @@ export default function InboxScreen({ navigation }) {
             </View>
         </TouchableOpacity>
     );
-    
+
     const renderUserItem = ({ item }) => (
         <TouchableOpacity style={styles.inboxItem} onPress={() => onPressUser(item)}>
             <View style={styles.avatarContainer}>
-                <Avatar.Image
-                    size={48}
-                    source={{ uri: item.avatar || DEFAULT_AVATAR }}
-                />
+                <Avatar.Image size={48} source={{ uri: item.avatar || DEFAULT_AVATAR }} />
             </View>
             <View style={styles.inboxDetails}>
                 <Text style={styles.inboxName}>{item.personal_information.full_name}</Text>
             </View>
         </TouchableOpacity>
     );
-    
 
     return (
         <View style={styles.container}>

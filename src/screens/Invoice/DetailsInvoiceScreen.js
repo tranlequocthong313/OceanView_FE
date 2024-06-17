@@ -70,14 +70,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#ccc',
+        // borderColor: '#ccc',
         padding: 10,
         borderRadius: 8,
         marginBottom: 10,
     },
     placeholderText: {
         flex: 1,
-        color: '#999',
+        // color: '#999',
     },
     selectedMethod: {
         flexDirection: 'row',
@@ -250,7 +250,7 @@ export default function DetailsInvoiceScreen({ navigation, route }) {
                 {Array.isArray(detailInvoices.invoicedetail_set) && detailInvoices.invoicedetail_set.length > 0 ? (
                     detailInvoices.invoicedetail_set.map((item) => (
                         <Invoice
-                            key={item.service_name}
+                            key={item.id}
                             name={item.service_name}
                             status={detailInvoices.status}
                             amount={item.amount}

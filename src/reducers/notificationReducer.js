@@ -22,12 +22,15 @@ function notificationReducer(state, action) {
             const newBadge = state.badge + 1;
             const newOffset = state.offset ? state.offset + 1 : 0;
             const { data } = action.payload;
-            return {
+            const result = {
                 ...state,
-                badge: newBadge,
-                data: [data, ...state.data],
                 offset: newOffset,
             };
+            if (data.content.entity_type !== 'CHAT_SEND_MESSAGE') {
+                result.badge = newBadge;
+                result.data = [data, ...state.data];
+            }
+            return result;
         }
         case NOTIFICATION_ACTION_TYPE.READ: {
             console.group('READ NOTIFICATION');

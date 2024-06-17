@@ -1,10 +1,11 @@
 import React from 'react';
 import { WebView } from 'react-native-webview';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Linking } from 'react-native';
 
 export default function WebViewScreen({ route }) {
     const { dataPayment } = route.params;
     console.log(dataPayment);
+
     return (
         <WebView
             style={{ marginTop: 28 }}
@@ -17,6 +18,17 @@ export default function WebViewScreen({ route }) {
                     <ActivityIndicator size="large" color="#000" />
                 </View>
             )}
+            onNavigationStateChange={(event) => {
+                const uri = dataPayment.deeplink;
+                if (!uri) {
+                    return;
+                }
+                if (event.url !== uri) {
+                    console.log('EVENT URL:::', event.url);
+                    // this.webview.stopLoading();
+                    Linking.openURL(event.url);
+                }
+            }}
         />
     );
 }
